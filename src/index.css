@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Indian Tricolour Theme - Saffron, White, Green */
+/* Indian Tricolour Theme - Enhanced Contrast */
 
 @layer base {
   :root {
@@ -16,17 +16,18 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* Indian Saffron as primary */
-    --primary: 24 100% 50%;
+    /* Enhanced Indian Saffron with better contrast */
+    --primary: 24 95% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 120 100% 25%;
+    /* Enhanced Indian Green with better contrast */
+    --secondary: 120 100% 20%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-foreground: 215.4 16.3% 35%;
 
-    --accent: 120 60% 50%;
+    --accent: 120 60% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -34,15 +35,17 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 24 100% 50%;
+    --ring: 24 95% 53%;
 
     --radius: 0.5rem;
 
-    /* Tricolour specific colors */
-    --saffron: 24 100% 50%;
+    /* Enhanced Tricolour specific colors with better contrast */
+    --saffron: 24 95% 53%;
+    --saffron-dark: 24 95% 40%;
     --white: 0 0% 100%;
-    --green: 120 100% 25%;
-    --navy-blue: 220 100% 20%;
+    --green: 120 100% 20%;
+    --green-light: 120 60% 45%;
+    --navy-blue: 220 100% 15%;
   }
 
   .dark {
@@ -55,14 +58,14 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 24 100% 50%;
+    --primary: 24 95% 53%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 120 100% 25%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted-foreground: 215 20.2% 75%;
 
     --accent: 120 60% 50%;
     --accent-foreground: 0 0% 100%;
@@ -72,7 +75,7 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 24 100% 50%;
+    --ring: 24 95% 53%;
   }
 }
 
@@ -86,33 +89,63 @@
   }
 }
 
-/* Indian Tricolour gradient utilities */
+/* Enhanced Indian Tricolour gradient utilities with better contrast */
 @layer utilities {
   .bg-tricolour {
-    background: linear-gradient(to right, #ff9933 0%, #ffffff 50%, #138808 100%);
+    background: linear-gradient(to right, hsl(24 95% 53%) 0%, hsl(0 0% 100%) 50%, hsl(120 100% 20%) 100%);
+  }
+  
+  .bg-tricolour-subtle {
+    background: linear-gradient(to right, hsl(24 95% 53% / 0.1) 0%, hsl(0 0% 100%) 50%, hsl(120 100% 20% / 0.1) 100%);
   }
   
   .bg-saffron {
-    background-color: #ff9933;
+    background-color: hsl(24 95% 53%);
+  }
+  
+  .bg-saffron-dark {
+    background-color: hsl(24 95% 40%);
   }
   
   .bg-indian-green {
-    background-color: #138808;
+    background-color: hsl(120 100% 20%);
+  }
+  
+  .bg-indian-green-light {
+    background-color: hsl(120 60% 45%);
   }
   
   .text-saffron {
-    color: #ff9933;
+    color: hsl(24 95% 53%);
+  }
+  
+  .text-saffron-dark {
+    color: hsl(24 95% 40%);
   }
   
   .text-indian-green {
-    color: #138808;
+    color: hsl(120 100% 20%);
+  }
+  
+  .text-indian-green-light {
+    color: hsl(120 60% 45%);
   }
   
   .border-saffron {
-    border-color: #ff9933;
+    border-color: hsl(24 95% 53%);
   }
   
   .border-indian-green {
-    border-color: #138808;
+    border-color: hsl(120 100% 20%);
+  }
+
+  /* High contrast text utilities */
+  .text-high-contrast {
+    color: hsl(222.2 84% 4.9%);
+  }
+
+  .text-white-contrast {
+    color: hsl(0 0% 100%);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
 }
