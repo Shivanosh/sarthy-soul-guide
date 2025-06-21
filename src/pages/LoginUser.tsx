@@ -5,72 +5,54 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Heart, Eye, EyeOff, ArrowLeft, Loader2, Shield } from 'lucide-react';
+import { Heart, Eye, EyeOff, ArrowLeft, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { loginSchema, sanitizeInput, createRateLimiter } from '@/lib/validation';
-import { secureAuth, DEMO_CREDENTIALS } from '@/lib/auth';
-import { useCSRF } from '@/lib/csrf';
 
 const LoginUser = () => {
   const navigate = useNavigate();
-  const { getCSRFToken } = useCSRF();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  // Rate limiting
-  const rateLimiter = createRateLimiter(5, 15 * 60 * 1000); // 5 attempts per 15 minutes
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Rate limiting check
-    const clientIp = 'user'; // In production, use actual IP
-    if (!rateLimiter(clientIp)) {
-      toast.error('Too many login attempts. Please try again later.');
-      return;
-    }
-
     setLoading(true);
-    setErrors({});
 
     try {
-      // Input validation
-      const sanitizedData = {
-        email: sanitizeInput(formData.email),
-        password: formData.password // Don't sanitize password as it may contain special chars
-      };
-
-      const validationResult = loginSchema.safeParse(sanitizedData);
-      if (!validationResult.success) {
-        const fieldErrors: Record<string, string> = {};
-        validationResult.error.errors.forEach((error) => {
-          fieldErrors[error.path[0]] = error.message;
-        });
-        setErrors(fieldErrors);
+      // Enhanced mock authentication with validation
+      if (!formData.email || !formData.password) {
+        toast.error('Please fill in all fields');
         return;
       }
 
-      // CSRF token validation
-      const csrfToken = getCSRFToken();
-      
-      // Secure authentication
-      const result = await secureAuth.login(validationResult.data, false);
-      
-      if (result.success && result.user) {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      if (formData.email === 'user@example.com' && formData.password === 'password') {
+        const mockUser = {
+          id: 1,
+          name: 'Spiritual Seeker',
+          email: formData.email,
+          role: 'user',
+          joinDate: new Date().toISOString(),
+          streak: 7,
+          points: 1250
+        };
+        
+        localStorage.setItem('token', 'mock-jwt-token-user');
+        localStorage.setItem('user', JSON.stringify(mockUser));
+        
         toast.success('🙏 Welcome back to your spiritual journey!');
         setTimeout(() => {
           navigate('/');
         }, 1000);
       } else {
-        toast.error(result.error || 'Invalid credentials');
+        toast.error('Invalid credentials. Try user@example.com / password');
       }
     } catch (error) {
-      console.error('Login error:', error);
       toast.error('Login failed. Please try again.');
     } finally {
       setLoading(false);
@@ -78,25 +60,16 @@ const LoginUser = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [e.target.name]: e.target.value
     }));
-    
-    // Clear field error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
   };
 
   const handleGuestLogin = () => {
     setFormData({
-      email: DEMO_CREDENTIALS.user.email,
-      password: DEMO_CREDENTIALS.user.password
+      email: 'user@example.com',
+      password: 'password'
     });
     toast.info('Demo credentials filled! Click Sign In to continue.');
   };
@@ -115,8 +88,8 @@ const LoginUser = () => {
         </Button>
 
         <Card className="shadow-2xl border-0 overflow-hidden">
-          {/* Security indicator */}
-          <div className="h-2 bg-gradient-to-r from-green-500 to-blue-500"></div>
+          {/* Tricolour header */}
+          <div className="h-2 bg-tricolour"></div>
           
           <CardHeader className="text-center pb-4 bg-gradient-to-b from-orange-50 to-white">
             <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
@@ -126,16 +99,10 @@ const LoginUser = () => {
             <CardDescription className="text-gray-600">
               Continue your spiritual journey with AapkaSarthy 🇮🇳
             </CardDescription>
-            <div className="flex items-center justify-center gap-2 mt-2">
-              <Shield className="h-4 w-4 text-green-600" />
-              <span className="text-xs text-green-600 font-medium">Secured Connection</span>
-            </div>
           </CardHeader>
           
           <CardContent className="p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
-              <input type="hidden" name="csrf_token" value={getCSRFToken()} />
-              
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700 font-medium">Email</Label>
                 <Input
@@ -146,14 +113,8 @@ const LoginUser = () => {
                   onChange={handleChange}
                   placeholder="your@email.com"
                   required
-                  className={`w-full focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${
-                    errors.email ? 'border-red-500' : ''
-                  }`}
-                  maxLength={100}
+                  className="w-full focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 />
-                {errors.email && (
-                  <p className="text-sm text-red-600">{errors.email}</p>
-                )}
               </div>
               
               <div className="space-y-2">
@@ -167,10 +128,7 @@ const LoginUser = () => {
                     onChange={handleChange}
                     placeholder="Enter your password"
                     required
-                    className={`w-full pr-10 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${
-                      errors.password ? 'border-red-500' : ''
-                    }`}
-                    maxLength={128}
+                    className="w-full pr-10 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                   />
                   <Button
                     type="button"
@@ -186,9 +144,6 @@ const LoginUser = () => {
                     )}
                   </Button>
                 </div>
-                {errors.password && (
-                  <p className="text-sm text-red-600">{errors.password}</p>
-                )}
               </div>
               
               <Button 
@@ -229,7 +184,7 @@ const LoginUser = () => {
                     🎯 Demo Credentials:
                   </p>
                   <p className="text-xs text-orange-700">
-                    {DEMO_CREDENTIALS.user.email} / {DEMO_CREDENTIALS.user.password}
+                    user@example.com / password
                   </p>
                 </div>
               </div>
