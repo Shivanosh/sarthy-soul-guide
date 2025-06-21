@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -15,8 +16,6 @@ const MoodSelection = () => {
   const [playingTrack, setPlayingTrack] = useState<string>('');
   const [meditationProgress, setMeditationProgress] = useState(0);
   const [isTracking, setIsTracking] = useState(false);
-
-  // ... keep existing code (moods array and moodRecommendations)
 
   const moods = [
     { id: 'happy', name: 'Joyful', icon: Smile, color: 'bg-yellow-500', description: 'Feeling blessed and grateful', mantra: 'Om Gam Ganapataye Namaha' },
@@ -48,7 +47,7 @@ const MoodSelection = () => {
     sad: [
       { type: 'Meditation', title: 'Healing Heart Meditation', duration: '18 min', description: 'Comfort for difficult times', points: 80 },
       { type: 'Chant', title: 'Mahamrityunjaya Mantra', duration: '21 min', description: 'Healing and transformation', points: 100 },
-      { type: 'Music', title: 'Soulful Bhajans', duration: '25 min', description: '...', points: 90 }
+      { type: 'Music', title: 'Soulful Bhajans', duration: '25 min', description: 'Devotional healing songs', points: 90 }
     ],
     energetic: [
       { type: 'Meditation', title: 'Dynamic Meditation', duration: '12 min', description: 'Channel your energy positively', points: 60 },
@@ -255,7 +254,7 @@ const MoodSelection = () => {
                       size="sm" 
                       className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
                       onClick={() => startPractice(rec)}
-                      disabled={isTracking && playingTrack !== rec.title)}
+                      disabled={isTracking && playingTrack !== rec.title}
                     >
                       {playingTrack === rec.title ? (
                         <>
