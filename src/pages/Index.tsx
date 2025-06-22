@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Users, BookOpen, Calendar, Star, ArrowRight, Bell, Settings, User, LogOut, Home, Sparkles, MapPin, Plane } from 'lucide-react';
+import { Heart, Users, BookOpen, Calendar, Star, ArrowRight, Bell, Settings, User, LogOut, Home, Sparkles, MapPin, Plane, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -65,6 +64,11 @@ const Index = () => {
     toast.success(`Today's Challenge: ${todaysChallenge}`);
   };
 
+  const handleDevotionalShop = () => {
+    toast.success('Opening Devotional Item Shop... (Amazon API integration coming soon!)');
+    // Future: navigate('/devotional-shop');
+  };
+
   if (currentUser) {
     return (
       <div className="min-h-screen bg-tricolour-mesh relative overflow-hidden">
@@ -86,20 +90,24 @@ const Index = () => {
                 />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white-contrast text-shadow-strong">AapkaSarthy</h1>
-                <p className="text-xs text-orange-100 font-medium">Guide to Your Soul</p>
+                <h1 className="text-2xl font-bold text-gray-800 font-semibold">AapkaSarthy</h1>
+                <p className="text-xs text-gray-600 font-medium">Guide to Your Soul</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" className="text-white hover:bg-white/20 glass transition-all duration-300">
+              <Button variant="ghost" size="sm" className="text-gray-700 hover:bg-white/20 glass transition-all duration-300">
                 <Bell className="h-4 w-4" />
               </Button>
               <div className="text-right">
-                <span className="text-orange-100 text-sm font-medium">Namaste, {currentUser.name}</span>
+                <span className="text-gray-700 text-sm font-medium">Namaste, {currentUser.name}</span>
                 <div className="flex items-center space-x-2 mt-1">
-                  <Badge className="bg-indian-green text-white text-xs shadow-green font-semibold">
-                    {streakCount} day streak 🔥
-                  </Badge>
+                  <Button 
+                    size="sm"
+                    className="bg-indian-green hover:bg-indian-green-dark text-white text-xs shadow-green font-semibold px-3 py-1 h-auto"
+                    onClick={handleQuickMeditation}
+                  >
+                    🔥 {streakCount} day streak
+                  </Button>
                 </div>
               </div>
               <Button 
@@ -141,6 +149,15 @@ const Index = () => {
                   className="border-indian-green text-indian-green hover:bg-green-50 shadow-green hover-lift font-semibold"
                 >
                   Daily Challenge
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={handleDevotionalShop} 
+                  className="border-purple-600 text-purple-600 hover:bg-purple-50 shadow-xl hover-lift font-semibold"
+                >
+                  <ShoppingCart className="h-4 w-4 mr-1" />
+                  Devotional Shop
                 </Button>
               </div>
             </CardContent>
@@ -269,6 +286,46 @@ const Index = () => {
               </CardContent>
             </Card>
           </div>
+
+          {/* Devotional Item Shop Section */}
+          <Card className="card-premium p-6 rounded-xl border-l-4 border-l-purple-500 mb-8 hover-lift">
+            <div className="relative">
+              <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                <ShoppingCart className="mr-2 h-6 w-6 text-purple-500" />
+                Devotional Item Shop
+                <Badge className="ml-2 bg-purple-100 text-purple-700 text-xs">Coming Soon</Badge>
+              </h2>
+              <p className="text-gray-600 mb-4">
+                Discover authentic spiritual items, books, malas, idols, and more. Future Amazon API integration for seamless shopping experience.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Button 
+                  variant="outline"
+                  className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200 text-purple-700 hover:from-purple-100 hover:to-purple-200 font-bold"
+                  onClick={handleDevotionalShop}
+                >
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Browse Items
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="bg-gradient-to-r from-orange-50 to-orange-100 border-orange-200 text-orange-700 hover:from-orange-100 hover:to-orange-200 font-bold"
+                  onClick={() => toast.success('Wishlist feature coming soon!')}
+                >
+                  <Heart className="mr-2 h-4 w-4" />
+                  My Wishlist
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="bg-gradient-to-r from-green-50 to-green-100 border-green-200 text-green-700 hover:from-green-100 hover:to-green-200 font-bold"
+                  onClick={() => toast.success('Special offers coming soon!')}
+                >
+                  <Star className="mr-2 h-4 w-4" />
+                  Special Offers
+                </Button>
+              </div>
+            </div>
+          </Card>
 
           {/* Enhanced Admin Features */}
           {currentUser.role === 'admin' && (
@@ -468,20 +525,20 @@ const Index = () => {
           <Card className="card-premium hover-lift group border-t-4 border-t-purple-600">
             <CardHeader className="text-center pb-4">
               <div className="w-20 h-20 bg-gradient-to-br from-purple-600 via-purple-500 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
-                <MapPin className="h-10 w-10 text-white group-hover:animate-pulse" />
+                <ShoppingCart className="h-10 w-10 text-white group-hover:animate-pulse" />
               </div>
-              <CardTitle className="text-xl text-purple-700 font-bold">Trip Planning</CardTitle>
+              <CardTitle className="text-xl text-purple-700 font-bold">Devotional Shop</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className="text-center text-gray-700 mb-4 font-medium leading-relaxed">
-                Plan sacred journeys to spiritual destinations with guided itineraries and temple visits
+                Spiritual items, books, malas, and authentic devotional products for your spiritual journey
               </CardDescription>
               <Button 
                 variant="outline"
                 className="w-full border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-bold shadow-xl hover-lift"
-                onClick={() => navigate('/trip-planning')}
+                onClick={handleDevotionalShop}
               >
-                Plan Journey
+                Shop Now
               </Button>
             </CardContent>
           </Card>
