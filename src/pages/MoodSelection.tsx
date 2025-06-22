@@ -10,6 +10,7 @@ import MeditationTimer from '@/components/meditation/MeditationTimer';
 import BreathingExercise from '@/components/meditation/BreathingExercise';
 import AmbientSounds from '@/components/meditation/AmbientSounds';
 import MeditationStats from '@/components/meditation/MeditationStats';
+import GuidedMeditation from '@/components/meditation/GuidedMeditation';
 
 const MoodSelection = () => {
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ const MoodSelection = () => {
   const [showTimer, setShowTimer] = useState(false);
   const [showBreathing, setShowBreathing] = useState(false);
   const [showStats, setShowStats] = useState(false);
+  const [showGuided, setShowGuided] = useState(false);
 
   const handleMoodSelect = async (moodId: string) => {
     setSelectedMood(moodId);
@@ -124,19 +126,51 @@ const MoodSelection = () => {
     toast.info('Practice reset');
   };
 
-  const handleMeditationComplete = () => {
+  const handleMeditationComplete = (sessionData?: { duration: number; type: string; points: number }) => {
     // Update stats in localStorage
     const currentStats = JSON.parse(localStorage.getItem('meditationStats') || '{}');
+    const today = new Date().toDateString();
+    const lastSession = currentStats.lastSessionDate ? new Date(currentStats.lastSessionDate).toDateString() : null;
+    
+    // Calculate streak
+    let newStreak = currentStats.streak || 0;
+    if (lastSession !== today) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      if (lastSession === yesterday.toDateString()) {
+        newStreak += 1;
+      } else if (lastSession !== today) {
+        newStreak = 1; // Reset streak if gap
+      }
+    }
+
+    // Calculate weekly sessions
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    const thisWeekSessions = (currentStats.thisWeekSessions || []).filter(
+      (date: string) => new Date(date) > weekAgo
+    );
+    
+    if (lastSession !== today) {
+      thisWeekSessions.push(today);
+    }
+
+    const points = sessionData?.points || 50;
+    
     const updatedStats = {
       ...currentStats,
       totalSessions: (currentStats.totalSessions || 0) + 1,
-      totalMinutes: (currentStats.totalMinutes || 0) + 10,
+      totalMinutes: (currentStats.totalMinutes || 0) + (sessionData?.duration || 10),
       lastSessionDate: new Date().toISOString(),
-      experiencePoints: (currentStats.experiencePoints || 0) + 50
+      experiencePoints: (currentStats.experiencePoints || 0) + points,
+      streak: newStreak,
+      completedThisWeek: thisWeekSessions.length,
+      thisWeekSessions: thisWeekSessions
     };
+    
     localStorage.setItem('meditationStats', JSON.stringify(updatedStats));
     
-    toast.success('🎉 Session completed! +50 XP earned');
+    toast.success(`🎉 Session completed! +${points} XP earned`);
   };
 
   const selectedMoodData = moods.find(m => m.id === selectedMood);
@@ -191,6 +225,14 @@ const MoodSelection = () => {
             >
               🫁 Breathing
             </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowGuided(!showGuided)}
+              className="text-white hover:bg-white/20"
+            >
+              🎧 Guided
+            </Button>
           </div>
         </div>
       </div>
@@ -207,6 +249,16 @@ const MoodSelection = () => {
           </div>
         )}
 
+        {showGuided && (
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-gray-800">Guided Meditations</h2>
+              <Button variant="ghost" onClick={() => setShowGuided(false)}>✕</Button>
+            </div>
+            <GuidedMeditation onComplete={handleMeditationComplete} />
+          </div>
+        )}
+
         {showTimer && (
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
@@ -214,7 +266,7 @@ const MoodSelection = () => {
               <Button variant="ghost" onClick={() => setShowTimer(false)}>✕</Button>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <MeditationTimer onComplete={handleMeditationComplete} />
+              <MeditationTimer onComplete={() => handleMeditationComplete()} />
               <AmbientSounds />
             </div>
           </div>
@@ -227,9 +279,9 @@ const MoodSelection = () => {
               <Button variant="ghost" onClick={() => setShowBreathing(false)}>✕</Button>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <BreathingExercise technique="box" onComplete={handleMeditationComplete} />
-              <BreathingExercise technique="478" onComplete={handleMeditationComplete} />
-              <BreathingExercise technique="triangle" onComplete={handleMeditationComplete} />
+              <BreathingExercise technique="box" onComplete={() => handleMeditationComplete()} />
+              <BreathingExercise technique="478" onComplete={() => handleMeditationComplete()} />
+              <BreathingExercise technique="triangle" onComplete={() => handleMeditationComplete()} />
             </div>
           </div>
         )}
@@ -245,47 +297,55 @@ const MoodSelection = () => {
             {/* Quick Tools Section */}
             <div className="mb-8 p-6 bg-gradient-to-r from-saffron/5 to-indian-green/5 rounded-xl border border-saffron/20">
               <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">Quick Meditation Tools</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Button
                   onClick={() => setShowTimer(true)}
-                  className="h-20 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white flex flex-col"
+                  className="h-20 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white flex flex-col hover-lift"
                 >
                   <Clock className="h-6 w-6 mb-1" />
-                  <span>Meditation Timer</span>
+                  <span>Timer</span>
                 </Button>
                 <Button
                   onClick={() => setShowBreathing(true)}
-                  className="h-20 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white flex flex-col"
+                  className="h-20 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white flex flex-col hover-lift"
                 >
                   <span className="text-2xl mb-1">🫁</span>
-                  <span>Breathing Exercises</span>
+                  <span>Breathing</span>
+                </Button>
+                <Button
+                  onClick={() => setShowGuided(true)}
+                  className="h-20 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white flex flex-col hover-lift"
+                >
+                  <span className="text-2xl mb-1">🎧</span>
+                  <span>Guided</span>
                 </Button>
                 <Button
                   onClick={() => setShowStats(true)}
-                  className="h-20 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white flex flex-col"
+                  className="h-20 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white flex flex-col hover-lift"
                 >
                   <Star className="h-6 w-6 mb-1" />
-                  <span>Progress & Stats</span>
+                  <span>Progress</span>
                 </Button>
               </div>
             </div>
 
+            {/* Mood selection grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {moods.map((mood) => {
                 const IconComponent = mood.icon;
                 return (
                   <Card 
                     key={mood.id}
-                    className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-orange-200"
+                    className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-orange-200 card-premium hover-lift"
                     onClick={() => handleMoodSelect(mood.id)}
                   >
                     <CardContent className="p-6 text-center">
-                      <div className={`w-16 h-16 ${mood.color} rounded-full flex items-center justify-center mx-auto mb-3 hover:animate-pulse`}>
+                      <div className={`w-16 h-16 ${mood.color} rounded-full flex items-center justify-center mx-auto mb-3 hover:animate-pulse shadow-lg`}>
                         <IconComponent className="h-8 w-8 text-white" />
                       </div>
                       <h3 className="font-semibold text-gray-800 mb-2">{mood.name}</h3>
                       <p className="text-sm text-gray-600 mb-2">{mood.description}</p>
-                      <Badge className="text-xs bg-orange-100 text-orange-800">
+                      <Badge className="text-xs bg-gradient-to-r from-orange-100 to-green-100 text-orange-800 border border-orange-200">
                         {mood.mantra.split(' ')[1]}
                       </Badge>
                     </CardContent>
@@ -406,6 +466,7 @@ const MoodSelection = () => {
                   setShowTimer(false);
                   setShowBreathing(false);
                   setShowStats(false);
+                  setShowGuided(false);
                 }}
                 className="mr-4 border-orange-500 text-orange-600 hover:bg-orange-50"
               >
