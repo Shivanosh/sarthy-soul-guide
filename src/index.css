@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Indian Tricolour Theme - Enhanced Contrast */
+/* Indian Tricolour Theme - Enhanced Production Ready */
 
 @layer base {
   :root {
@@ -16,18 +16,18 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* Enhanced Indian Saffron with better contrast */
-    --primary: 24 95% 53%;
+    /* Enhanced Indian Saffron with maximum contrast */
+    --primary: 20 100% 45%;
     --primary-foreground: 0 0% 100%;
 
-    /* Enhanced Indian Green with better contrast */
-    --secondary: 120 100% 20%;
+    /* Enhanced Indian Green with maximum contrast */
+    --secondary: 120 100% 15%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 35%;
+    --muted-foreground: 215.4 16.3% 25%;
 
-    --accent: 120 60% 45%;
+    --accent: 120 60% 40%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -35,17 +35,24 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 24 95% 53%;
+    --ring: 20 100% 45%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    /* Enhanced Tricolour specific colors with better contrast */
-    --saffron: 24 95% 53%;
-    --saffron-dark: 24 95% 40%;
+    /* Enhanced Tricolour specific colors with maximum contrast */
+    --saffron: 20 100% 45%;
+    --saffron-dark: 20 100% 35%;
+    --saffron-light: 25 100% 65%;
     --white: 0 0% 100%;
-    --green: 120 100% 20%;
-    --green-light: 120 60% 45%;
-    --navy-blue: 220 100% 15%;
+    --green: 120 100% 15%;
+    --green-light: 120 60% 35%;
+    --green-dark: 120 100% 10%;
+    --navy-blue: 220 100% 10%;
+    
+    /* Shadow colors for depth */
+    --shadow-saffron: 20 100% 45% / 0.25;
+    --shadow-green: 120 100% 15% / 0.25;
+    --shadow-blue: 220 100% 50% / 0.15;
   }
 
   .dark {
@@ -58,14 +65,14 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 24 95% 53%;
+    --primary: 25 100% 55%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 120 100% 25%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 75%;
+    --muted-foreground: 215 20.2% 85%;
 
     --accent: 120 60% 50%;
     --accent-foreground: 0 0% 100%;
@@ -75,7 +82,7 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 24 95% 53%;
+    --ring: 25 100% 55%;
   }
 }
 
@@ -86,66 +93,186 @@
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
-/* Enhanced Indian Tricolour gradient utilities with better contrast */
+/* Enhanced Production-Ready Gradient Utilities */
 @layer utilities {
+  /* Premium Tricolour Gradients */
   .bg-tricolour {
-    background: linear-gradient(to right, hsl(24 95% 53%) 0%, hsl(0 0% 100%) 50%, hsl(120 100% 20%) 100%);
+    background: linear-gradient(135deg, hsl(20 100% 45%) 0%, hsl(25 100% 65%) 25%, hsl(0 0% 100%) 50%, hsl(120 60% 35%) 75%, hsl(120 100% 15%) 100%);
+  }
+  
+  .bg-tricolour-radial {
+    background: radial-gradient(ellipse at center, hsl(25 100% 65% / 0.9) 0%, hsl(0 0% 100% / 0.95) 40%, hsl(120 60% 35% / 0.9) 100%);
   }
   
   .bg-tricolour-subtle {
-    background: linear-gradient(to right, hsl(24 95% 53% / 0.1) 0%, hsl(0 0% 100%) 50%, hsl(120 100% 20% / 0.1) 100%);
+    background: linear-gradient(135deg, hsl(20 100% 45% / 0.05) 0%, hsl(0 0% 100%) 35%, hsl(120 100% 15% / 0.05) 100%);
   }
   
+  .bg-tricolour-mesh {
+    background: 
+      radial-gradient(at 27% 37%, hsl(20 100% 45% / 0.3) 0px, transparent 50%),
+      radial-gradient(at 97% 21%, hsl(120 100% 15% / 0.3) 0px, transparent 50%),
+      radial-gradient(at 52% 99%, hsl(25 100% 65% / 0.3) 0px, transparent 50%),
+      radial-gradient(at 10% 29%, hsl(120 60% 35% / 0.3) 0px, transparent 50%),
+      radial-gradient(at 97% 96%, hsl(20 100% 35% / 0.3) 0px, transparent 50%),
+      radial-gradient(at 33% 50%, hsl(120 100% 10% / 0.3) 0px, transparent 50%),
+      radial-gradient(at 79% 53%, hsl(25 100% 75% / 0.3) 0px, transparent 50%);
+  }
+  
+  /* Enhanced Color Utilities with Better Contrast */
   .bg-saffron {
-    background-color: hsl(24 95% 53%);
+    background-color: hsl(20 100% 45%);
   }
   
   .bg-saffron-dark {
-    background-color: hsl(24 95% 40%);
+    background-color: hsl(20 100% 35%);
+  }
+  
+  .bg-saffron-light {
+    background-color: hsl(25 100% 65%);
   }
   
   .bg-indian-green {
-    background-color: hsl(120 100% 20%);
+    background-color: hsl(120 100% 15%);
   }
   
   .bg-indian-green-light {
-    background-color: hsl(120 60% 45%);
+    background-color: hsl(120 60% 35%);
   }
   
+  .bg-indian-green-dark {
+    background-color: hsl(120 100% 10%);
+  }
+  
+  /* High Contrast Text Utilities */
   .text-saffron {
-    color: hsl(24 95% 53%);
+    color: hsl(20 100% 35%);
   }
   
   .text-saffron-dark {
-    color: hsl(24 95% 40%);
+    color: hsl(20 100% 30%);
   }
   
   .text-indian-green {
-    color: hsl(120 100% 20%);
+    color: hsl(120 100% 15%);
   }
   
   .text-indian-green-light {
-    color: hsl(120 60% 45%);
+    color: hsl(120 60% 25%);
   }
   
+  .text-indian-green-dark {
+    color: hsl(120 100% 10%);
+  }
+  
+  /* Border Utilities */
   .border-saffron {
-    border-color: hsl(24 95% 53%);
+    border-color: hsl(20 100% 45%);
   }
   
   .border-indian-green {
-    border-color: hsl(120 100% 20%);
+    border-color: hsl(120 100% 15%);
   }
 
-  /* High contrast text utilities */
+  /* Enhanced Text Contrast Utilities */
   .text-high-contrast {
     color: hsl(222.2 84% 4.9%);
+    font-weight: 600;
   }
 
   .text-white-contrast {
     color: hsl(0 0% 100%);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+  }
+
+  .text-shadow-strong {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Premium Shadow Utilities */
+  .shadow-saffron {
+    box-shadow: 0 10px 25px -3px hsl(var(--shadow-saffron)), 0 4px 6px -2px hsl(var(--shadow-saffron));
+  }
+  
+  .shadow-green {
+    box-shadow: 0 10px 25px -3px hsl(var(--shadow-green)), 0 4px 6px -2px hsl(var(--shadow-green));
+  }
+  
+  .shadow-premium {
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Glass Morphism Effects */
+  .glass {
+    backdrop-filter: blur(20px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+  }
+
+  .glass-saffron {
+    backdrop-filter: blur(20px) saturate(180%);
+    background-color: hsl(20 100% 45% / 0.1);
+    border: 1px solid hsl(20 100% 45% / 0.2);
+  }
+
+  .glass-green {
+    backdrop-filter: blur(20px) saturate(180%);
+    background-color: hsl(120 100% 15% / 0.1);
+    border: 1px solid hsl(120 100% 15% / 0.2);
+  }
+
+  /* Interactive Effects */
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse-glow {
+    from {
+      box-shadow: 0 0 20px hsl(20 100% 45% / 0.4);
+    }
+    to {
+      box-shadow: 0 0 40px hsl(20 100% 45% / 0.8), 0 0 60px hsl(120 100% 15% / 0.4);
+    }
+  }
+
+  /* Animated Backgrounds */
+  .bg-animated-gradient {
+    background: linear-gradient(-45deg, hsl(20 100% 45%), hsl(25 100% 65%), hsl(120 60% 35%), hsl(120 100% 15%));
+    background-size: 400% 400%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Premium Card Styles */
+  .card-premium {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+      0 25px 45px -12px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
 }
