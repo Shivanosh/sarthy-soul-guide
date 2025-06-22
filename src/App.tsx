@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +13,7 @@ import MediaLibrary from "./pages/MediaLibrary";
 import RitualBooking from "./pages/RitualBooking";
 import MediaUpload from "./pages/admin/MediaUpload";
 import RitualManagement from "./pages/admin/RitualManagement";
+import TripPlanning from "./pages/TripPlanning";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +31,7 @@ const App = () => (
           <Route path="/mood-selection" element={<MoodSelection />} />
           <Route path="/media-library" element={<MediaLibrary />} />
           <Route path="/ritual-booking" element={<RitualBooking />} />
+          <Route path="/trip-planning" element={<TripPlanning />} />
           <Route path="/admin/media-upload" element={<MediaUpload />} />
           <Route path="/admin/ritual-management" element={<RitualManagement />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

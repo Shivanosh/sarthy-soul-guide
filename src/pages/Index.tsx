@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -136,7 +135,7 @@ const Index = () => {
           </Card>
 
           {/* Main Feature Cards with improved contrast */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {/* Enhanced Mood Selection Card */}
             <Card className="hover:shadow-xl transition-all duration-300 border-l-4 border-l-saffron group">
               <CardHeader>
@@ -208,6 +207,30 @@ const Index = () => {
                   }}
                 >
                   Book Now <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* New Trip Planning Card */}
+            <Card className="hover:shadow-xl transition-all duration-300 border-l-4 border-l-purple-600 group">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2 text-purple-700">
+                  <ArrowRight className="h-5 w-5 group-hover:animate-pulse rotate-45" />
+                  <span>Trip Planning</span>
+                </CardTitle>
+                <CardDescription className="text-gray-700">Plan sacred journeys to spiritual destinations</CardDescription>
+                <Badge className="w-fit bg-purple-100 text-purple-700 border border-purple-600/20">12+ Destinations</Badge>
+              </CardHeader>
+              <CardContent>
+                <Button 
+                  variant="outline" 
+                  className="w-full border-purple-600 text-purple-600 hover:bg-purple-50 font-medium"
+                  onClick={() => {
+                    toast.success('Opening trip planning...');
+                    navigate('/trip-planning');
+                  }}
+                >
+                  Plan Journey <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
             </Card>
@@ -399,6 +422,27 @@ const Index = () => {
                 onClick={() => navigate('/ritual-booking')}
               >
                 Book Pooja
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-xl transition-all duration-300 group border-t-4 border-t-purple-600">
+            <CardHeader className="text-center pb-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-bounce">
+                <ArrowRight className="h-8 w-8 text-white rotate-45" />
+              </div>
+              <CardTitle className="text-xl text-purple-700">Trip Planning</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-center text-gray-700 mb-4 font-medium">
+                Plan sacred journeys to spiritual destinations with guided itineraries and temple visits
+              </CardDescription>
+              <Button 
+                variant="outline"
+                className="w-full border-purple-600 text-purple-600 hover:bg-purple-50 font-medium"
+                onClick={() => navigate('/trip-planning')}
+              >
+                Plan Journey
               </Button>
             </CardContent>
           </Card>
