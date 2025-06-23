@@ -5,312 +5,349 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Upload, File, Music, Trash2, Eye } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowLeft, Upload, BookOpen, Music, Image, FileText, File } from 'lucide-react';
 import { toast } from 'sonner';
 
 const MediaUpload = () => {
   const navigate = useNavigate();
-  const [uploadForm, setUploadForm] = useState({
+  const [uploading, setUploading] = useState(false);
+  const [formData, setFormData] = useState({
     title: '',
-    artist: '',
-    type: '',
-    language: '',
-    mood: '',
     description: '',
-    duration: '',
-    file: null as File | null
+    category: '',
+    mediaType: '',
+    author: '',
+    language: 'Hindi',
+    tags: ''
   });
 
-  const [uploadedFiles, setUploadedFiles] = useState([
-    {
-      id: 1,
-      title: 'New Bhajan Upload',
-      artist: 'Temple Artist',
-      type: 'bhajan',
-      status: 'uploaded',
-      uploadDate: '2024-06-21'
-    }
-  ]);
+  const mediaTypes = [
+    { value: 'book', label: 'Spiritual Book', icon: BookOpen },
+    { value: 'pdf', label: 'PDF Document', icon: FileText },
+    { value: 'audio', label: 'Audio/Music', icon: Music },
+    { value: 'image', label: 'Image', icon: Image },
+    { value: 'document', label: 'Document', icon: File }
+  ];
 
-  const handleFormChange = (field: string, value: string) => {
-    setUploadForm(prev => ({
+  const categories = [
+    'Vedic Literature',
+    'Bhagavad Gita',
+    'Ramayana',
+    'Mahabharata',
+    'Puranas',
+    'Upanishads',
+    'Devotional Songs',
+    'Mantras',
+    'Spiritual Guidance',
+    'Temple Information',
+    'Ritual Guides',
+    'Meditation Guides',
+    'Philosophy',
+    'History',
+    'Other'
+  ];
+
+  const languages = [
+    'Hindi',
+    'English',
+    'Sanskrit',
+    'Tamil',
+    'Telugu',
+    'Bengali',
+    'Marathi',
+    'Gujarati',
+    'Kannada',
+    'Malayalam',
+    'Punjabi',
+    'Other'
+  ];
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setUploadForm(prev => ({
-        ...prev,
-        file: file
-      }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleFileUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!uploadForm.file) {
-      toast.error('Please select a file to upload');
+    if (!formData.title || !formData.mediaType || !formData.category) {
+      toast.error('Please fill in all required fields');
       return;
     }
 
-    // Mock upload process
-    toast.success('Media uploaded successfully!');
-    
-    const newFile = {
-      id: Date.now(),
-      title: uploadForm.title,
-      artist: uploadForm.artist,
-      type: uploadForm.type,
-      status: 'uploaded',
-      uploadDate: new Date().toISOString().split('T')[0]
-    };
-    
-    setUploadedFiles(prev => [newFile, ...prev]);
-    
-    // Reset form
-    setUploadForm({
-      title: '',
-      artist: '',
-      type: '',
-      language: '',
-      mood: '',
-      description: '',
-      duration: '',
-      file: null
-    });
+    setUploading(true);
+
+    try {
+      // Simulate file upload process
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Mock upload success
+      const uploadedContent = {
+        id: Date.now(),
+        ...formData,
+        uploadDate: new Date().toISOString(),
+        uploadedBy: 'admin',
+        status: 'active'
+      };
+
+      // Store in localStorage for demo purposes
+      const existingContent = JSON.parse(localStorage.getItem('mediaLibrary') || '[]');
+      existingContent.push(uploadedContent);
+      localStorage.setItem('mediaLibrary', JSON.stringify(existingContent));
+
+      toast.success(`${formData.mediaType === 'pdf' ? 'PDF book' : 'Content'} uploaded successfully!`);
+      
+      // Reset form
+      setFormData({
+        title: '',
+        description: '',
+        category: '',
+        mediaType: '',
+        author: '',
+        language: 'Hindi',
+        tags: ''
+      });
+
+    } catch (error) {
+      toast.error('Upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const getMediaIcon = (type: string) => {
+    const mediaType = mediaTypes.find(mt => mt.value === type);
+    return mediaType?.icon || File;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white p-4">
-        <div className="max-w-6xl mx-auto flex items-center space-x-4">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={() => navigate('/')}
-            className="text-white hover:bg-white/20"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-          <div className="flex items-center space-x-2">
-            <Upload className="h-6 w-6" />
-            <h1 className="text-xl font-bold">Media Upload Center</h1>
+      <header className="bg-white/90 backdrop-blur-md shadow-sm border-b sticky top-0 z-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/')}
+              className="text-gray-600 hover:text-gray-800 hover:bg-gray-100 p-2"
+            >
+              <ArrowLeft className="h-5 w-5 mr-2" />
+              Back to Home
+            </Button>
+            <div className="flex items-center space-x-3">
+              <img 
+                src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
+                alt="AapkaSarthy Logo" 
+                className="h-8 w-8 sm:h-10 sm:w-10 object-contain"
+              />
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Media Upload</h1>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className="max-w-6xl mx-auto p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Upload Form */}
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl text-orange-800">Upload New Content</CardTitle>
-                <CardDescription>Add spiritual content to the library</CardDescription>
-              </CardHeader>
-              
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="title">Title *</Label>
+      {/* Main Content */}
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="max-w-2xl mx-auto">
+          <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+            <CardHeader className="text-center pb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Upload className="h-8 w-8 text-white" />
+              </div>
+              <CardTitle className="text-2xl sm:text-3xl font-bold text-gray-800">Upload Content</CardTitle>
+              <CardDescription className="text-base sm:text-lg text-gray-600">
+                Add books, PDFs, audio, and other spiritual resources to the library
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="px-6 sm:px-8 pb-8">
+              <form onSubmit={handleFileUpload} className="space-y-6">
+                {/* Media Type Selection */}
+                <div className="space-y-2">
+                  <Label className="text-base font-semibold text-gray-700">Content Type *</Label>
+                  <Select value={formData.mediaType} onValueChange={(value) => handleInputChange('mediaType', value)}>
+                    <SelectTrigger className="w-full h-12 text-base border-2 border-gray-200 focus:border-red-400">
+                      <SelectValue placeholder="Select content type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {mediaTypes.map((type) => {
+                        const Icon = type.icon;
+                        return (
+                          <SelectItem key={type.value} value={type.value} className="py-3">
+                            <div className="flex items-center space-x-2">
+                              <Icon className="h-4 w-4" />
+                              <span>{type.label}</span>
+                            </div>
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Title */}
+                <div className="space-y-2">
+                  <Label htmlFor="title" className="text-base font-semibold text-gray-700">Title *</Label>
+                  <Input
+                    id="title"
+                    value={formData.title}
+                    onChange={(e) => handleInputChange('title', e.target.value)}
+                    placeholder="Enter content title"
+                    className="h-12 text-base border-2 border-gray-200 focus:border-red-400"
+                    required
+                  />
+                </div>
+
+                {/* Author (for books and PDFs) */}
+                {(formData.mediaType === 'book' || formData.mediaType === 'pdf') && (
+                  <div className="space-y-2">
+                    <Label htmlFor="author" className="text-base font-semibold text-gray-700">Author</Label>
                     <Input
-                      id="title"
-                      value={uploadForm.title}
-                      onChange={(e) => handleFormChange('title', e.target.value)}
-                      placeholder="Enter content title"
-                      required
+                      id="author"
+                      value={formData.author}
+                      onChange={(e) => handleInputChange('author', e.target.value)}
+                      placeholder="Enter author name"
+                      className="h-12 text-base border-2 border-gray-200 focus:border-red-400"
                     />
                   </div>
+                )}
 
-                  <div>
-                    <Label htmlFor="artist">Artist/Creator *</Label>
-                    <Input
-                      id="artist"
-                      value={uploadForm.artist}
-                      onChange={(e) => handleFormChange('artist', e.target.value)}
-                      placeholder="Artist or creator name"
-                      required
-                    />
-                  </div>
+                {/* Category */}
+                <div className="space-y-2">
+                  <Label className="text-base font-semibold text-gray-700">Category *</Label>
+                  <Select value={formData.category} onValueChange={(value) => handleInputChange('category', value)}>
+                    <SelectTrigger className="w-full h-12 text-base border-2 border-gray-200 focus:border-red-400">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-60">
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category} className="py-2">
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="type">Content Type *</Label>
-                      <Select value={uploadForm.type} onValueChange={(value) => handleFormChange('type', value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="bhajan">Bhajan</SelectItem>
-                          <SelectItem value="mantra">Mantra</SelectItem>
-                          <SelectItem value="chant">Chant</SelectItem>
-                          <SelectItem value="aarti">Aarti</SelectItem>
-                          <SelectItem value="instrumental">Instrumental</SelectItem>
-                          <SelectItem value="meditation">Meditation</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                {/* Language */}
+                <div className="space-y-2">
+                  <Label className="text-base font-semibold text-gray-700">Language</Label>
+                  <Select value={formData.language} onValueChange={(value) => handleInputChange('language', value)}>
+                    <SelectTrigger className="w-full h-12 text-base border-2 border-gray-200 focus:border-red-400">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-60">
+                      {languages.map((language) => (
+                        <SelectItem key={language} value={language} className="py-2">
+                          {language}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                    <div>
-                      <Label htmlFor="language">Language *</Label>
-                      <Select value={uploadForm.language} onValueChange={(value) => handleFormChange('language', value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Hindi">Hindi</SelectItem>
-                          <SelectItem value="Sanskrit">Sanskrit</SelectItem>
-                          <SelectItem value="English">English</SelectItem>
-                          <SelectItem value="Bengali">Bengali</SelectItem>
-                          <SelectItem value="Tamil">Tamil</SelectItem>
-                          <SelectItem value="Universal">Universal</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
+                {/* Description */}
+                <div className="space-y-2">
+                  <Label htmlFor="description" className="text-base font-semibold text-gray-700">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    placeholder="Enter content description..."
+                    className="min-h-24 text-base border-2 border-gray-200 focus:border-red-400 resize-none"
+                    rows={4}
+                  />
+                </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="mood">Mood Tag *</Label>
-                      <Select value={uploadForm.mood} onValueChange={(value) => handleFormChange('mood', value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select mood" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="peaceful">Peaceful</SelectItem>
-                          <SelectItem value="joyful">Joyful</SelectItem>
-                          <SelectItem value="devotional">Devotional</SelectItem>
-                          <SelectItem value="energetic">Energetic</SelectItem>
-                          <SelectItem value="meditative">Meditative</SelectItem>
-                          <SelectItem value="healing">Healing</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                {/* Tags */}
+                <div className="space-y-2">
+                  <Label htmlFor="tags" className="text-base font-semibold text-gray-700">Tags</Label>
+                  <Input
+                    id="tags"
+                    value={formData.tags}
+                    onChange={(e) => handleInputChange('tags', e.target.value)}
+                    placeholder="Enter tags separated by commas"
+                    className="h-12 text-base border-2 border-gray-200 focus:border-red-400"
+                  />
+                  <p className="text-sm text-gray-500">Separate multiple tags with commas (e.g., spiritual, meditation, peace)</p>
+                </div>
 
-                    <div>
-                      <Label htmlFor="duration">Duration</Label>
-                      <Input
-                        id="duration"
-                        value={uploadForm.duration}
-                        onChange={(e) => handleFormChange('duration', e.target.value)}
-                        placeholder="e.g., 15:30"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      value={uploadForm.description}
-                      onChange={(e) => handleFormChange('description', e.target.value)}
-                      placeholder="Brief description of the content"
-                      rows={3}
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="file">Audio File *</Label>
-                    <div className="mt-2">
-                      <input
-                        type="file"
-                        id="file"
-                        accept="audio/*"
-                        onChange={handleFileChange}
-                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
-                        required
-                      />
-                    </div>
-                    {uploadForm.file && (
-                      <div className="mt-2 flex items-center text-sm text-green-600">
-                        <File className="h-4 w-4 mr-2" />
-                        {uploadForm.file.name}
+                {/* File Upload Area */}
+                <div className="space-y-2">
+                  <Label className="text-base font-semibold text-gray-700">Upload File *</Label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-red-400 transition-colors">
+                    {formData.mediaType && (
+                      <div className="mb-4">
+                        {React.createElement(getMediaIcon(formData.mediaType), { 
+                          className: "h-12 w-12 mx-auto text-gray-400" 
+                        })}
                       </div>
                     )}
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
-                  >
-                    <Upload className="h-4 w-4 mr-2" />
-                    Upload Content
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Recent Uploads */}
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl text-orange-800">Recent Uploads</CardTitle>
-                <CardDescription>Recently uploaded content</CardDescription>
-              </CardHeader>
-              
-              <CardContent>
-                <div className="space-y-4">
-                  {uploadedFiles.map((file) => (
-                    <div key={file.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <Music className="h-8 w-8 text-orange-500" />
-                        <div>
-                          <h4 className="font-medium">{file.title}</h4>
-                          <p className="text-sm text-gray-600">{file.artist}</p>
-                          <div className="flex items-center space-x-2 mt-1">
-                            <Badge variant="outline" className="text-xs">
-                              {file.type}
-                            </Badge>
-                            <span className="text-xs text-gray-500">{file.uploadDate}</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex space-x-2">
-                        <Button variant="outline" size="sm">
-                          <Eye className="h-3 w-3" />
-                        </Button>
-                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Upload Stats */}
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle className="text-lg text-orange-800">Upload Statistics</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-orange-600">24</div>
-                    <div className="text-sm text-gray-600">This Month</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-yellow-600">108</div>
-                    <div className="text-sm text-gray-600">Total Uploads</div>
+                    <p className="text-base text-gray-600 mb-2">
+                      {formData.mediaType === 'pdf' ? 'Drop your PDF file here or click to browse' :
+                       formData.mediaType === 'book' ? 'Upload book file (PDF, EPUB, etc.)' :
+                       formData.mediaType === 'audio' ? 'Upload audio file (MP3, WAV, etc.)' :
+                       formData.mediaType === 'image' ? 'Upload image file (JPG, PNG, etc.)' :
+                       'Select a file to upload'}
+                    </p>
+                    <Input
+                      type="file"
+                      className="hidden"
+                      id="file-upload"
+                      accept={
+                        formData.mediaType === 'pdf' ? '.pdf' :
+                        formData.mediaType === 'book' ? '.pdf,.epub,.mobi' :
+                        formData.mediaType === 'audio' ? '.mp3,.wav,.ogg' :
+                        formData.mediaType === 'image' ? '.jpg,.jpeg,.png,.gif' :
+                        '*'
+                      }
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="mt-2"
+                      onClick={() => document.getElementById('file-upload')?.click()}
+                    >
+                      Choose File
+                    </Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+
+                {/* Submit Button */}
+                <Button 
+                  type="submit" 
+                  className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 h-12 text-lg font-semibold shadow-lg"
+                  disabled={uploading}
+                >
+                  {uploading ? 'Uploading...' : `Upload ${formData.mediaType === 'pdf' ? 'PDF' : 'Content'}`}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Upload Tips */}
+          <Card className="mt-6 bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
+            <CardContent className="p-6">
+              <h3 className="font-semibold text-blue-800 mb-3 flex items-center">
+                <FileText className="h-5 w-5 mr-2" />
+                Upload Guidelines
+              </h3>
+              <ul className="text-sm text-blue-700 space-y-2">
+                <li>• PDF books should be under 50MB for optimal performance</li>
+                <li>• Use descriptive titles and detailed descriptions for better discoverability</li>
+                <li>• Add relevant tags to help users find content easily</li>
+                <li>• Ensure content is appropriate for spiritual and educational purposes</li>
+                <li>• Audio files should be high quality (preferably 320kbps or higher)</li>
+                <li>• Images should be at least 800x600 pixels for clear viewing</li>
+              </ul>
+            </CardContent>
+          </Card>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
