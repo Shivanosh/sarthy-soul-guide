@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Play, Pause, RotateCcw, Settings } from 'lucide-react';
 import { toast } from 'sonner';
+import { addMeditationSession } from '@/utils/meditationStats';
 
 interface MeditationTimerProps {
   initialDuration?: number;
@@ -17,6 +18,7 @@ const MeditationTimer = ({ initialDuration = 600, onComplete, title = "Meditatio
   const [timeLeft, setTimeLeft] = useState(initialDuration);
   const [isRunning, setIsRunning] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -26,8 +28,7 @@ const MeditationTimer = ({ initialDuration = 600, onComplete, title = "Meditatio
         setTimeLeft((prev) => {
           if (prev <= 1) {
             setIsRunning(false);
-            onComplete?.();
-            toast.success('🧘‍♀️ Meditation session completed! Well done!');
+            handleSessionComplete();
             return 0;
           }
           return prev - 1;
@@ -36,7 +37,22 @@ const MeditationTimer = ({ initialDuration = 600, onComplete, title = "Meditatio
     }
 
     return () => clearInterval(interval);
-  }, [isRunning, timeLeft, onComplete]);
+  }, [isRunning, timeLeft]);
+
+  const handleSessionComplete = () => {
+    const sessionDuration = Math.floor((duration - timeLeft) / 60); // Convert to minutes
+    const points = Math.max(25, sessionDuration * 10); // Minimum 25 points, 10 points per minute
+    
+    // Add session to stats
+    addMeditationSession({
+      duration: sessionDuration,
+      type: 'timer',
+      points: points
+    });
+    
+    onComplete?.();
+    toast.success(`🧘‍♀️ Meditation session completed! +${points} XP earned for ${sessionDuration} minutes`);
+  };
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -45,15 +61,17 @@ const MeditationTimer = ({ initialDuration = 600, onComplete, title = "Meditatio
   };
 
   const handleStart = () => {
-    setIsRunning(!isRunning);
     if (!isRunning) {
+      setSessionStartTime(Date.now());
       toast.info('🧘‍♀️ Meditation session started');
     }
+    setIsRunning(!isRunning);
   };
 
   const handleReset = () => {
     setIsRunning(false);
     setTimeLeft(duration);
+    setSessionStartTime(null);
     toast.info('Timer reset');
   };
 
@@ -62,6 +80,7 @@ const MeditationTimer = ({ initialDuration = 600, onComplete, title = "Meditatio
     setTimeLeft(newDuration);
     setIsRunning(false);
     setShowSettings(false);
+    setSessionStartTime(null);
   };
 
   const progress = ((duration - timeLeft) / duration) * 100;
@@ -118,6 +137,11 @@ const MeditationTimer = ({ initialDuration = 600, onComplete, title = "Meditatio
               <div className="text-sm text-gray-600">
                 {isRunning ? 'Meditating...' : 'Ready to start'}
               </div>
+              {sessionStartTime && (
+                <div className="text-xs text-gray-500 mt-1">
+                  {Math.floor((Date.now() - sessionStartTime) / 60000)} min elapsed
+                </div>
+              )}
             </div>
           </div>
           
@@ -136,6 +160,9 @@ const MeditationTimer = ({ initialDuration = 600, onComplete, title = "Meditatio
             <span>{Math.round(progress)}%</span>
           </div>
           <Progress value={progress} className="h-2" />
+          <div className="text-center text-xs text-gray-500">
+            Earn {Math.max(25, Math.floor(duration / 60) * 10)} XP when completed
+          </div>
         </div>
 
         {/* Controls */}
@@ -183,6 +210,9 @@ const MeditationTimer = ({ initialDuration = 600, onComplete, title = "Meditatio
                   className="text-sm"
                 >
                   {Math.floor(seconds / 60)} min
+                  <span className="text-xs ml-1">
+                    (+{Math.max(25, Math.floor(seconds / 60) * 10)} XP)
+                  </span>
                 </Button>
               ))}
             </div>

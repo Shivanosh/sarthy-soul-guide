@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -10,30 +11,125 @@ const Index = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [dailyQuote, setDailyQuote] = useState('');
-  const [streakCount, setStreakCount] = useState(7);
+  const [dailyGoodDeed, setDailyGoodDeed] = useState('');
+  const [streakCount, setStreakCount] = useState(0);
   const [todaysMood, setTodaysMood] = useState('');
+  const [lastLoginDate, setLastLoginDate] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
     if (token && user) {
       setCurrentUser(JSON.parse(user));
+      calculateStreak();
     }
     
-    // Set daily spiritual quote
-    const quotes = [
-      "The mind is everything. What you think you become. - Buddha",
-      "Yoga is a light, which once lit will never dim. - B.K.S. Iyengar",
-      "The soul that sees beauty may sometimes walk alone. - Johann Wolfgang von Goethe",
-      "Peace comes from within. Do not seek it without. - Buddha",
-      "The best way to find yourself is to lose yourself in service. - Mahatma Gandhi"
-    ];
-    setDailyQuote(quotes[Math.floor(Math.random() * quotes.length)]);
+    // Load or fetch daily content
+    loadDailyContent();
     
     // Load user's today mood
     const mood = localStorage.getItem('todaysMood');
     if (mood) setTodaysMood(mood);
   }, []);
+
+  const calculateStreak = () => {
+    const today = new Date().toDateString();
+    const lastLogin = localStorage.getItem('lastLoginDate');
+    const currentStreak = parseInt(localStorage.getItem('streakCount') || '0');
+    
+    if (!lastLogin) {
+      // First time login
+      setStreakCount(1);
+      localStorage.setItem('streakCount', '1');
+      localStorage.setItem('lastLoginDate', today);
+      return;
+    }
+    
+    const lastLoginDate = new Date(lastLogin);
+    const todayDate = new Date(today);
+    const diffTime = Math.abs(todayDate.getTime() - lastLoginDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) {
+      // Consecutive day
+      const newStreak = currentStreak + 1;
+      setStreakCount(newStreak);
+      localStorage.setItem('streakCount', newStreak.toString());
+      localStorage.setItem('lastLoginDate', today);
+    } else if (diffDays > 1) {
+      // Streak broken
+      setStreakCount(1);
+      localStorage.setItem('streakCount', '1');
+      localStorage.setItem('lastLoginDate', today);
+    } else {
+      // Same day
+      setStreakCount(currentStreak);
+    }
+  };
+
+  const loadDailyContent = () => {
+    const today = new Date().toDateString();
+    const savedQuoteDate = localStorage.getItem('dailyQuoteDate');
+    const savedQuote = localStorage.getItem('dailyQuote');
+    const savedGoodDeed = localStorage.getItem('dailyGoodDeed');
+    
+    if (savedQuoteDate === today && savedQuote) {
+      setDailyQuote(savedQuote);
+      setDailyGoodDeed(savedGoodDeed || '');
+    } else {
+      // Fetch new daily content
+      fetchDailyContent();
+    }
+  };
+
+  const fetchDailyContent = async () => {
+    try {
+      // Spiritual quotes collection
+      const quotes = [
+        "The mind is everything. What you think you become. - Buddha",
+        "Yoga is a light, which once lit will never dim. - B.K.S. Iyengar",
+        "The soul that sees beauty may sometimes walk alone. - Johann Wolfgang von Goethe",
+        "Peace comes from within. Do not seek it without. - Buddha",
+        "The best way to find yourself is to lose yourself in service. - Mahatma Gandhi",
+        "Your task is not to seek for love, but merely to seek and find all the barriers within yourself. - Rumi",
+        "The whole purpose of religion is to facilitate love and compassion, patience, tolerance, humility, and forgiveness. - Dalai Lama",
+        "In the end, just three things matter: How well we have lived, How well we have loved, How well we have learned to let go. - Jack Kornfield",
+        "Be yourself and you will be at peace. - Lao Tzu",
+        "The greatest revolution of our generation is the discovery that human beings can alter their lives by altering their attitudes. - William James"
+      ];
+
+      const goodDeeds = [
+        "Smile at a stranger and brighten their day",
+        "Help someone carry their groceries",
+        "Call a friend or family member you haven't spoken to in a while",
+        "Donate to a local charity or food bank",
+        "Volunteer at a community center",
+        "Plant a tree or tend to a garden",
+        "Write a thank you note to someone who has helped you",
+        "Offer to help a neighbor with their chores",
+        "Listen to someone who needs to talk",
+        "Practice random acts of kindness throughout the day"
+      ];
+
+      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      const randomGoodDeed = goodDeeds[Math.floor(Math.random() * goodDeeds.length)];
+      
+      setDailyQuote(randomQuote);
+      setDailyGoodDeed(randomGoodDeed);
+      
+      // Save to localStorage
+      const today = new Date().toDateString();
+      localStorage.setItem('dailyQuote', randomQuote);
+      localStorage.setItem('dailyGoodDeed', randomGoodDeed);
+      localStorage.setItem('dailyQuoteDate', today);
+      
+    } catch (error) {
+      console.error('Error fetching daily content:', error);
+      // Fallback content
+      setDailyQuote("The mind is everything. What you think you become. - Buddha");
+      setDailyGoodDeed("Smile at a stranger and brighten their day");
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -44,11 +140,24 @@ const Index = () => {
   };
 
   const handleQuickMeditation = () => {
+    // Update meditation stats
+    const currentStats = JSON.parse(localStorage.getItem('meditationStats') || '{}');
+    const today = new Date().toDateString();
+    
+    const updatedStats = {
+      ...currentStats,
+      totalSessions: (currentStats.totalSessions || 0) + 1,
+      totalMinutes: (currentStats.totalMinutes || 0) + 5,
+      lastSessionDate: new Date().toISOString(),
+      experiencePoints: (currentStats.experiencePoints || 0) + 50,
+      completedThisWeek: (currentStats.completedThisWeek || 0) + 1
+    };
+    
+    localStorage.setItem('meditationStats', JSON.stringify(updatedStats));
+    
     toast.success('Starting 5-minute guided meditation...');
-    // In a real app, this would start a meditation session
     setTimeout(() => {
-      toast.success('Meditation completed! +10 spiritual points earned');
-      setStreakCount(prev => prev + 1);
+      toast.success('Meditation completed! +50 spiritual points earned');
     }, 3000);
   };
 
@@ -78,28 +187,28 @@ const Index = () => {
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
         }}></div>
         
-        {/* Enhanced Header with Glass Effect */}
+        {/* Enhanced Header */}
         <header className="glass-saffron backdrop-blur-xl border-b border-white/20 shadow-premium relative z-10">
           <div className="max-w-6xl mx-auto flex justify-between items-center p-4">
-            <div className="flex items-center space-x-4">
-              <div className="w-14 h-14 rounded-full overflow-hidden bg-white/20 backdrop-blur-sm p-1 shadow-saffron hover-lift">
+            <div className="flex items-center space-x-6">
+              {/* Enlarged and centered logo */}
+              <div className="flex flex-col items-center">
                 <img 
                   src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
                   alt="AapkaSarthy Logo" 
-                  className="w-full h-full object-contain"
+                  className="w-20 h-20 object-contain hover-lift"
                 />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-800 font-semibold">AapkaSarthy</h1>
-                <p className="text-xs text-gray-600 font-medium">Guide to Your Soul</p>
+                <div className="text-center mt-2">
+                  <p className="text-sm font-bold text-gray-800">Guide to Your Soul</p>
+                </div>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" className="text-gray-700 hover:bg-white/20 glass transition-all duration-300">
+              <Button variant="ghost" size="sm" className="text-gray-800 hover:bg-white/20 glass transition-all duration-300">
                 <Bell className="h-4 w-4" />
               </Button>
               <div className="text-right">
-                <span className="text-gray-700 text-sm font-medium">Namaste, {currentUser.name}</span>
+                <span className="text-gray-800 text-sm font-medium">Namaste, {currentUser.name}</span>
                 <div className="flex items-center space-x-2 mt-1">
                   <Button 
                     size="sm"
@@ -123,7 +232,7 @@ const Index = () => {
           </div>
         </header>
 
-        {/* Enhanced Daily Quote Section */}
+        {/* Enhanced Daily Content Section */}
         <div className="max-w-6xl mx-auto p-6 relative z-10">
           <Card className="mb-6 card-premium border-l-4 border-l-saffron hover-lift">
             <CardContent className="p-6">
@@ -134,6 +243,12 @@ const Index = () => {
                 <h3 className="font-bold text-saffron-dark text-lg">Daily Wisdom</h3>
               </div>
               <p className="text-gray-800 italic font-medium text-lg leading-relaxed mb-4">"{dailyQuote}"</p>
+              {dailyGoodDeed && (
+                <div className="mb-4 p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                  <h4 className="font-semibold text-green-800 mb-2">Good Deed of the Day</h4>
+                  <p className="text-green-700">{dailyGoodDeed}</p>
+                </div>
+              )}
               <div className="flex space-x-3">
                 <Button 
                   size="sm" 
@@ -158,6 +273,14 @@ const Index = () => {
                 >
                   <ShoppingCart className="h-4 w-4 mr-1" />
                   Devotional Shop
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={fetchDailyContent} 
+                  className="border-blue-600 text-blue-600 hover:bg-blue-50 shadow-xl hover-lift font-semibold"
+                >
+                  Refresh Content
                 </Button>
               </div>
             </CardContent>
@@ -413,17 +536,14 @@ const Index = () => {
         <div className="absolute inset-0 bg-animated-gradient opacity-90"></div>
         <div className="relative max-w-6xl mx-auto px-4 py-24 text-center">
           <div className="flex justify-center mb-8">
-            <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-premium pulse-glow p-3 hover-lift">
+            <div className="bg-white rounded-3xl flex items-center justify-center shadow-premium pulse-glow p-8 hover-lift">
               <img 
                 src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
                 alt="AapkaSarthy Logo" 
-                className="w-full h-full object-contain"
+                className="w-40 h-40 object-contain"
               />
             </div>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white-contrast mb-6 text-shadow-strong">
-            AapkaSarthy
-          </h1>
           <p className="text-xl md:text-2xl text-orange-100 mb-8 max-w-4xl mx-auto font-semibold leading-relaxed text-shadow-strong">
             🇮🇳 Guide to Your Soul - Experience personalized spiritual guidance with AI-powered meditation, sacred music, and authentic ritual bookings
           </p>
