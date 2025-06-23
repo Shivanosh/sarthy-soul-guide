@@ -68,12 +68,8 @@ const LoginAdmin = () => {
 
         <Card className="shadow-xl border-0">
           <CardHeader className="text-center pb-4">
-            <div className="flex justify-center mb-4">
-              <img 
-                src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
-                alt="AapkaSarthy Logo" 
-                className="h-16 w-16 sm:h-20 sm:w-20 object-contain"
-              />
+            <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Shield className="h-8 w-8 text-white" />
             </div>
             <CardTitle className="text-2xl font-bold text-gray-800">Admin Login</CardTitle>
             <CardDescription className="text-gray-600">

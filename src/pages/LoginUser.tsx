@@ -92,12 +92,8 @@ const LoginUser = () => {
           <div className="h-2 bg-tricolour"></div>
           
           <CardHeader className="text-center pb-4 bg-gradient-to-b from-orange-50 to-white">
-            <div className="flex justify-center mb-4">
-              <img 
-                src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
-                alt="AapkaSarthy Logo" 
-                className="h-16 w-16 sm:h-20 sm:w-20 object-contain"
-              />
+            <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <Heart className="h-8 w-8 text-white" />
             </div>
             <CardTitle className="text-2xl font-bold text-gray-800">User Login</CardTitle>
             <CardDescription className="text-gray-600">
