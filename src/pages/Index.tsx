@@ -5,13 +5,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Heart, Calendar, Book, Music, MapPin, User, Shield, Flame, Trophy, Target, Clock } from 'lucide-react';
 import { toast } from 'sonner';
-import { getDailyQuote, getDailyGoodDeed } from '@/services/dailyContent';
-import { getUserStats, updateStreak } from '@/utils/meditationStats';
+import { dailyContentService } from '@/services/dailyContent';
+import { loadMeditationStats } from '@/utils/meditationStats';
 
 const Index = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [quote, setQuote] = useState('');
+  const [quote, setQuote] = useState({ text: '', author: '' });
   const [goodDeed, setGoodDeed] = useState({ text: '', category: '' });
   const [userStats, setUserStats] = useState({ streak: 0, totalXP: 0 });
 
@@ -19,18 +19,17 @@ const Index = () => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-      loadUserStats(JSON.parse(storedUser));
+      loadUserStats();
     } else {
       setUser(null);
     }
 
     const fetchQuoteAndDeed = async () => {
       try {
-        const quoteData = await getDailyQuote();
-        setQuote(quoteData.content);
-
-        const deedData = await getDailyGoodDeed();
-        setGoodDeed(deedData);
+        const content = await dailyContentService.loadDailyContent();
+        const [quoteText, author] = content.quote.split(' - ');
+        setQuote({ text: quoteText, author: author || '' });
+        setGoodDeed({ text: content.goodDeed, category: 'kindness' });
       } catch (error) {
         console.error('Failed to fetch daily content:', error);
         toast.error('Failed to load daily content. Please try again.');
@@ -42,14 +41,17 @@ const Index = () => {
 
   useEffect(() => {
     if (user) {
-      loadUserStats(user);
+      loadUserStats();
     }
   }, [user]);
 
-  const loadUserStats = async (currentUser: any) => {
+  const loadUserStats = () => {
     try {
-      const stats = await getUserStats(currentUser.id);
-      setUserStats(stats);
+      const stats = loadMeditationStats();
+      setUserStats({ 
+        streak: stats.streak, 
+        totalXP: stats.experiencePoints 
+      });
     } catch (error) {
       console.error('Failed to load user stats:', error);
     }
@@ -181,7 +183,8 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <blockquote className="text-sm sm:text-base text-orange-700 italic leading-relaxed">
-                  "{quote}"
+                  "{quote.text}"
+                  {quote.author && <div className="mt-2 text-right text-sm font-medium">- {quote.author}</div>}
                 </blockquote>
               </CardContent>
             </Card>
