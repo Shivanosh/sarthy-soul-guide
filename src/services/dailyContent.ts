@@ -1,4 +1,3 @@
-
 export interface DailyQuote {
   text: string;
   author: string;
@@ -46,7 +45,7 @@ const GOOD_DEEDS: GoodDeed[] = [
   { text: "Hold the door open for someone", category: "kindness", difficulty: "easy" },
   { text: "Pick up litter in your neighborhood", category: "environment", difficulty: "easy" },
   { text: "Teach someone a skill you know", category: "community", difficulty: "medium" },
-  { text: "Forgive someone who has wronged you", category: "spiritual", difficulty: "hard" }
+  { text: "Forgive someone who has wronged you", category: "kindness", difficulty: "hard" }
 ];
 
 export class DailyContentService {
