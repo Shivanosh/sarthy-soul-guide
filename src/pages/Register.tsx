@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -75,21 +74,21 @@ const Register = () => {
           Back to Home
         </Button>
 
-        <Card className="shadow-xl border-0">
+        <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-sm">
           <CardHeader className="text-center pb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <User className="h-8 w-8 text-white" />
+            <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <User className="h-10 w-10 text-white" />
             </div>
-            <CardTitle className="text-2xl font-bold text-gray-800">Join AapkaSarthy</CardTitle>
-            <CardDescription className="text-gray-600">
+            <CardTitle className="text-3xl font-bold text-gray-800 mb-2">Join AapkaSarthy</CardTitle>
+            <CardDescription className="text-gray-600 text-lg">
               Begin your personalized spiritual journey
             </CardDescription>
           </CardHeader>
           
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <CardContent className="px-8 pb-8">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="name" className="text-gray-700 font-semibold">Full Name</Label>
                 <Input
                   id="name"
                   name="name"
@@ -98,12 +97,12 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="Your spiritual name"
                   required
-                  className="w-full"
+                  className="w-full h-12 text-lg border-2 border-gray-200 focus:border-blue-400 rounded-lg"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-gray-700 font-semibold">Email</Label>
                 <Input
                   id="email"
                   name="email"
@@ -112,12 +111,12 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="your@email.com"
                   required
-                  className="w-full"
+                  className="w-full h-12 text-lg border-2 border-gray-200 focus:border-blue-400 rounded-lg"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-gray-700 font-semibold">Password</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -127,7 +126,7 @@ const Register = () => {
                     onChange={handleChange}
                     placeholder="Create a strong password"
                     required
-                    className="w-full pr-10"
+                    className="w-full h-12 text-lg border-2 border-gray-200 focus:border-blue-400 rounded-lg pr-12"
                   />
                   <Button
                     type="button"
@@ -137,43 +136,41 @@ const Register = () => {
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-500" />
+                      <EyeOff className="h-5 w-5 text-gray-500" />
                     ) : (
-                      <Eye className="h-4 w-4 text-gray-500" />
+                      <Eye className="h-5 w-5 text-gray-500" />
                     )}
                   </Button>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword" className="text-gray-700 font-semibold">Confirm Password</Label>
                 <Input
                   id="confirmPassword"
-                  name="confirm
-
-Password"
+                  name="confirmPassword"
                   type="password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="Confirm your password"
                   required
-                  className="w-full"
+                  className="w-full h-12 text-lg border-2 border-gray-200 focus:border-blue-400 rounded-lg"
                 />
               </div>
               
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 h-12 text-lg font-semibold shadow-lg"
                 disabled={loading}
               >
                 {loading ? 'Creating Account...' : 'Start Your Journey'}
               </Button>
             </form>
             
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
+            <div className="mt-8 text-center">
+              <p className="text-gray-600 text-lg">
                 Already have an account?{' '}
-                <Link to="/login-user" className="text-blue-600 hover:text-blue-700 font-medium">
+                <Link to="/login-user" className="text-blue-600 hover:text-blue-700 font-semibold underline">
                   Sign in here
                 </Link>
               </p>

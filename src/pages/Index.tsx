@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -180,39 +179,38 @@ const Index = () => {
 
   if (currentUser) {
     return (
-      <div className="min-h-screen bg-tricolour-mesh relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 relative overflow-hidden">
         {/* Background Pattern */}
-        <div className="absolute inset-0 bg-tricolour-subtle"></div>
-        <div className="absolute inset-0 opacity-30" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        <div className="absolute inset-0 opacity-20" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
         }}></div>
         
         {/* Enhanced Header */}
-        <header className="glass-saffron backdrop-blur-xl border-b border-white/20 shadow-premium relative z-10">
-          <div className="max-w-6xl mx-auto flex justify-between items-center p-4">
+        <header className="bg-white/90 backdrop-blur-xl border-b border-orange-200 shadow-lg relative z-10">
+          <div className="max-w-6xl mx-auto flex justify-between items-center p-6">
             <div className="flex items-center space-x-6">
-              {/* Enlarged and centered logo */}
+              {/* Enlarged logo without white box */}
               <div className="flex flex-col items-center">
                 <img 
                   src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
                   alt="AapkaSarthy Logo" 
-                  className="w-20 h-20 object-contain hover-lift"
+                  className="w-32 h-32 object-contain transition-transform duration-300 hover:scale-105"
                 />
-                <div className="text-center mt-2">
-                  <p className="text-sm font-bold text-gray-800">Guide to Your Soul</p>
+                <div className="text-center mt-3">
+                  <p className="text-lg font-bold text-gray-800 tracking-wide">Guide to Your Soul</p>
                 </div>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" className="text-gray-800 hover:bg-white/20 glass transition-all duration-300">
-                <Bell className="h-4 w-4" />
+              <Button variant="ghost" size="sm" className="text-gray-800 hover:bg-orange-100 transition-all duration-300 p-3">
+                <Bell className="h-5 w-5" />
               </Button>
               <div className="text-right">
-                <span className="text-gray-800 text-sm font-medium">Namaste, {currentUser.name}</span>
-                <div className="flex items-center space-x-2 mt-1">
+                <span className="text-gray-800 text-lg font-semibold">Namaste, {currentUser.name}</span>
+                <div className="flex items-center space-x-2 mt-2">
                   <Button 
                     size="sm"
-                    className="bg-indian-green hover:bg-indian-green-dark text-white text-xs shadow-green font-semibold px-3 py-1 h-auto"
+                    className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold px-4 py-2 h-auto shadow-lg transition-all duration-300"
                     onClick={handleQuickMeditation}
                   >
                     🔥 {streakCount} day streak
@@ -223,9 +221,9 @@ const Index = () => {
                 variant="secondary" 
                 size="sm" 
                 onClick={handleLogout} 
-                className="bg-white/90 text-saffron-dark hover:bg-white border border-saffron/20 shadow-lg hover-lift font-semibold"
+                className="bg-white text-orange-600 hover:bg-orange-50 border-2 border-orange-200 shadow-lg font-semibold px-4 py-2 transition-all duration-300"
               >
-                <LogOut className="h-4 w-4 mr-1" />
+                <LogOut className="h-4 w-4 mr-2" />
                 Logout
               </Button>
             </div>
@@ -234,51 +232,51 @@ const Index = () => {
 
         {/* Enhanced Daily Content Section */}
         <div className="max-w-6xl mx-auto p-6 relative z-10">
-          <Card className="mb-6 card-premium border-l-4 border-l-saffron hover-lift">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-saffron to-saffron-light flex items-center justify-center shadow-saffron">
-                  <Sparkles className="h-5 w-5 text-white" />
+          <Card className="mb-8 bg-gradient-to-r from-orange-50 to-yellow-50 border-l-4 border-l-orange-500 shadow-xl transition-all duration-300 hover:shadow-2xl">
+            <CardContent className="p-8">
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-400 to-yellow-500 flex items-center justify-center shadow-lg">
+                  <Sparkles className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-bold text-saffron-dark text-lg">Daily Wisdom</h3>
+                <h3 className="font-bold text-orange-700 text-2xl">Daily Wisdom</h3>
               </div>
-              <p className="text-gray-800 italic font-medium text-lg leading-relaxed mb-4">"{dailyQuote}"</p>
+              <p className="text-gray-800 italic font-medium text-xl leading-relaxed mb-6 bg-white/60 p-4 rounded-lg">"{dailyQuote}"</p>
               {dailyGoodDeed && (
-                <div className="mb-4 p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-                  <h4 className="font-semibold text-green-800 mb-2">Good Deed of the Day</h4>
-                  <p className="text-green-700">{dailyGoodDeed}</p>
+                <div className="mb-6 p-4 bg-green-50 rounded-xl border-l-4 border-green-500 shadow-sm">
+                  <h4 className="font-bold text-green-800 mb-3 text-lg">Good Deed of the Day</h4>
+                  <p className="text-green-700 text-lg">{dailyGoodDeed}</p>
                 </div>
               )}
-              <div className="flex space-x-3">
+              <div className="flex flex-wrap gap-3">
                 <Button 
-                  size="sm" 
+                  size="lg" 
                   onClick={handleQuickMeditation} 
-                  className="bg-gradient-to-r from-saffron to-saffron-dark hover:from-saffron-dark hover:to-saffron text-white shadow-saffron hover-lift font-semibold"
+                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg font-bold px-6 py-3 transition-all duration-300"
                 >
                   Quick Meditation (5 min)
                 </Button>
                 <Button 
-                  size="sm" 
+                  size="lg" 
                   variant="outline" 
                   onClick={handleDailyChallenge} 
-                  className="border-indian-green text-indian-green hover:bg-green-50 shadow-green hover-lift font-semibold"
+                  className="border-2 border-green-500 text-green-600 hover:bg-green-50 shadow-lg font-bold px-6 py-3 transition-all duration-300"
                 >
                   Daily Challenge
                 </Button>
                 <Button 
-                  size="sm" 
+                  size="lg" 
                   variant="outline" 
                   onClick={handleDevotionalShop} 
-                  className="border-purple-600 text-purple-600 hover:bg-purple-50 shadow-xl hover-lift font-semibold"
+                  className="border-2 border-purple-500 text-purple-600 hover:bg-purple-50 shadow-lg font-bold px-6 py-3 transition-all duration-300"
                 >
-                  <ShoppingCart className="h-4 w-4 mr-1" />
+                  <ShoppingCart className="h-5 w-5 mr-2" />
                   Devotional Shop
                 </Button>
                 <Button 
-                  size="sm" 
+                  size="lg" 
                   variant="outline" 
                   onClick={fetchDailyContent} 
-                  className="border-blue-600 text-blue-600 hover:bg-blue-50 shadow-xl hover-lift font-semibold"
+                  className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50 shadow-lg font-bold px-6 py-3 transition-all duration-300"
                 >
                   Refresh Content
                 </Button>
@@ -287,124 +285,116 @@ const Index = () => {
           </Card>
 
           {/* Enhanced Main Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             {/* Enhanced Mood Selection Card */}
-            <Card className="card-premium hover-lift group border-l-4 border-l-saffron">
-              <CardHeader className="pb-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-saffron via-saffron-light to-saffron-dark flex items-center justify-center mx-auto mb-4 shadow-saffron pulse-glow">
-                  <Heart className="h-8 w-8 text-white group-hover:animate-pulse" />
+            <Card className="bg-white/95 backdrop-blur-sm shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 border-0 rounded-2xl">
+              <CardHeader className="pb-4 text-center">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center mx-auto mb-4 shadow-xl">
+                  <Heart className="h-10 w-10 text-white" />
                 </div>
-                <CardTitle className="flex items-center justify-center space-x-2 text-saffron-dark text-lg font-bold">
-                  <span>Mood Meditation</span>
-                </CardTitle>
-                <CardDescription className="text-center text-gray-700 font-medium leading-relaxed">
+                <CardTitle className="text-orange-600 text-xl font-bold mb-2">Mood Meditation</CardTitle>
+                <CardDescription className="text-gray-700 font-medium leading-relaxed text-base">
                   AI-powered meditation based on your current mood
                 </CardDescription>
                 {todaysMood && (
-                  <Badge className="w-fit mx-auto bg-orange-100 text-saffron-dark border border-saffron/20 font-semibold">
+                  <Badge className="w-fit mx-auto bg-orange-100 text-orange-700 border border-orange-300 font-semibold mt-2">
                     Today: {todaysMood}
                   </Badge>
                 )}
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <Button 
-                  className="w-full bg-gradient-to-r from-saffron to-saffron-dark hover:from-saffron-dark hover:to-saffron text-white font-bold shadow-saffron hover-lift"
+                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold shadow-lg py-3 text-lg transition-all duration-300"
                   onClick={() => {
                     toast.success('Opening Narad AI mood analyzer...');
                     navigate('/mood-selection');
                   }}
                 >
-                  Start Meditation <ArrowRight className="ml-2 h-4 w-4" />
+                  Start Meditation <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </CardContent>
             </Card>
 
             {/* Enhanced Media Library Card */}
-            <Card className="card-premium hover-lift group border-l-4 border-l-indian-green">
-              <CardHeader className="pb-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indian-green via-indian-green-light to-indian-green-dark flex items-center justify-center mx-auto mb-4 shadow-green">
-                  <BookOpen className="h-8 w-8 text-white group-hover:animate-bounce" />
+            <Card className="bg-white/95 backdrop-blur-sm shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 border-0 rounded-2xl">
+              <CardHeader className="pb-4 text-center">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center mx-auto mb-4 shadow-xl">
+                  <BookOpen className="h-10 w-10 text-white" />
                 </div>
-                <CardTitle className="flex items-center justify-center space-x-2 text-indian-green text-lg font-bold">
-                  <span>Spiritual Library</span>
-                </CardTitle>
-                <CardDescription className="text-center text-gray-700 font-medium leading-relaxed">
+                <CardTitle className="text-green-600 text-xl font-bold mb-2">Spiritual Library</CardTitle>
+                <CardDescription className="text-gray-700 font-medium leading-relaxed text-base">
                   108+ Bhajans, chants, and spiritual content
                 </CardDescription>
-                <Badge className="w-fit mx-auto bg-green-100 text-indian-green border border-indian-green/20 font-semibold">
+                <Badge className="w-fit mx-auto bg-green-100 text-green-700 border border-green-300 font-semibold mt-2">
                   15 Languages
                 </Badge>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <Button 
                   variant="outline" 
-                  className="w-full border-2 border-indian-green text-indian-green hover:bg-green-50 font-bold shadow-green hover-lift"
+                  className="w-full border-2 border-green-500 text-green-600 hover:bg-green-50 font-bold shadow-lg py-3 text-lg transition-all duration-300"
                   onClick={() => {
                     toast.success('Loading spiritual media library...');
                     navigate('/media-library');
                   }}
                 >
-                  Explore Library <ArrowRight className="ml-2 h-4 w-4" />
+                  Explore Library <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </CardContent>
             </Card>
 
             {/* Enhanced Ritual Booking Card */}
-            <Card className="card-premium hover-lift group border-l-4 border-l-blue-600">
-              <CardHeader className="pb-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 flex items-center justify-center mx-auto mb-4 shadow-xl">
-                  <Calendar className="h-8 w-8 text-white group-hover:animate-spin" />
+            <Card className="bg-white/95 backdrop-blur-sm shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 border-0 rounded-2xl">
+              <CardHeader className="pb-4 text-center">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mx-auto mb-4 shadow-xl">
+                  <Calendar className="h-10 w-10 text-white" />
                 </div>
-                <CardTitle className="flex items-center justify-center space-x-2 text-blue-700 text-lg font-bold">
-                  <span>Book Rituals</span>
-                </CardTitle>
-                <CardDescription className="text-center text-gray-700 font-medium leading-relaxed">
+                <CardTitle className="text-blue-600 text-xl font-bold mb-2">Book Rituals</CardTitle>
+                <CardDescription className="text-gray-700 font-medium leading-relaxed text-base">
                   Schedule poojas with verified priests
                 </CardDescription>
-                <Badge className="w-fit mx-auto bg-blue-100 text-blue-700 border border-blue-600/20 font-semibold">
+                <Badge className="w-fit mx-auto bg-blue-100 text-blue-700 border border-blue-300 font-semibold mt-2">
                   42+ Temples
                 </Badge>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <Button 
                   variant="outline" 
-                  className="w-full border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-bold shadow-xl hover-lift"
+                  className="w-full border-2 border-blue-500 text-blue-600 hover:bg-blue-50 font-bold shadow-lg py-3 text-lg transition-all duration-300"
                   onClick={() => {
                     toast.success('Opening ritual booking system...');
                     navigate('/ritual-booking');
                   }}
                 >
-                  Book Now <ArrowRight className="ml-2 h-4 w-4" />
+                  Book Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </CardContent>
             </Card>
 
             {/* Enhanced Trip Planning Card */}
-            <Card className="card-premium hover-lift group border-l-4 border-l-purple-600">
-              <CardHeader className="pb-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 via-purple-500 to-purple-700 flex items-center justify-center mx-auto mb-4 shadow-xl">
-                  <Plane className="h-8 w-8 text-white group-hover:animate-pulse rotate-45" />
+            <Card className="bg-white/95 backdrop-blur-sm shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 border-0 rounded-2xl">
+              <CardHeader className="pb-4 text-center">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center mx-auto mb-4 shadow-xl">
+                  <Plane className="h-10 w-10 text-white rotate-45" />
                 </div>
-                <CardTitle className="flex items-center justify-center space-x-2 text-purple-700 text-lg font-bold">
-                  <span>Trip Planning</span>
-                </CardTitle>
-                <CardDescription className="text-center text-gray-700 font-medium leading-relaxed">
+                <CardTitle className="text-purple-600 text-xl font-bold mb-2">Trip Planning</CardTitle>
+                <CardDescription className="text-gray-700 font-medium leading-relaxed text-base">
                   Plan sacred journeys to spiritual destinations
                 </CardDescription>
-                <Badge className="w-fit mx-auto bg-purple-100 text-purple-700 border border-purple-600/20 font-semibold">
+                <Badge className="w-fit mx-auto bg-purple-100 text-purple-700 border border-purple-300 font-semibold mt-2">
                   12+ Destinations
                 </Badge>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <Button 
                   variant="outline" 
-                  className="w-full border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-bold shadow-xl hover-lift"
+                  className="w-full border-2 border-purple-500 text-purple-600 hover:bg-purple-50 font-bold shadow-lg py-3 text-lg transition-all duration-300"
                   onClick={() => {
                     toast.success('Opening trip planning...');
                     navigate('/trip-planning');
                   }}
                 >
-                  Plan Journey <ArrowRight className="ml-2 h-4 w-4" />
+                  Plan Journey <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </CardContent>
             </Card>
@@ -461,7 +451,7 @@ const Index = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Button 
                     variant="secondary"
-                    className="bg-gradient-to-r from-saffron to-saffron-dark text-white hover:from-saffron-dark hover:to-saffron shadow-saffron hover-lift font-bold"
+                    className="bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-red-600 hover:to-orange-700 shadow-lg hover-lift font-bold"
                     onClick={() => {
                       toast.success('Opening media upload panel...');
                       navigate('/admin/media-upload');
@@ -472,7 +462,7 @@ const Index = () => {
                   </Button>
                   <Button 
                     variant="secondary"
-                    className="bg-gradient-to-r from-indian-green to-indian-green-light text-white hover:from-indian-green-dark hover:to-indian-green shadow-green hover-lift font-bold"
+                    className="bg-gradient-to-r from-green-600 to-teal-600 text-white hover:from-teal-700 hover:to-green-700 shadow-lg hover-lift font-bold"
                     onClick={() => {
                       toast.success('Opening ritual management...');
                       navigate('/admin/ritual-management');
@@ -488,31 +478,31 @@ const Index = () => {
 
           {/* Enhanced Stats with Premium Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="card-premium text-center hover-lift p-6 border-l-4 border-l-saffron">
-              <div className="text-3xl font-bold text-saffron mb-2">108</div>
+            <Card className="card-premium text-center hover-lift p-6 border-l-4 border-l-orange-500 bg-orange-50 shadow-lg rounded-xl">
+              <div className="text-3xl font-bold text-orange-600 mb-2">108</div>
               <div className="text-sm text-gray-700 font-semibold mb-3">Meditations</div>
-              <Button size="sm" variant="ghost" className="text-saffron hover:bg-orange-50 font-semibold" onClick={() => navigate('/media-library')}>
+              <Button size="sm" variant="ghost" className="text-orange-600 hover:bg-orange-100 font-semibold" onClick={() => navigate('/media-library')}>
                 Explore →
               </Button>
             </Card>
-            <Card className="card-premium text-center hover-lift p-6 border-l-4 border-l-indian-green">
-              <div className="text-3xl font-bold text-indian-green mb-2">42</div>
+            <Card className="card-premium text-center hover-lift p-6 border-l-4 border-l-green-600 bg-green-50 shadow-lg rounded-xl">
+              <div className="text-3xl font-bold text-green-600 mb-2">42</div>
               <div className="text-sm text-gray-700 font-semibold mb-3">Bhajans</div>
-              <Button size="sm" variant="ghost" className="text-indian-green hover:bg-green-50 font-semibold" onClick={() => navigate('/media-library')}>
+              <Button size="sm" variant="ghost" className="text-green-600 hover:bg-green-100 font-semibold" onClick={() => navigate('/media-library')}>
                 Listen →
               </Button>
             </Card>
-            <Card className="card-premium text-center hover-lift p-6 border-l-4 border-l-blue-500">
+            <Card className="card-premium text-center hover-lift p-6 border-l-4 border-l-blue-600 bg-blue-50 shadow-lg rounded-xl">
               <div className="text-3xl font-bold text-blue-600 mb-2">15</div>
               <div className="text-sm text-gray-700 font-semibold mb-3">Rituals</div>
-              <Button size="sm" variant="ghost" className="text-blue-600 hover:bg-blue-50 font-semibold" onClick={() => navigate('/ritual-booking')}>
+              <Button size="sm" variant="ghost" className="text-blue-600 hover:bg-blue-100 font-semibold" onClick={() => navigate('/ritual-booking')}>
                 Book →
               </Button>
             </Card>
-            <Card className="card-premium text-center hover-lift p-6 border-l-4 border-l-purple-400">
+            <Card className="card-premium text-center hover-lift p-6 border-l-4 border-l-purple-600 bg-purple-50 shadow-lg rounded-xl">
               <div className="text-3xl font-bold text-purple-600 mb-2">{streakCount}</div>
               <div className="text-sm text-gray-700 font-semibold mb-3">Day Streak</div>
-              <Button size="sm" variant="ghost" className="text-purple-600 hover:bg-purple-50 font-semibold" onClick={handleQuickMeditation}>
+              <Button size="sm" variant="ghost" className="text-purple-600 hover:bg-purple-100 font-semibold" onClick={handleQuickMeditation}>
                 Continue →
               </Button>
             </Card>
@@ -524,48 +514,48 @@ const Index = () => {
 
   // Enhanced Landing page for non-authenticated users
   return (
-    <div className="min-h-screen bg-tricolour-mesh relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-tricolour-radial"></div>
-      <div className="absolute inset-0 opacity-20" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+      <div className="absolute inset-0 opacity-10" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
       }}></div>
       
       {/* Enhanced Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-animated-gradient opacity-90"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/80 via-yellow-400/60 to-red-500/80"></div>
         <div className="relative max-w-6xl mx-auto px-4 py-24 text-center">
-          <div className="flex justify-center mb-8">
-            <div className="bg-white rounded-3xl flex items-center justify-center shadow-premium pulse-glow p-8 hover-lift">
+          <div className="flex justify-center mb-12">
+            <div className="transition-transform duration-500 hover:scale-110">
               <img 
                 src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
                 alt="AapkaSarthy Logo" 
-                className="w-40 h-40 object-contain"
+                className="w-60 h-60 object-contain drop-shadow-2xl"
               />
             </div>
           </div>
-          <p className="text-xl md:text-2xl text-orange-100 mb-8 max-w-4xl mx-auto font-semibold leading-relaxed text-shadow-strong">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg tracking-wide">AapkaSarthy</h1>
+          <p className="text-2xl md:text-3xl text-white/95 mb-10 max-w-4xl mx-auto font-semibold leading-relaxed drop-shadow-md">
             🇮🇳 Guide to Your Soul - Experience personalized spiritual guidance with AI-powered meditation, sacred music, and authentic ritual bookings
           </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          <div className="flex flex-col sm:flex-row gap-8 justify-center">
             <Button 
               size="lg" 
-              className="bg-white text-saffron-dark hover:bg-orange-50 px-10 py-4 text-lg shadow-premium font-bold border border-saffron/20 hover-lift"
+              className="bg-white text-orange-600 hover:bg-orange-50 px-12 py-4 text-xl shadow-2xl font-bold border-2 border-white/20 transition-all duration-300 hover:scale-105"
               onClick={() => {
                 toast.success('Welcome to your spiritual journey!');
                 navigate('/register');
               }}
             >
-              <User className="mr-2 h-6 w-6" />
+              <User className="mr-3 h-7 w-7" />
               Begin Your Journey
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-2 border-white text-white hover:bg-white hover:text-saffron-dark px-10 py-4 text-lg font-bold shadow-premium hover-lift glass"
+              className="border-3 border-white text-white hover:bg-white hover:text-orange-600 px-12 py-4 text-xl font-bold shadow-2xl backdrop-blur-sm transition-all duration-300 hover:scale-105"
               onClick={() => navigate('/login-user')}
             >
-              <Home className="mr-2 h-6 w-6" />
+              <Home className="mr-3 h-7 w-7" />
               Sign In
             </Button>
           </div>
@@ -580,19 +570,19 @@ const Index = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <Card className="card-premium hover-lift group border-t-4 border-t-saffron">
+          <Card className="card-premium hover-lift group border-t-4 border-t-orange-500 bg-orange-50 shadow-lg rounded-xl">
             <CardHeader className="text-center pb-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-saffron via-saffron-light to-saffron-dark rounded-full flex items-center justify-center mx-auto mb-4 shadow-saffron pulse-glow">
+              <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
                 <Heart className="h-10 w-10 text-white group-hover:animate-pulse" />
               </div>
-              <CardTitle className="text-xl text-saffron-dark font-bold">AI Mood Meditation</CardTitle>
+              <CardTitle className="text-xl text-orange-600 font-bold">AI Mood Meditation</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className="text-center text-gray-700 mb-4 font-medium leading-relaxed">
                 Narad AI analyzes your mood and suggests personalized meditation practices for inner harmony
               </CardDescription>
               <Button 
-                className="w-full bg-gradient-to-r from-saffron to-saffron-dark hover:from-saffron-dark hover:to-saffron text-white font-bold shadow-saffron hover-lift"
+                className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold shadow-lg hover-lift py-3 text-lg transition-all duration-300"
                 onClick={() => navigate('/mood-selection')}
               >
                 Try Narad AI
@@ -600,12 +590,12 @@ const Index = () => {
             </CardContent>
           </Card>
 
-          <Card className="card-premium hover-lift group border-t-4 border-t-indian-green">
+          <Card className="card-premium hover-lift group border-t-4 border-t-green-600 bg-green-50 shadow-lg rounded-xl">
             <CardHeader className="text-center pb-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-indian-green via-indian-green-light to-indian-green-dark rounded-full flex items-center justify-center mx-auto mb-4 shadow-green">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
                 <BookOpen className="h-10 w-10 text-white group-hover:animate-bounce" />
               </div>
-              <CardTitle className="text-xl text-indian-green font-bold">Sacred Library</CardTitle>
+              <CardTitle className="text-xl text-green-600 font-bold">Sacred Library</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className="text-center text-gray-700 mb-4 font-medium leading-relaxed">
@@ -613,7 +603,7 @@ const Index = () => {
               </CardDescription>
               <Button 
                 variant="outline"
-                className="w-full border-2 border-indian-green text-indian-green hover:bg-green-50 font-bold shadow-green hover-lift"
+                className="w-full border-2 border-green-600 text-green-700 hover:bg-green-100 font-bold shadow-lg hover-lift py-3 text-lg transition-all duration-300"
                 onClick={() => navigate('/media-library')}
               >
                 Explore Library
@@ -621,9 +611,9 @@ const Index = () => {
             </CardContent>
           </Card>
 
-          <Card className="card-premium hover-lift group border-t-4 border-t-blue-600">
+          <Card className="card-premium hover-lift group border-t-4 border-t-blue-600 bg-blue-50 shadow-lg rounded-xl">
             <CardHeader className="text-center pb-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
                 <Calendar className="h-10 w-10 text-white group-hover:animate-spin" />
               </div>
               <CardTitle className="text-xl text-blue-700 font-bold">Ritual Booking</CardTitle>
@@ -634,7 +624,7 @@ const Index = () => {
               </CardDescription>
               <Button 
                 variant="outline"
-                className="w-full border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-bold shadow-xl hover-lift"
+                className="w-full border-2 border-blue-700 text-blue-700 hover:bg-blue-100 font-bold shadow-lg hover-lift py-3 text-lg transition-all duration-300"
                 onClick={() => navigate('/ritual-booking')}
               >
                 Book Pooja
@@ -642,9 +632,9 @@ const Index = () => {
             </CardContent>
           </Card>
 
-          <Card className="card-premium hover-lift group border-t-4 border-t-purple-600">
+          <Card className="card-premium hover-lift group border-t-4 border-t-purple-600 bg-purple-50 shadow-lg rounded-xl">
             <CardHeader className="text-center pb-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-600 via-purple-500 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
                 <ShoppingCart className="h-10 w-10 text-white group-hover:animate-pulse" />
               </div>
               <CardTitle className="text-xl text-purple-700 font-bold">Devotional Shop</CardTitle>
@@ -655,7 +645,7 @@ const Index = () => {
               </CardDescription>
               <Button 
                 variant="outline"
-                className="w-full border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-bold shadow-xl hover-lift"
+                className="w-full border-2 border-purple-700 text-purple-700 hover:bg-purple-100 font-bold shadow-lg hover-lift py-3 text-lg transition-all duration-300"
                 onClick={handleDevotionalShop}
               >
                 Shop Now
@@ -666,15 +656,15 @@ const Index = () => {
       </div>
 
       {/* Enhanced CTA Section */}
-      <div className="bg-animated-gradient text-white py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-saffron-dark/80 via-white/10 to-indian-green-dark/80"></div>
+      <div className="bg-gradient-to-r from-orange-600 via-yellow-400 to-green-600 text-white py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-700/80 via-yellow-300/60 to-green-700/80"></div>
         <div className="relative max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-4xl font-bold mb-4 text-white-contrast text-shadow-strong">Ready to Transform Your Spiritual Journey?</h2>
-          <p className="text-xl mb-8 text-orange-100 font-semibold text-shadow-strong">Join thousands of souls finding peace through AapkaSarthy 🙏</p>
+          <h2 className="text-4xl font-bold mb-4 text-white drop-shadow-lg">Ready to Transform Your Spiritual Journey?</h2>
+          <p className="text-xl mb-8 text-orange-100 font-semibold drop-shadow-md">Join thousands of souls finding peace through AapkaSarthy 🙏</p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Button 
               size="lg" 
-              className="bg-white text-saffron-dark hover:bg-orange-50 shadow-premium font-bold border border-saffron/20 hover-lift px-10 py-4"
+              className="bg-white text-orange-600 hover:bg-orange-50 shadow-lg font-bold border border-orange-300 hover-lift px-10 py-4 transition-all duration-300"
               onClick={() => {
                 toast.success('Welcome to the spiritual community!');
                 navigate('/register');
@@ -686,7 +676,7 @@ const Index = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-2 border-white text-white hover:bg-white hover:text-saffron-dark font-bold shadow-premium hover-lift glass px-10 py-4"
+              className="border-2 border-white text-white hover:bg-white hover:text-orange-600 font-bold shadow-lg hover-lift px-10 py-4 transition-all duration-300"
               onClick={() => navigate('/login-admin')}
             >
               <Star className="mr-2 h-6 w-6" />
