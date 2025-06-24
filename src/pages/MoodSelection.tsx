@@ -4,13 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Heart, Brain, Smile, Frown, Meh, Sun, Moon, Cloud, Zap, Play, Pause, RotateCcw, Star, Clock } from 'lucide-react';
+import { ArrowLeft, Heart, Brain, Smile, Frown, Meh, Sun, Moon, Cloud, Zap, Play, Pause, RotateCcw, Star, Clock, MessageCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import MeditationTimer from '@/components/meditation/MeditationTimer';
 import BreathingExercise from '@/components/meditation/BreathingExercise';
 import AmbientSounds from '@/components/meditation/AmbientSounds';
 import MeditationStats from '@/components/meditation/MeditationStats';
 import GuidedMeditation from '@/components/meditation/GuidedMeditation';
+import NaradAIChat from '@/components/NaradAIChat';
 
 const MoodSelection = () => {
   const navigate = useNavigate();
@@ -20,6 +21,11 @@ const MoodSelection = () => {
   const [playingTrack, setPlayingTrack] = useState<string>('');
   const [meditationProgress, setMeditationProgress] = useState(0);
   const [isTracking, setIsTracking] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
+  const [showBreathing, setShowBreathing] = useState(false);
+  const [showStats, setShowStats] = useState(false);
+  const [showGuided, setShowGuided] = useState(false);
+  const [showNaradAI, setShowNaradAI] = useState(false);
 
   const moods = [
     { id: 'happy', name: 'Joyful', icon: Smile, color: 'bg-yellow-500', description: 'Feeling blessed and grateful', mantra: 'Om Gam Ganapataye Namaha' },
@@ -74,11 +80,6 @@ const MoodSelection = () => {
       { type: 'Music', title: 'Devotional Prayers', duration: '30 min', description: 'Songs of appreciation', points: 100 }
     ]
   };
-
-  const [showTimer, setShowTimer] = useState(false);
-  const [showBreathing, setShowBreathing] = useState(false);
-  const [showStats, setShowStats] = useState(false);
-  const [showGuided, setShowGuided] = useState(false);
 
   const handleMoodSelect = async (moodId: string) => {
     setSelectedMood(moodId);
@@ -177,8 +178,8 @@ const MoodSelection = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50">
-      {/* Header with Tricolour theme */}
-      <div className="bg-tricolour text-white p-4 relative overflow-hidden">
+      {/* Header with enhanced navigation */}
+      <div className="bg-gradient-to-r from-orange-600 via-yellow-500 to-green-600 text-white p-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-orange-600/90 via-white/10 to-green-600/90"></div>
         <div className="relative max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -199,6 +200,15 @@ const MoodSelection = () => {
           
           {/* Enhanced Navigation */}
           <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowNaradAI(!showNaradAI)}
+              className="text-white hover:bg-white/20"
+            >
+              <MessageCircle className="h-4 w-4 mr-1" />
+              Chat AI
+            </Button>
             <Button
               variant="ghost"
               size="sm"
@@ -238,7 +248,22 @@ const MoodSelection = () => {
       </div>
 
       <div className="max-w-6xl mx-auto p-6">
-        {/* Show meditation tools when requested */}
+        {/* Narad AI Chat Section */}
+        {showNaradAI && (
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                <MessageCircle className="mr-2 h-6 w-6 text-orange-500" />
+                Chat with Narad AI
+              </h2>
+              <Button variant="ghost" onClick={() => setShowNaradAI(false)}>✕</Button>
+            </div>
+            <Card className="h-[500px] border-2 border-orange-200 shadow-xl">
+              <NaradAIChat />
+            </Card>
+          </div>
+        )}
+
         {showStats && (
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
@@ -291,37 +316,53 @@ const MoodSelection = () => {
           <div>
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">How are you feeling today? 🧘‍♀️</h2>
-              <p className="text-lg text-gray-600">Select your current mood and let Narad AI guide your spiritual practice</p>
+              <p className="text-lg text-gray-600 mb-4">Select your current mood or chat with Narad AI for personalized guidance</p>
+              
+              {/* Quick Access to AI Chat */}
+              <Button
+                onClick={() => setShowNaradAI(true)}
+                className="mb-6 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold px-8 py-3 text-lg shadow-lg"
+              >
+                <MessageCircle className="mr-2 h-5 w-5" />
+                Chat with Narad AI
+              </Button>
             </div>
 
             {/* Quick Tools Section */}
-            <div className="mb-8 p-6 bg-gradient-to-r from-saffron/5 to-indian-green/5 rounded-xl border border-saffron/20">
+            <div className="mb-8 p-6 bg-gradient-to-r from-orange-50/50 to-green-50/50 rounded-xl border border-orange-200/50">
               <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">Quick Meditation Tools</h3>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <Button
+                  onClick={() => setShowNaradAI(true)}
+                  className="h-20 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white flex flex-col"
+                >
+                  <MessageCircle className="h-6 w-6 mb-1" />
+                  <span>AI Chat</span>
+                </Button>
                 <Button
                   onClick={() => setShowTimer(true)}
-                  className="h-20 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white flex flex-col hover-lift"
+                  className="h-20 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white flex flex-col"
                 >
                   <Clock className="h-6 w-6 mb-1" />
                   <span>Timer</span>
                 </Button>
                 <Button
                   onClick={() => setShowBreathing(true)}
-                  className="h-20 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white flex flex-col hover-lift"
+                  className="h-20 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white flex flex-col"
                 >
                   <span className="text-2xl mb-1">🫁</span>
                   <span>Breathing</span>
                 </Button>
                 <Button
                   onClick={() => setShowGuided(true)}
-                  className="h-20 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white flex flex-col hover-lift"
+                  className="h-20 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white flex flex-col"
                 >
                   <span className="text-2xl mb-1">🎧</span>
                   <span>Guided</span>
                 </Button>
                 <Button
                   onClick={() => setShowStats(true)}
-                  className="h-20 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white flex flex-col hover-lift"
+                  className="h-20 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white flex flex-col"
                 >
                   <Star className="h-6 w-6 mb-1" />
                   <span>Progress</span>
@@ -336,7 +377,7 @@ const MoodSelection = () => {
                 return (
                   <Card 
                     key={mood.id}
-                    className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-orange-200 card-premium hover-lift"
+                    className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-orange-200"
                     onClick={() => handleMoodSelect(mood.id)}
                   >
                     <CardContent className="p-6 text-center">
@@ -467,6 +508,7 @@ const MoodSelection = () => {
                   setShowBreathing(false);
                   setShowStats(false);
                   setShowGuided(false);
+                  setShowNaradAI(false);
                 }}
                 className="mr-4 border-orange-500 text-orange-600 hover:bg-orange-50"
               >
