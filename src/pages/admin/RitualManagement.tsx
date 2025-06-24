@@ -104,7 +104,7 @@ const RitualManagement = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/admin/dashboard')}
             className="text-white hover:bg-white/20"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />

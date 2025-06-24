@@ -3,38 +3,38 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Settings, Users, Upload, BookOpen, Youtube, Key, Shield, ArrowLeft } from 'lucide-react';
+import { Settings, Users, Upload, Calendar, Shield, ArrowLeft, Key } from 'lucide-react';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
   const adminFeatures = [
     {
+      title: 'Booking Requests',
+      description: 'View, approve or deny ritual booking requests',
+      icon: Calendar,
+      path: '/admin/ritual-management',
+      color: 'from-blue-500 to-cyan-500'
+    },
+    {
       title: 'API Settings',
       description: 'Configure OpenAI, Gemini & YouTube API keys',
       icon: Key,
       path: '/admin/settings',
-      color: 'from-blue-500 to-cyan-500'
+      color: 'from-green-500 to-emerald-500'
     },
     {
       title: 'User Management',
       description: 'Manage registered users and their data',
       icon: Users,
       path: '/admin/user-management',
-      color: 'from-green-500 to-emerald-500'
-    },
-    {
-      title: 'Media Upload',
-      description: 'Upload spiritual content and PDFs',
-      icon: Upload,
-      path: '/admin/media-upload',
       color: 'from-purple-500 to-violet-500'
     },
     {
-      title: 'Content Management',
-      description: 'Manage books, videos and meditation content',
-      icon: BookOpen,
-      path: '/admin/content-management',
+      title: 'Upload Books & Media',
+      description: 'Upload spiritual books and meditation content',
+      icon: Upload,
+      path: '/admin/media-upload',
       color: 'from-orange-500 to-red-500'
     }
   ];
@@ -104,7 +104,7 @@ const AdminDashboard = () => {
         </Card>
 
         {/* Admin Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {adminFeatures.map((feature, index) => (
             <Card key={index} className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
