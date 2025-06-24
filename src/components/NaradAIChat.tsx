@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Send, Bot, User, Heart, Brain, Smile, Frown, Meh, Sun, Moon, Cloud, Zap, Play, Pause, RotateCcw } from 'lucide-react';
+import { Send, Bot, User, Heart, Brain, Smile, Frown, Meh, Sun, Moon, Cloud, Zap, Play, Pause, RotateCcw, Star, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Message {
@@ -15,6 +14,7 @@ interface Message {
   timestamp: Date;
   mood?: string;
   recommendations?: any[];
+  type?: 'meditation' | 'astrology' | 'general';
 }
 
 const NaradAIChat = () => {
@@ -24,6 +24,7 @@ const NaradAIChat = () => {
   const [playingTrack, setPlayingTrack] = useState<string>('');
   const [meditationProgress, setMeditationProgress] = useState(0);
   const [isTracking, setIsTracking] = useState(false);
+  const [apiConnected, setApiConnected] = useState(false);
 
   const moods = [
     { id: 'happy', name: 'Joyful', icon: Smile, color: 'bg-yellow-500', keywords: ['happy', 'joy', 'blessed', 'grateful', 'excited', 'content'] },
@@ -83,11 +84,23 @@ const NaradAIChat = () => {
     // Initialize with welcome message
     setMessages([{
       id: '1',
-      text: 'Namaste! I am Narad AI, your personal spiritual guide. Tell me how you\'re feeling today, and I\'ll recommend personalized meditation practices to help you on your spiritual journey. You can say things like "I feel anxious" or "I\'m feeling grateful today".',
+      text: 'Namaste! I am Narad AI, your personal spiritual guide and chatbot. I can help you with guided meditation, provide astrological insights, and offer spiritual guidance. Feel free to ask me about your mood, meditation practices, or seek astrological advice!',
       sender: 'narad',
-      timestamp: new Date()
+      timestamp: new Date(),
+      type: 'general'
     }]);
+
+    // Check if API is configured
+    checkApiConnection();
   }, []);
+
+  const checkApiConnection = () => {
+    const settings = localStorage.getItem('adminSettings');
+    if (settings) {
+      const { openaiApiKey } = JSON.parse(settings);
+      setApiConnected(!!openaiApiKey);
+    }
+  };
 
   const detectMood = (text: string): string | null => {
     const lowercaseText = text.toLowerCase();
@@ -102,33 +115,85 @@ const NaradAIChat = () => {
     return null;
   };
 
-  const generateNaradResponse = (userInput: string, detectedMood: string | null): string => {
-    if (detectedMood) {
-      const moodData = moods.find(m => m.id === detectedMood);
-      const responses = {
-        happy: "I sense your joyful energy! This is a beautiful state to be in. Let me share some practices that will amplify your happiness and gratitude.",
-        peaceful: "Your peaceful energy is truly wonderful. I can guide you to deepen this tranquility with some calming practices.",
-        anxious: "I understand you're feeling anxious. Take a deep breath - you're safe here. Let me help you find some peace with these calming practices.",
-        sad: "I feel your heart is heavy today. It's okay to feel this way - these emotions are part of our human journey. Let me offer some healing practices.",
-        energetic: "Your dynamic energy is fantastic! Let's channel this vitality into positive spiritual practices.",
-        tired: "I sense you need rest and renewal. Let me guide you to some restorative practices that will rejuvenate your spirit.",
-        confused: "When we feel confused, it's often a sign that clarity is seeking to emerge. These practices will help illuminate your path.",
-        grateful: "Your gratitude fills my digital heart with joy! Let's expand this beautiful feeling with these appreciative practices."
-      };
-      
-      return responses[detectedMood as keyof typeof responses] || 
-        `I sense you're feeling ${moodData?.name.toLowerCase()}. Let me help you with some personalized spiritual practices.`;
+  const detectMessageType = (text: string): 'meditation' | 'astrology' | 'general' => {
+    const lowercaseText = text.toLowerCase();
+    
+    const meditationKeywords = ['meditat', 'breath', 'relax', 'calm', 'peace', 'mindful', 'zen', 'yoga'];
+    const astrologyKeywords = ['astrology', 'horoscope', 'zodiac', 'birth chart', 'planet', 'star', 'cosmic', 'celestial'];
+    
+    const hasMeditation = meditationKeywords.some(keyword => lowercaseText.includes(keyword));
+    const hasAstrology = astrologyKeywords.some(keyword => lowercaseText.includes(keyword));
+    
+    if (hasMeditation) return 'meditation';
+    if (hasAstrology) return 'astrology';
+    return 'general';
+  };
+
+  const callChatGPT = async (userMessage: string, messageType: 'meditation' | 'astrology' | 'general'): Promise<string> => {
+    const settings = localStorage.getItem('adminSettings');
+    if (!settings) {
+      return "I need to be configured with an API key first. Please ask your admin to set up my connection.";
+    }
+
+    const { openaiApiKey, naradPersonality, meditationPrompts, astrologyPrompts } = JSON.parse(settings);
+    
+    if (!openaiApiKey) {
+      return "My OpenAI connection isn't configured yet. Please ask your admin to add the API key.";
+    }
+
+    let systemPrompt = naradPersonality;
+    
+    if (messageType === 'meditation') {
+      systemPrompt += ` ${meditationPrompts}`;
+    } else if (messageType === 'astrology') {
+      systemPrompt += ` ${astrologyPrompts}`;
+    }
+
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openaiApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userMessage }
+          ],
+          max_tokens: 500,
+          temperature: 0.7,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('API call failed');
+      }
+
+      const data = await response.json();
+      return data.choices[0].message.content;
+    } catch (error) {
+      console.error('ChatGPT API error:', error);
+      return "I'm having trouble connecting to my AI brain right now. Let me give you some traditional guidance instead.";
+    }
+  };
+
+  const generateFallbackResponse = (userInput: string, detectedMood: string | null, messageType: 'meditation' | 'astrology' | 'general'): string => {
+    if (messageType === 'meditation') {
+      return "Let me guide you through a simple meditation. Find a comfortable position, close your eyes, and focus on your breath. Inhale slowly for 4 counts, hold for 4, then exhale for 4. Let your thoughts pass like clouds in the sky.";
     }
     
-    // General responses for non-mood messages
-    const generalResponses = [
-      "That's interesting! How are you feeling right now? Share your emotions with me so I can guide you to the perfect spiritual practice.",
-      "I'm here to help with your spiritual journey. Tell me about your current emotional state, and I'll recommend the best meditation for you.",
-      "Thank you for sharing. To provide the most helpful guidance, could you tell me how you're feeling today?",
-      "I appreciate your message. To offer personalized spiritual guidance, please share your current mood or emotions with me."
-    ];
+    if (messageType === 'astrology') {
+      return "The cosmos holds many mysteries! While I'd love to provide personalized astrological insights, consider how the current planetary alignments might be influencing your spiritual journey. Each zodiac sign has unique spiritual gifts - what's yours?";
+    }
     
-    return generalResponses[Math.floor(Math.random() * generalResponses.length)];
+    if (detectedMood) {
+      const moodData = moods.find(m => m.id === detectedMood);
+      return `I sense you're feeling ${moodData?.name.toLowerCase()}. This is a valuable emotional state that can guide your spiritual practice. Let me recommend some practices that align with your current energy.`;
+    }
+    
+    return "Thank you for sharing with me. As your spiritual guide, I'm here to help you on your journey. Feel free to ask about meditation, astrology, or share what's on your heart today.";
   };
 
   const handleSendMessage = async () => {
@@ -145,33 +210,48 @@ const NaradAIChat = () => {
     setInput('');
     setIsTyping(true);
 
-    // Detect mood from user input
     const detectedMood = detectMood(input);
+    const messageType = detectMessageType(input);
     
-    // Simulate AI processing delay
-    setTimeout(() => {
-      const naradResponse = generateNaradResponse(input, detectedMood);
+    try {
+      let aiResponse;
+      if (apiConnected) {
+        aiResponse = await callChatGPT(input, messageType);
+      } else {
+        aiResponse = generateFallbackResponse(input, detectedMood, messageType);
+      }
+      
       const recommendations = detectedMood ? moodRecommendations[detectedMood as keyof typeof moodRecommendations] : undefined;
       
       const naradMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: naradResponse,
+        text: aiResponse,
         sender: 'narad',
         timestamp: new Date(),
         mood: detectedMood || undefined,
-        recommendations
+        recommendations,
+        type: messageType
       };
 
       setMessages(prev => [...prev, naradMessage]);
-      setIsTyping(false);
 
-      // Store detected mood
       if (detectedMood) {
         const moodData = moods.find(m => m.id === detectedMood);
         localStorage.setItem('todaysMood', moodData?.name || '');
         toast.success(`Mood detected: ${moodData?.name}! Personalized recommendations ready.`);
       }
-    }, 1500);
+    } catch (error) {
+      const errorMessage: Message = {
+        id: (Date.now() + 2).toString(),
+        text: "I'm experiencing some technical difficulties. Please try again in a moment.",
+        sender: 'narad',
+        timestamp: new Date(),
+        type: 'general'
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const startPractice = (recommendation: any) => {
@@ -181,7 +261,6 @@ const NaradAIChat = () => {
     
     toast.success(`Starting ${recommendation.title}...`);
     
-    // Simulate meditation progress
     const duration = parseInt(recommendation.duration) * 60;
     const interval = setInterval(() => {
       setMeditationProgress(prev => {
@@ -190,7 +269,6 @@ const NaradAIChat = () => {
           setIsTracking(false);
           setPlayingTrack('');
           
-          // Update meditation stats
           const currentStats = JSON.parse(localStorage.getItem('meditationStats') || '{}');
           const updatedStats = {
             ...currentStats,
@@ -218,6 +296,22 @@ const NaradAIChat = () => {
 
   return (
     <div className="flex flex-col h-full bg-gradient-to-br from-orange-50 to-green-50">
+      {/* Connection Status */}
+      <div className="p-2 bg-gradient-to-r from-orange-100 to-green-100 border-b">
+        <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center space-x-2">
+            <div className={`w-2 h-2 rounded-full ${apiConnected ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+            <span className="text-gray-700">
+              {apiConnected ? 'AI Enhanced Mode' : 'Basic Mode'}
+            </span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <Sparkles className="h-3 w-3 text-orange-500" />
+            <span className="text-gray-600 text-xs">Meditation & Astrology Guide</span>
+          </div>
+        </div>
+      </div>
+
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
@@ -232,6 +326,15 @@ const NaradAIChat = () => {
                 <span className="font-semibold text-sm">
                   {message.sender === 'user' ? 'You' : 'Narad AI'}
                 </span>
+                {message.type && message.sender === 'narad' && (
+                  <Badge className={`text-xs ${
+                    message.type === 'meditation' ? 'bg-blue-100 text-blue-700' :
+                    message.type === 'astrology' ? 'bg-purple-100 text-purple-700' :
+                    'bg-gray-100 text-gray-700'
+                  }`}>
+                    {message.type}
+                  </Badge>
+                )}
               </div>
               <p className="text-sm leading-relaxed">{message.text}</p>
               
@@ -327,7 +430,7 @@ const NaradAIChat = () => {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Tell me how you're feeling today..."
+            placeholder="Ask about meditation, astrology, or share your feelings..."
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
             className="flex-1 border-orange-200 focus:border-orange-500"
           />
@@ -340,7 +443,7 @@ const NaradAIChat = () => {
           </Button>
         </div>
         <div className="mt-2 text-xs text-gray-500">
-          Try: "I feel anxious", "I'm happy today", "I feel confused", etc.
+          Try: "I feel anxious", "What's my horoscope?", "Guide me through meditation", etc.
         </div>
       </div>
     </div>

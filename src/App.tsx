@@ -14,6 +14,7 @@ import TripPlanning from "./pages/TripPlanning";
 import MediaUpload from "./pages/admin/MediaUpload";
 import RitualManagement from "./pages/admin/RitualManagement";
 import UserManagement from "./pages/admin/UserManagement";
+import AdminSettings from "./pages/admin/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/admin/media-upload" element={<MediaUpload />} />
           <Route path="/admin/ritual-management" element={<RitualManagement />} />
           <Route path="/admin/user-management" element={<UserManagement />} />
+          <Route path="/admin/settings" element={<AdminSettings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
