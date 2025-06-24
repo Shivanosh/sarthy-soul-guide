@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Settings, Users, Upload, Calendar, Shield, ArrowLeft, Key } from 'lucide-react';
+import { Settings, Users, Upload, Calendar, Shield, Key } from 'lucide-react';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -45,26 +45,15 @@ const AdminDashboard = () => {
       <div className="bg-gradient-to-r from-orange-600 via-yellow-500 to-green-600 text-white p-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-orange-600/90 via-white/10 to-green-600/90"></div>
         <div className="relative max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={() => navigate('/')}
-              className="text-white hover:bg-white/20"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Site
-            </Button>
-            <div className="flex items-center space-x-2">
-              <Shield className="h-8 w-8" />
-              <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-            </div>
+          <div className="flex items-center space-x-2">
+            <Shield className="h-8 w-8" />
+            <h1 className="text-2xl font-bold">Admin Dashboard</h1>
           </div>
           <Button
             onClick={() => {
               localStorage.removeItem('token');
               localStorage.removeItem('user');
-              navigate('/');
+              navigate('/login-admin');
             }}
             variant="ghost"
             className="text-white hover:bg-white/20"
