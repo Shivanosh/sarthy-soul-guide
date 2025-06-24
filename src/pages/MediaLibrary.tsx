@@ -5,46 +5,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Search, Play, Book, Music, Video, Settings, Youtube, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Search, Play, Book, Music, Video, Settings, Youtube, ExternalLink, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import { youtubeService, YouTubeVideo } from '@/services/youtubeService';
 
 const MediaLibrary = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [youtubeContent, setYoutubeContent] = useState<{
-    meditations: YouTubeVideo[];
-    bhajans: YouTubeVideo[];
-    talks: YouTubeVideo[];
-    yoga: YouTubeVideo[];
-  }>({ meditations: [], bhajans: [], talks: [], yoga: [] });
+  const [devotionalContent, setDevotionalContent] = useState<{
+    videos: YouTubeVideo[];
+    music: YouTubeVideo[];
+  }>({ videos: [], music: [] });
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<YouTubeVideo[]>([]);
   const [selectedVideo, setSelectedVideo] = useState<string>('');
   const [isApiConfigured, setIsApiConfigured] = useState(false);
-
-  const staticBooks = [
-    { title: 'Bhagavad Gita', author: 'Vyasa', description: 'Ancient wisdom on duty and righteousness', category: 'Scripture', url: '#' },
-    { title: 'Ramayana', author: 'Valmiki', description: 'Epic tale of virtue and devotion', category: 'Epic', url: '#' },
-    { title: 'The Upanishads', author: 'Various Sages', description: 'Philosophical insights into the nature of reality', category: 'Philosophy', url: '#' },
-    { title: 'Yoga Sutras', author: 'Patanjali', description: 'A guide to yoga and meditation', category: 'Yoga', url: '#' },
-    { title: 'Tao Te Ching', author: 'Lao Tzu', description: 'A classic text on Taoist philosophy', category: 'Philosophy', url: '#' },
-    { title: 'The Dhammapada', author: 'Buddha', description: 'Verses on ethics and mindfulness', category: 'Buddhism', url: '#' }
-  ];
-
-  const staticMusic = [
-    { title: 'Om Mani Padme Hum', artist: 'Traditional', description: 'Sacred Tibetan mantra', duration: '5:30' },
-    { title: 'Gayatri Mantra', artist: 'Various Artists', description: 'Universal prayer for wisdom', duration: '3:45' },
-    { title: 'Hare Krishna Mantra', artist: 'ISKCON', description: 'Devotional chant for Krishna', duration: '6:20' },
-    { title: 'Shanti Mantra', artist: 'Deva Premal', description: 'Peaceful mantra for inner harmony', duration: '4:15' },
-    { title: 'Guru Ram Das Raakho', artist: 'Snatam Kaur', description: 'Sikh chant for protection', duration: '7:00' },
-    { title: 'Namo Amitabha', artist: 'Imee Ooi', description: 'Buddhist chant for compassion', duration: '5:50' }
-  ];
+  const [uploadedPDFs, setUploadedPDFs] = useState<any[]>([]);
 
   useEffect(() => {
     checkApiConfiguration();
+    loadUploadedPDFs();
     if (isApiConfigured) {
-      loadSpiritualContent();
+      loadDevotionalContent();
     }
   }, [isApiConfigured]);
 
@@ -56,15 +38,25 @@ const MediaLibrary = () => {
     }
   };
 
-  const loadSpiritualContent = async () => {
+  const loadUploadedPDFs = () => {
+    const pdfs = localStorage.getItem('uploadedPDFs');
+    if (pdfs) {
+      setUploadedPDFs(JSON.parse(pdfs));
+    }
+  };
+
+  const loadDevotionalContent = async () => {
     if (!isApiConfigured) return;
     
     setLoading(true);
     try {
-      const content = await youtubeService.getSpiritualContent();
-      setYoutubeContent(content);
+      const [videos, music] = await Promise.all([
+        youtubeService.searchVideos('devotional bhajan kirtan spiritual songs', 12),
+        youtubeService.searchVideos('meditation music mantras om chanting', 12)
+      ]);
+      setDevotionalContent({ videos, music });
     } catch (error) {
-      console.error('Error loading YouTube content:', error);
+      console.error('Error loading devotional content:', error);
       toast.error('Failed to load YouTube content. Please check API configuration.');
     } finally {
       setLoading(false);
@@ -81,7 +73,7 @@ const MediaLibrary = () => {
 
     setLoading(true);
     try {
-      const results = await youtubeService.searchVideos(searchTerm + ' spiritual meditation', 12);
+      const results = await youtubeService.searchVideos(searchTerm + ' spiritual devotional', 12);
       setSearchResults(results);
       toast.success(`Found ${results.length} videos`);
     } catch (error) {
@@ -113,7 +105,10 @@ const MediaLibrary = () => {
         <p className="text-xs text-gray-600 mb-2">{video.channelTitle}</p>
         <p className="text-xs text-gray-500 line-clamp-2">{video.description}</p>
         <div className="mt-2 flex justify-between items-center">
-          <Badge variant="outline" className="text-xs">Video</Badge>
+          <Badge variant="outline" className="text-xs">
+            <Heart className="h-3 w-3 mr-1" />
+            Devotional
+          </Badge>
           <Button
             size="sm"
             variant="ghost"
@@ -125,6 +120,15 @@ const MediaLibrary = () => {
       </CardContent>
     </Card>
   );
+
+  const staticBooks = [
+    { title: 'Bhagavad Gita', author: 'Vyasa', description: 'Ancient wisdom on duty and righteousness', category: 'Scripture', url: '#' },
+    { title: 'Ramayana', author: 'Valmiki', description: 'Epic tale of virtue and devotion', category: 'Epic', url: '#' },
+    { title: 'The Upanishads', author: 'Various Sages', description: 'Philosophical insights into the nature of reality', category: 'Philosophy', url: '#' },
+    { title: 'Yoga Sutras', author: 'Patanjali', description: 'A guide to yoga and meditation', category: 'Yoga', url: '#' },
+    { title: 'Tao Te Ching', author: 'Lao Tzu', description: 'A classic text on Taoist philosophy', category: 'Philosophy', url: '#' },
+    { title: 'The Dhammapada', author: 'Buddha', description: 'Verses on ethics and mindfulness', category: 'Buddhism', url: '#' }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50">
@@ -144,7 +148,7 @@ const MediaLibrary = () => {
             </Button>
             <div className="flex items-center space-x-2">
               <Book className="h-6 w-6" />
-              <h1 className="text-xl font-bold">Spiritual Media Library</h1>
+              <h1 className="text-xl font-bold">Devotional Media Library</h1>
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -172,11 +176,11 @@ const MediaLibrary = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Search className="mr-2 h-5 w-5" />
-              Search Spiritual Content
+              Search Devotional Content
             </CardTitle>
             <CardDescription>
               {isApiConfigured ? 
-                'Search YouTube for meditation, spiritual talks, and devotional content' :
+                'Search YouTube for devotional videos, bhajans, and spiritual music' :
                 'YouTube API not configured. Please contact admin to enable video search.'
               }
             </CardDescription>
@@ -184,7 +188,7 @@ const MediaLibrary = () => {
           <CardContent>
             <div className="flex space-x-2">
               <Input
-                placeholder="Search for meditation, bhajans, spiritual talks..."
+                placeholder="Search for bhajans, kirtans, devotional songs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -229,62 +233,33 @@ const MediaLibrary = () => {
         )}
 
         {/* Content Tabs */}
-        <Tabs defaultValue="videos" className="space-y-6">
+        <Tabs defaultValue="devotional" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="videos">YouTube Videos</TabsTrigger>
+            <TabsTrigger value="devotional">Devotional Videos</TabsTrigger>
+            <TabsTrigger value="music">Spiritual Music</TabsTrigger>
             <TabsTrigger value="books">Sacred Texts</TabsTrigger>
-            <TabsTrigger value="music">Devotional Music</TabsTrigger>
             <TabsTrigger value="search">Search Results</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="videos" className="space-y-6">
+          <TabsContent value="devotional" className="space-y-6">
             {isApiConfigured ? (
-              <>
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">Guided Meditations</h3>
-                  {loading ? (
-                    <div className="text-center py-8">Loading...</div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                      {youtubeContent.meditations.map((video) => (
-                        <VideoCard key={video.id} video={video} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">Bhajans & Kirtans</h3>
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Devotional Videos & Bhajans</h3>
+                {loading ? (
+                  <div className="text-center py-8">Loading...</div>
+                ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {youtubeContent.bhajans.map((video) => (
+                    {devotionalContent.videos.map((video) => (
                       <VideoCard key={video.id} video={video} />
                     ))}
                   </div>
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">Spiritual Talks</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {youtubeContent.talks.map((video) => (
-                      <VideoCard key={video.id} video={video} />
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">Yoga & Pranayama</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {youtubeContent.yoga.map((video) => (
-                      <VideoCard key={video.id} video={video} />
-                    ))}
-                  </div>
-                </div>
-              </>
+                )}
+              </div>
             ) : (
               <div className="text-center py-12">
                 <Youtube className="h-12 w-12 mx-auto mb-4 text-gray-400" />
                 <h3 className="text-lg font-semibold text-gray-600 mb-2">YouTube Integration Not Configured</h3>
-                <p className="text-gray-500 mb-4">Ask your admin to configure the YouTube Data API key to access video content.</p>
+                <p className="text-gray-500 mb-4">Configure YouTube Data API key in admin settings to access devotional content.</p>
                 <Button onClick={() => navigate('/admin/settings')} variant="outline">
                   Go to Settings
                 </Button>
@@ -292,50 +267,74 @@ const MediaLibrary = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="books">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {staticBooks.map((book, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="text-lg">{book.title}</CardTitle>
-                    <CardDescription>by {book.author}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">{book.description}</p>
-                    <div className="flex items-center justify-between">
-                      <Badge>{book.category}</Badge>
-                      <Button size="sm" variant="outline">
-                        <Book className="h-4 w-4 mr-1" />
-                        Read
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+          <TabsContent value="music">
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Spiritual Music & Mantras</h3>
+              {loading ? (
+                <div className="text-center py-8">Loading...</div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {devotionalContent.music.map((video) => (
+                    <VideoCard key={video.id} video={video} />
+                  ))}
+                </div>
+              )}
             </div>
           </TabsContent>
 
-          <TabsContent value="music">
-            <div className="space-y-4">
-              {staticMusic.map((track, index) => (
-                <Card key={index} className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold">{track.title}</h3>
-                        <p className="text-sm text-gray-600">{track.artist}</p>
-                        <p className="text-xs text-gray-500">{track.description}</p>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-gray-500">{track.duration}</span>
-                        <Button size="sm">
-                          <Play className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+          <TabsContent value="books">
+            <div className="space-y-6">
+              {/* Uploaded PDFs */}
+              {uploadedPDFs.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Uploaded Spiritual Books</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    {uploadedPDFs.map((pdf, index) => (
+                      <Card key={index} className="hover:shadow-lg transition-shadow">
+                        <CardHeader>
+                          <CardTitle className="text-lg">{pdf.title}</CardTitle>
+                          <CardDescription>by {pdf.author}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm text-gray-600 mb-4">{pdf.description}</p>
+                          <div className="flex items-center justify-between">
+                            <Badge>{pdf.category}</Badge>
+                            <Button size="sm" variant="outline">
+                              <Book className="h-4 w-4 mr-1" />
+                              Read
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Default Books */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Sacred Texts Collection</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {staticBooks.map((book, index) => (
+                    <Card key={index} className="hover:shadow-lg transition-shadow">
+                      <CardHeader>
+                        <CardTitle className="text-lg">{book.title}</CardTitle>
+                        <CardDescription>by {book.author}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-600 mb-4">{book.description}</p>
+                        <div className="flex items-center justify-between">
+                          <Badge>{book.category}</Badge>
+                          <Button size="sm" variant="outline">
+                            <Book className="h-4 w-4 mr-1" />
+                            Read
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
             </div>
           </TabsContent>
 
@@ -350,7 +349,7 @@ const MediaLibrary = () => {
               <div className="text-center py-12">
                 <Search className="h-12 w-12 mx-auto mb-4 text-gray-400" />
                 <h3 className="text-lg font-semibold text-gray-600 mb-2">No Search Results</h3>
-                <p className="text-gray-500">Use the search bar above to find spiritual content on YouTube.</p>
+                <p className="text-gray-500">Use the search bar above to find devotional content on YouTube.</p>
               </div>
             )}
           </TabsContent>

@@ -6,15 +6,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, Settings, Eye, EyeOff, Save, Key, Youtube } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowLeft, Settings, Eye, EyeOff, Save, Key, Youtube, Brain } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AdminSettings = () => {
   const navigate = useNavigate();
   const [showOpenAIKey, setShowOpenAIKey] = useState(false);
+  const [showGeminiKey, setShowGeminiKey] = useState(false);
   const [showYouTubeKey, setShowYouTubeKey] = useState(false);
   const [settings, setSettings] = useState({
+    aiProvider: 'openai',
     openaiApiKey: '',
+    geminiApiKey: '',
     youtubeApiKey: '',
     naradPersonality: 'You are Narad AI, a wise spiritual guide who helps with meditation and provides astrological insights. Be compassionate, insightful, and spiritually minded in your responses.',
     meditationPrompts: 'Provide guided meditation instructions and breathing exercises.',
@@ -67,6 +71,25 @@ const AdminSettings = () => {
     }
   };
 
+  const testGeminiConnection = async () => {
+    if (!settings.geminiApiKey) {
+      toast.error('Please enter Gemini API key first');
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${settings.geminiApiKey}`);
+      
+      if (response.ok) {
+        toast.success('Gemini API connection successful!');
+      } else {
+        toast.error('Invalid Gemini API key');
+      }
+    } catch (error) {
+      toast.error('Failed to test Gemini connection');
+    }
+  };
+
   const testYouTubeConnection = async () => {
     if (!settings.youtubeApiKey) {
       toast.error('Please enter YouTube API key first');
@@ -96,7 +119,7 @@ const AdminSettings = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/admin/dashboard')}
               className="text-white hover:bg-white/20"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -111,46 +134,92 @@ const AdminSettings = () => {
       </div>
 
       <div className="max-w-4xl mx-auto p-6 space-y-6">
-        {/* API Keys Section */}
+        {/* AI Provider Selection */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Key className="mr-2 h-5 w-5" />
-              API Configuration
+              <Brain className="mr-2 h-5 w-5" />
+              AI Provider Configuration
             </CardTitle>
             <CardDescription>
-              Configure API keys for NaradAI chatbot and YouTube integration
+              Choose and configure your preferred AI provider for NaradAI
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            {/* OpenAI API Key */}
+          <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="openaiKey">OpenAI API Key</Label>
-              <div className="flex space-x-2">
-                <div className="relative flex-1">
-                  <Input
-                    id="openaiKey"
-                    type={showOpenAIKey ? "text" : "password"}
-                    value={settings.openaiApiKey}
-                    onChange={(e) => handleChange('openaiApiKey', e.target.value)}
-                    placeholder="sk-..."
-                    className="pr-10"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => setShowOpenAIKey(!showOpenAIKey)}
-                  >
-                    {showOpenAIKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              <Label htmlFor="aiProvider">AI Provider</Label>
+              <Select value={settings.aiProvider} onValueChange={(value) => handleChange('aiProvider', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select AI Provider" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="openai">OpenAI (GPT)</SelectItem>
+                  <SelectItem value="gemini">Google Gemini</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* OpenAI API Key */}
+            {settings.aiProvider === 'openai' && (
+              <div className="space-y-2">
+                <Label htmlFor="openaiKey">OpenAI API Key</Label>
+                <div className="flex space-x-2">
+                  <div className="relative flex-1">
+                    <Input
+                      id="openaiKey"
+                      type={showOpenAIKey ? "text" : "password"}
+                      value={settings.openaiApiKey}
+                      onChange={(e) => handleChange('openaiApiKey', e.target.value)}
+                      placeholder="sk-..."
+                      className="pr-10"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3"
+                      onClick={() => setShowOpenAIKey(!showOpenAIKey)}
+                    >
+                      {showOpenAIKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                  <Button onClick={testOpenAIConnection} variant="outline">
+                    Test Connection
                   </Button>
                 </div>
-                <Button onClick={testOpenAIConnection} variant="outline">
-                  Test Connection
-                </Button>
               </div>
-            </div>
+            )}
+
+            {/* Gemini API Key */}
+            {settings.aiProvider === 'gemini' && (
+              <div className="space-y-2">
+                <Label htmlFor="geminiKey">Google Gemini API Key</Label>
+                <div className="flex space-x-2">
+                  <div className="relative flex-1">
+                    <Input
+                      id="geminiKey"
+                      type={showGeminiKey ? "text" : "password"}
+                      value={settings.geminiApiKey}
+                      onChange={(e) => handleChange('geminiApiKey', e.target.value)}
+                      placeholder="AIza..."
+                      className="pr-10"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3"
+                      onClick={() => setShowGeminiKey(!showGeminiKey)}
+                    >
+                      {showGeminiKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                  <Button onClick={testGeminiConnection} variant="outline">
+                    Test Connection
+                  </Button>
+                </div>
+              </div>
+            )}
 
             {/* YouTube API Key */}
             <div className="space-y-2">

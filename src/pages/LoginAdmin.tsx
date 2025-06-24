@@ -35,7 +35,7 @@ const LoginAdmin = () => {
         localStorage.setItem('user', JSON.stringify(mockAdmin));
         
         toast.success('Welcome back, Administrator!');
-        navigate('/');
+        navigate('/admin/dashboard');
       } else {
         toast.error('Invalid admin credentials. Try admin@example.com / admin123');
       }

@@ -11,6 +11,7 @@ import MoodSelection from "./pages/MoodSelection";
 import MediaLibrary from "./pages/MediaLibrary";
 import RitualBooking from "./pages/RitualBooking";
 import TripPlanning from "./pages/TripPlanning";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import MediaUpload from "./pages/admin/MediaUpload";
 import RitualManagement from "./pages/admin/RitualManagement";
 import UserManagement from "./pages/admin/UserManagement";
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/media-library" element={<MediaLibrary />} />
           <Route path="/ritual-booking" element={<RitualBooking />} />
           <Route path="/trip-planning" element={<TripPlanning />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/media-upload" element={<MediaUpload />} />
           <Route path="/admin/ritual-management" element={<RitualManagement />} />
           <Route path="/admin/user-management" element={<UserManagement />} />
