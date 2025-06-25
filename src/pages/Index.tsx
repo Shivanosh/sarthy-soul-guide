@@ -437,45 +437,6 @@ const Index = () => {
               />
             </div>
 
-            {currentUser.role === 'admin' && (
-              <Card className="mb-6 sm:mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-l-yellow-500 shadow-xl">
-                <CardContent className="p-4 sm:p-6">
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <Star className="mr-2 h-5 w-5 sm:h-6 sm:w-6 text-yellow-500" />
-                    Admin Dashboard
-                  </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                    <Button 
-                      variant="secondary"
-                      className="bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-red-600 hover:to-orange-700 shadow-lg font-bold py-2 sm:py-3"
-                      onClick={() => navigate('/admin/media-upload')}
-                    >
-                      <Upload className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      Upload Media
-                    </Button>
-                    <Button 
-                      variant="secondary"
-                      className="bg-gradient-to-r from-green-600 to-teal-600 text-white hover:from-teal-700 hover:to-green-700 shadow-lg font-bold py-2 sm:py-3"
-                      onClick={() => navigate('/admin/ritual-management')}
-                    >
-                      <Settings className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      Manage Rituals
-                    </Button>
-                    <Button 
-                      variant="secondary"
-                      className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-indigo-700 hover:to-blue-700 shadow-lg font-bold py-2 sm:py-3"
-                      onClick={() => {
-                        toast.success('Opening PDF book upload...');
-                      }}
-                    >
-                      <FileText className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      Add PDF Books
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <StatsCard 
                 count={108} 
@@ -567,56 +528,76 @@ const Index = () => {
             </div>
           </div>
 
+          {/* About Section */}
           <div className="max-w-6xl mx-auto px-4 py-12 sm:py-16 relative z-10">
             <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">Spiritual Features</h2>
-              <p className="text-lg sm:text-xl text-gray-700 font-semibold">Discover your inner peace through technology and tradition 🕉️</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">About AapkaSarthy</h2>
+              <p className="text-lg sm:text-xl text-gray-700 font-semibold">Your spiritual companion for inner peace and wisdom 🕉️</p>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-              <FeatureCard 
-                icon={Heart}
-                title="AI Mood Meditation"
-                description="Narad AI analyzes your mood and suggests personalized meditation practices for inner harmony"
-                badgeText={null}
-                badgeColor="bg-gradient-to-br from-orange-400 to-red-500"
-                buttonText="Try Narad AI"
-                buttonVariant="default"
-                onButtonClick={() => navigate('/mood-selection')}
-              />
-              <FeatureCard 
-                icon={BookOpen}
-                title="Sacred Library"
-                description="Access thousands of bhajans, mantras, and spiritual content in 15+ Indian languages"
-                badgeText={null}
-                badgeColor="bg-gradient-to-br from-green-500 to-teal-600"
-                buttonText="Explore Library"
-                buttonVariant="outline"
-                onButtonClick={() => navigate('/media-library')}
-              />
-              <FeatureCard 
-                icon={Calendar}
-                title="Ritual Booking"
-                description="Book authentic poojas and ceremonies with verified priests and temples across India"
-                badgeText={null}
-                badgeColor="bg-gradient-to-br from-blue-600 to-indigo-700"
-                buttonText="Book Pooja"
-                buttonVariant="outline"
-                onButtonClick={() => navigate('/ritual-booking')}
-              />
-              <FeatureCard 
-                icon={ShoppingCart}
-                title="Devotional Shop"
-                description="Spiritual items, books, malas, and authentic devotional products for your spiritual journey"
-                badgeText={null}
-                badgeColor="bg-gradient-to-br from-purple-600 to-pink-700"
-                buttonText="Shop Now"
-                buttonVariant="outline"
-                onButtonClick={handleDevotionalShop}
-              />
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-xl">
+              <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">
+                AapkaSarthy is more than just a spiritual platform - it's your personal guide to discovering inner peace and wisdom. 
+                Our AI-powered system provides personalized meditation experiences, connects you with sacred music and literature, 
+                and helps you book authentic spiritual rituals with verified priests across India.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div className="p-4">
+                  <div className="w-16 h-16 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Heart className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-2">AI-Powered Guidance</h3>
+                  <p className="text-gray-600">Personalized spiritual content based on your mood and needs</p>
+                </div>
+                <div className="p-4">
+                  <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <BookOpen className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-2">Sacred Library</h3>
+                  <p className="text-gray-600">Thousands of bhajans, mantras, and spiritual texts in multiple languages</p>
+                </div>
+                <div className="p-4">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Calendar className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-2">Authentic Rituals</h3>
+                  <p className="text-gray-600">Connect with verified priests and temples for traditional ceremonies</p>
+                </div>
+              </div>
             </div>
           </div>
 
+          {/* Contact Section */}
+          <div className="bg-white/90 backdrop-blur-sm py-12 sm:py-16">
+            <div className="max-w-4xl mx-auto px-4 text-center">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">Contact Us</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mb-4">
+                    <Phone className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-2">Phone</h3>
+                  <p className="text-gray-600">+91 9876543210</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center mb-4">
+                    <MessageCircle className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-2">Email</h3>
+                  <p className="text-gray-600">support@aapkasarthy.com</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-4">
+                    <Home className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-2">Address</h3>
+                  <p className="text-gray-600">Spiritual Center, New Delhi, India</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Call to Action */}
           <div className="bg-gradient-to-r from-orange-600 via-yellow-400 to-green-600 text-white py-12 sm:py-16 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-orange-700/80 via-yellow-300/60 to-green-700/80"></div>
             <div className="relative max-w-4xl mx-auto text-center px-4">
