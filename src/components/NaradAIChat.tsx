@@ -117,21 +117,24 @@ const NaradAIChat = () => {
   };
 
   const callGemini = async (prompt: string): Promise<string> => {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${adminSettings?.geminiApiKey}`, {
+    const systemPrompt = adminSettings?.naradPersonality || 'You are a wise spiritual guide.';
+    const fullPrompt = `${systemPrompt}\n\nUser: ${prompt}`;
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${adminSettings?.geminiApiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: `${adminSettings?.naradPersonality || 'You are a wise spiritual guide.'}\n\nUser: ${prompt}`
-          }]
-        }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 500,
-        }
+        contents: [
+          {
+            parts: [
+              {
+                text: fullPrompt
+              }
+            ]
+          }
+        ]
       }),
     });
 
