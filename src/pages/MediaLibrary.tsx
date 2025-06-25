@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Search, Play, Book, Music, Video, Settings, Youtube, ExternalLink, Heart } from 'lucide-react';
+import { ArrowLeft, Search, Play, Book, Music, Video, Youtube, ExternalLink, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import { youtubeService, YouTubeVideo } from '@/services/youtubeService';
 
@@ -157,15 +157,6 @@ const MediaLibrary = () => {
                 API Not Configured
               </Badge>
             )}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/admin/settings')}
-              className="text-white hover:bg-white/20"
-            >
-              <Settings className="h-4 w-4 mr-1" />
-              Configure
-            </Button>
           </div>
         </div>
       </div>
@@ -259,10 +250,7 @@ const MediaLibrary = () => {
               <div className="text-center py-12">
                 <Youtube className="h-12 w-12 mx-auto mb-4 text-gray-400" />
                 <h3 className="text-lg font-semibold text-gray-600 mb-2">YouTube Integration Not Configured</h3>
-                <p className="text-gray-500 mb-4">Configure YouTube Data API key in admin settings to access devotional content.</p>
-                <Button onClick={() => navigate('/admin/settings')} variant="outline">
-                  Go to Settings
-                </Button>
+                <p className="text-gray-500 mb-4">Contact admin to configure YouTube Data API key for devotional content access.</p>
               </div>
             )}
           </TabsContent>
