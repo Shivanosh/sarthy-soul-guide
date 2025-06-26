@@ -9,17 +9,18 @@ import NaradAIChat from '@/components/NaradAIChat';
 
 const Header = ({ currentUser, streakCount, onLogout, onQuickMeditation, onShowNaradAI, onShowContactUs }) => {
   return (
-    <header className="bg-white/98 backdrop-blur-xl border-b border-orange-100 shadow-sm relative z-10">
+    <header className="bg-white/95 backdrop-blur-xl border-b border-orange-100 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center p-4 sm:p-6">
         <div className="flex items-center space-x-4 sm:space-x-6">
-          <div className="flex flex-col items-center">
+          <div className="flex items-center space-x-4">
             <img 
-              src="/lovable-uploads/a0394890-f95b-479a-af1a-7bd309b544c7.png" 
+              src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
               alt="AapkaSarthy Logo" 
-              className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain transition-transform duration-300 hover:scale-105"
+              className="w-12 h-12 sm:w-16 sm:h-16 object-contain transition-transform duration-300 hover:scale-105"
             />
-            <div className="text-center mt-2">
-              <p className="text-sm sm:text-base lg:text-lg font-bold text-gray-700 tracking-wide">Guide to Your Soul</p>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-saffron-600">AapkaSarthy</h1>
+              <p className="text-sm text-gray-600 font-medium">Guide to Your Soul</p>
             </div>
           </div>
         </div>
@@ -75,46 +76,54 @@ const Header = ({ currentUser, streakCount, onLogout, onQuickMeditation, onShowN
 
 const DailyWisdomCard = ({ dailyQuote, dailyGoodDeed, onQuickMeditation, onDailyChallenge, onDevotionalShop }) => {
   return (
-    <Card className="mb-6 sm:mb-8 bg-gradient-to-r from-orange-50 to-white border border-orange-200 shadow-lg transition-all duration-300 hover:shadow-xl">
-      <CardContent className="p-4 sm:p-8">
-        <div className="flex items-center space-x-4 mb-4">
-          <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-md">
-            <Sparkles className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+    <Card className="mb-8 bg-gradient-to-br from-saffron-50 via-white to-green-50 border border-saffron-200 shadow-xl rounded-2xl overflow-hidden">
+      <CardContent className="p-8 relative">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-saffron-100 to-transparent rounded-full -translate-y-16 translate-x-16 opacity-60"></div>
+        <div className="relative z-10">
+          <div className="flex items-center space-x-4 mb-6">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-saffron-500 to-saffron-600 flex items-center justify-center shadow-lg">
+              <Sparkles className="h-7 w-7 text-white" />
+            </div>
+            <h3 className="font-bold text-saffron-700 text-2xl">Daily Wisdom</h3>
           </div>
-          <h3 className="font-bold text-orange-700 text-lg sm:text-2xl">Daily Wisdom</h3>
-        </div>
-        <p className="text-gray-700 italic font-medium text-base sm:text-xl leading-relaxed mb-4 sm:mb-6 bg-white/80 p-3 sm:p-4 rounded-lg border border-orange-100">"{dailyQuote}"</p>
-        {dailyGoodDeed && (
-          <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-green-50 rounded-xl border border-green-200 shadow-sm">
-            <h4 className="font-bold text-green-700 mb-2 sm:mb-3 text-base sm:text-lg">Good Deed of the Day</h4>
-            <p className="text-green-600 text-sm sm:text-lg">{dailyGoodDeed}</p>
+          <blockquote className="text-gray-700 italic font-medium text-lg leading-relaxed mb-6 bg-white/90 p-6 rounded-xl border-l-4 border-saffron-300 shadow-sm">
+            "{dailyQuote}"
+          </blockquote>
+          {dailyGoodDeed && (
+            <div className="mb-6 p-6 bg-green-50 rounded-xl border-l-4 border-green-400 shadow-sm">
+              <h4 className="font-bold text-green-700 mb-3 text-lg flex items-center">
+                <Heart className="h-5 w-5 mr-2" />
+                Good Deed of the Day
+              </h4>
+              <p className="text-green-600 text-lg">{dailyGoodDeed}</p>
+            </div>
+          )}
+          <div className="flex flex-wrap gap-3">
+            <Button 
+              size="sm" 
+              onClick={onQuickMeditation} 
+              className="bg-gradient-to-r from-saffron-500 to-saffron-600 hover:from-saffron-600 hover:to-saffron-700 text-white shadow-md font-bold px-6 py-3 transition-all duration-300 text-base rounded-lg"
+            >
+              Quick Meditation (5 min)
+            </Button>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              onClick={onDailyChallenge} 
+              className="border border-green-500 text-green-600 hover:bg-green-50 shadow-md font-bold px-6 py-3 transition-all duration-300 text-base rounded-lg"
+            >
+              Daily Challenge
+            </Button>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              onClick={onDevotionalShop} 
+              className="border border-purple-500 text-purple-600 hover:bg-purple-50 shadow-md font-bold px-6 py-3 transition-all duration-300 text-base rounded-lg flex items-center justify-center"
+            >
+              <ShoppingCart className="h-5 w-5 mr-2" />
+              Shop
+            </Button>
           </div>
-        )}
-        <div className="flex flex-wrap gap-2 sm:gap-3">
-          <Button 
-            size="sm" 
-            onClick={onQuickMeditation} 
-            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-md font-bold px-3 py-2 sm:px-6 sm:py-3 transition-all duration-300 text-xs sm:text-base"
-          >
-            Quick Meditation (5 min)
-          </Button>
-          <Button 
-            size="sm" 
-            variant="outline" 
-            onClick={onDailyChallenge} 
-            className="border border-green-500 text-green-600 hover:bg-green-50 shadow-md font-bold px-3 py-2 sm:px-6 sm:py-3 transition-all duration-300 text-xs sm:text-base"
-          >
-            Daily Challenge
-          </Button>
-          <Button 
-            size="sm" 
-            variant="outline" 
-            onClick={onDevotionalShop} 
-            className="border border-purple-500 text-purple-600 hover:bg-purple-50 shadow-md font-bold px-3 py-2 sm:px-6 sm:py-3 transition-all duration-300 text-xs sm:text-base"
-          >
-            <ShoppingCart className="h-3 w-3 sm:h-5 sm:w-5 mr-1 sm:mr-2" />
-            Shop
-          </Button>
         </div>
       </CardContent>
     </Card>
@@ -123,28 +132,31 @@ const DailyWisdomCard = ({ dailyQuote, dailyGoodDeed, onQuickMeditation, onDaily
 
 const FeatureCard = ({ icon: Icon, title, description, badgeText, badgeColor, buttonText, buttonVariant, onButtonClick }) => {
   return (
-    <Card className="bg-white border border-gray-200 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 rounded-xl">
-      <CardHeader className="pb-3 sm:pb-4 text-center">
-        <div className={`w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ${badgeColor} flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg`}>
-          <Icon className="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 text-white" />
+    <Card className="bg-white border-0 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 rounded-2xl group overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <CardHeader className="pb-4 text-center relative z-10">
+        <div className={`w-16 h-16 lg:w-20 lg:h-20 rounded-2xl ${badgeColor} flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+          <Icon className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
         </div>
-        <CardTitle className="text-base sm:text-xl font-bold mb-2 text-gray-800">{title}</CardTitle>
-        <CardDescription className="text-gray-600 font-medium leading-relaxed text-sm sm:text-base">
+        <CardTitle className="text-xl font-bold mb-3 text-gray-800 group-hover:text-saffron-600 transition-colors">
+          {title}
+        </CardTitle>
+        <CardDescription className="text-gray-600 font-medium leading-relaxed text-base">
           {description}
         </CardDescription>
         {badgeText && (
-          <Badge className={`w-fit mx-auto ${badgeColor.replace('from-', 'bg-').replace('to-', '')} text-white border-0 font-semibold mt-2 text-xs sm:text-sm`}>
+          <Badge className={`w-fit mx-auto ${badgeColor.replace('from-', 'bg-').replace('to-', '')} text-white border-0 font-semibold mt-3`}>
             {badgeText}
           </Badge>
         )}
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent className="pt-0 relative z-10">
         <Button 
           variant={buttonVariant} 
-          className="w-full font-bold shadow-md py-2 sm:py-3 text-sm sm:text-lg transition-all duration-300"
+          className="w-full font-bold shadow-md py-3 text-lg transition-all duration-300 group-hover:bg-saffron-500 group-hover:text-white"
           onClick={onButtonClick}
         >
-          {buttonText} <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+          {buttonText} <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
         </Button>
       </CardContent>
     </Card>
@@ -153,10 +165,17 @@ const FeatureCard = ({ icon: Icon, title, description, badgeText, badgeColor, bu
 
 const StatsCard = ({ count, label, color, onClick, buttonText }) => {
   return (
-    <Card className={`text-center p-3 sm:p-6 border ${color} bg-white shadow-md rounded-xl hover:shadow-lg transition-all duration-300`}>
-      <div className={`text-2xl sm:text-3xl font-bold ${color.replace('border-', 'text-')}`}>{count}</div>
-      <div className="text-xs sm:text-sm text-gray-600 font-semibold mb-2 sm:mb-3">{label}</div>
-      <Button size="sm" variant="ghost" className={`${color.replace('border-', 'text-')} hover:bg-gray-50 font-semibold text-xs sm:text-sm`} onClick={onClick}>
+    <Card className={`text-center p-6 border-0 bg-white shadow-lg rounded-2xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group`}>
+      <div className={`text-4xl font-bold ${color.replace('border-', 'text-')} mb-2 group-hover:scale-110 transition-transform`}>
+        {count}
+      </div>
+      <div className="text-sm text-gray-600 font-semibold mb-3">{label}</div>
+      <Button 
+        size="sm" 
+        variant="ghost" 
+        className={`${color.replace('border-', 'text-')} hover:bg-gray-50 font-semibold transition-all duration-300 group-hover:bg-saffron-50`} 
+        onClick={onClick}
+      >
         {buttonText}
       </Button>
     </Card>
@@ -332,10 +351,10 @@ const Index = () => {
   return (
     <>
       {currentUser ? (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 relative overflow-hidden">
-          {/* Subtle Background Pattern */}
-          <div className="absolute inset-0 opacity-3" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        <div className="min-h-screen bg-gradient-to-br from-saffron-50 via-white to-green-50 relative">
+          {/* Enhanced Background Pattern */}
+          <div className="absolute inset-0 opacity-5" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23FF9933' fill-opacity='0.1'%3E%3Cpath d='M50 30c11.046 0 20 8.954 20 20s-8.954 20-20 20-20-8.954-20-20 8.954-20 20-20zm0 5c-8.284 0-15 6.716-15 15s6.716 15 15 15 15-6.716 15-15-6.716-15-15-15z'/%3E%3C/g%3E%3C/svg%3E")`
           }}></div>
           
           <Header 
@@ -394,13 +413,13 @@ const Index = () => {
               onDevotionalShop={handleDevotionalShop} 
             />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
               <FeatureCard 
                 icon={MessageCircle}
                 title="Narad AI Chat"
                 description="Chat with AI for mood-based meditation and spiritual guidance"
                 badgeText={todaysMood ? `Today: ${todaysMood}` : null}
-                badgeColor="bg-gradient-to-br from-orange-500 to-orange-600"
+                badgeColor="bg-gradient-to-br from-saffron-500 to-saffron-600"
                 buttonText="Chat with Narad AI"
                 buttonVariant="default"
                 onButtonClick={() => setShowNaradAI(true)}
@@ -437,11 +456,11 @@ const Index = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               <StatsCard 
                 count={108} 
                 label="Meditations" 
-                color="border-orange-500" 
+                color="border-saffron-500" 
                 onClick={() => navigate('/media-library')} 
                 buttonText="Explore →" 
               />
@@ -470,158 +489,171 @@ const Index = () => {
           </div>
         </div>
       ) : (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 relative overflow-hidden">
-          {/* Subtle Background Pattern */}
-          <div className="absolute inset-0 opacity-3" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-          }}></div>
+        <div className="min-h-screen bg-gradient-to-br from-saffron-50 via-white to-green-50 relative">
+          {/* Hero Background */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-40 -right-40 w-80 h-80 bg-saffron-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+            <div className="absolute top-40 left-1/2 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+          </div>
           
+          {/* Hero Section */}
           <div className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-400/60 via-white/80 to-green-500/60"></div>
-            <div className="relative max-w-6xl mx-auto px-4 py-16 sm:py-24 text-center">
-              <div className="flex justify-center mb-8 sm:mb-12">
-                <div className="transition-transform duration-500 hover:scale-110">
+            <div className="relative max-w-6xl mx-auto px-4 py-20 sm:py-32 text-center">
+              <div className="flex justify-center mb-12">
+                <div className="transition-transform duration-500 hover:scale-110 bg-white rounded-3xl p-8 shadow-2xl">
                   <img 
-                    src="/lovable-uploads/a0394890-f95b-479a-af1a-7bd309b544c7.png" 
+                    src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
                     alt="AapkaSarthy Logo" 
-                    className="w-40 h-40 sm:w-52 sm:h-52 lg:w-60 lg:h-60 object-contain drop-shadow-lg"
+                    className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 object-contain"
                   />
                 </div>
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-800 mb-4 sm:mb-6 tracking-wide">AapkaSarthy</h1>
-              <p className="text-lg sm:text-2xl md:text-3xl text-gray-700 mb-8 sm:mb-10 max-w-4xl mx-auto font-semibold leading-relaxed">
-                🇮🇳 Guide to Your Soul - Experience personalized spiritual guidance with AI-powered meditation, sacred music, and authentic ritual bookings
+              
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-800 mb-6 tracking-tight">
+                <span className="bg-gradient-to-r from-saffron-600 to-saffron-700 bg-clip-text text-transparent">
+                  AapkaSarthy
+                </span>
+              </h1>
+              
+              <p className="text-xl sm:text-2xl md:text-3xl text-gray-700 mb-12 max-w-4xl mx-auto font-medium leading-relaxed">
+                🇮🇳 <span className="text-saffron-600 font-semibold">Guide to Your Soul</span> - Experience personalized spiritual guidance with AI-powered meditation, sacred music, and authentic ritual bookings
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center">
+              
+              <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
                 <Button 
                   size="lg" 
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 sm:px-12 py-3 sm:py-4 text-lg sm:text-xl shadow-lg font-bold transition-all duration-300 hover:scale-105"
+                  className="bg-gradient-to-r from-saffron-500 to-saffron-600 hover:from-saffron-600 hover:to-saffron-700 text-white px-12 py-4 text-xl shadow-2xl font-bold transition-all duration-300 hover:scale-105 rounded-xl"
                   onClick={() => {
                     toast.success('Welcome to your spiritual journey!');
                     navigate('/register');
                   }}
                 >
-                  <User className="mr-2 sm:mr-3 h-5 w-5 sm:h-7 sm:w-7" />
+                  <User className="mr-3 h-6 w-6" />
                   Begin Your Journey
                 </Button>
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="border-2 border-green-600 text-green-700 bg-white hover:bg-green-50 px-8 sm:px-12 py-3 sm:py-4 text-lg sm:text-xl font-bold shadow-lg transition-all duration-300 hover:scale-105"
+                  className="border-2 border-green-600 text-green-700 bg-white hover:bg-green-50 px-12 py-4 text-xl font-bold shadow-xl transition-all duration-300 hover:scale-105 rounded-xl"
                   onClick={() => navigate('/login-user')}
                 >
-                  <Home className="mr-2 sm:mr-3 h-5 w-5 sm:h-7 sm:w-7" />
+                  <Home className="mr-3 h-6 w-6" />
                   Sign In
                 </Button>
               </div>
-              <div className="mt-6 sm:mt-8">
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="border-2 border-gray-400 text-gray-600 bg-white hover:bg-gray-50 px-6 sm:px-10 py-2 sm:py-3 text-base sm:text-lg font-bold shadow-md transition-all duration-300 hover:scale-105"
-                  onClick={() => navigate('/login-admin')}
-                >
-                  <Star className="mr-2 h-4 w-4 sm:h-6 sm:w-6" />
-                  Admin Login
-                </Button>
-              </div>
+              
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-2 border-gray-300 text-gray-600 bg-white/80 hover:bg-gray-50 px-10 py-3 text-lg font-bold shadow-lg transition-all duration-300 hover:scale-105 rounded-xl backdrop-blur-sm"
+                onClick={() => navigate('/login-admin')}
+              >
+                <Star className="mr-2 h-5 w-5" />
+                Admin Login
+              </Button>
             </div>
           </div>
 
           {/* About Section */}
-          <div className="max-w-6xl mx-auto px-4 py-12 sm:py-16 relative z-10">
-            <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">About AapkaSarthy</h2>
-              <p className="text-lg sm:text-xl text-gray-600 font-semibold">Your spiritual companion for inner peace and wisdom 🕉️</p>
+          <div className="max-w-6xl mx-auto px-4 py-16 relative z-10">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-800 mb-4">About AapkaSarthy</h2>
+              <p className="text-xl text-gray-600 font-medium">Your spiritual companion for inner peace and wisdom 🕉️</p>
             </div>
             
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200">
-              <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-6">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-0">
+              <p className="text-gray-600 text-lg leading-relaxed mb-8 text-center max-w-4xl mx-auto">
                 AapkaSarthy is more than just a spiritual platform - it's your personal guide to discovering inner peace and wisdom. 
                 Our AI-powered system provides personalized meditation experiences, connects you with sacred music and literature, 
                 and helps you book authentic spiritual rituals with verified priests across India.
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div className="p-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Heart className="h-8 w-8 text-white" />
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-saffron-50 to-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                  <div className="w-20 h-20 bg-gradient-to-r from-saffron-500 to-saffron-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Heart className="h-10 w-10 text-white" />
                   </div>
-                  <h3 className="font-bold text-gray-800 mb-2">AI-Powered Guidance</h3>
-                  <p className="text-gray-600">Personalized spiritual content based on your mood and needs</p>
+                  <h3 className="font-bold text-gray-800 mb-3 text-xl">AI-Powered Guidance</h3>
+                  <p className="text-gray-600 leading-relaxed">Personalized spiritual content based on your mood and needs</p>
                 </div>
-                <div className="p-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <BookOpen className="h-8 w-8 text-white" />
+                
+                <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-green-50 to-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                  <div className="w-20 h-20 bg-gradient-to-r from-green-600 to-green-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <BookOpen className="h-10 w-10 text-white" />
                   </div>
-                  <h3 className="font-bold text-gray-800 mb-2">Sacred Library</h3>
-                  <p className="text-gray-600">Thousands of bhajans, mantras, and spiritual texts in multiple languages</p>
+                  <h3 className="font-bold text-gray-800 mb-3 text-xl">Sacred Library</h3>
+                  <p className="text-gray-600 leading-relaxed">Thousands of bhajans, mantras, and spiritual texts in multiple languages</p>
                 </div>
-                <div className="p-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Calendar className="h-8 w-8 text-white" />
+                
+                <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                  <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Calendar className="h-10 w-10 text-white" />
                   </div>
-                  <h3 className="font-bold text-gray-800 mb-2">Authentic Rituals</h3>
-                  <p className="text-gray-600">Connect with verified priests and temples for traditional ceremonies</p>
+                  <h3 className="font-bold text-gray-800 mb-3 text-xl">Authentic Rituals</h3>
+                  <p className="text-gray-600 leading-relaxed">Connect with verified priests and temples for traditional ceremonies</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Contact Section */}
-          <div className="bg-white/95 backdrop-blur-sm py-12 sm:py-16">
+          <div className="bg-white/95 backdrop-blur-sm py-16 border-t border-gray-100">
             <div className="max-w-4xl mx-auto px-4 text-center">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">Contact Us</h2>
+              <h2 className="text-4xl font-bold text-gray-800 mb-8">Contact Us</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-4">
-                    <Phone className="h-6 w-6 text-white" />
+                <div className="flex flex-col items-center p-6 rounded-2xl bg-gradient-to-br from-saffron-50 to-white shadow-lg">
+                  <div className="w-16 h-16 bg-gradient-to-r from-saffron-500 to-saffron-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                    <Phone className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="font-bold text-gray-800 mb-2">Phone</h3>
+                  <h3 className="font-bold text-gray-800 mb-2 text-lg">Phone</h3>
                   <p className="text-gray-600">+91 9876543210</p>
                 </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mb-4">
-                    <MessageCircle className="h-6 w-6 text-white" />
+                
+                <div className="flex flex-col items-center p-6 rounded-2xl bg-gradient-to-br from-green-50 to-white shadow-lg">
+                  <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                    <MessageCircle className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="font-bold text-gray-800 mb-2">Email</h3>
+                  <h3 className="font-bold text-gray-800 mb-2 text-lg">Email</h3>
                   <p className="text-gray-600">support@aapkasarthy.com</p>
                 </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-700 rounded-full flex items-center justify-center mb-4">
-                    <Home className="h-6 w-6 text-white" />
+                
+                <div className="flex flex-col items-center p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-white shadow-lg">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                    <Home className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="font-bold text-gray-800 mb-2">Address</h3>
+                  <h3 className="font-bold text-gray-800 mb-2 text-lg">Address</h3>
                   <p className="text-gray-600">Spiritual Center, New Delhi, India</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Call to Action */}
-          <div className="bg-gradient-to-r from-orange-500 via-white to-green-600 relative overflow-hidden py-12 sm:py-16">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/80 via-white/90 to-green-600/80"></div>
+          {/* CTA Section */}
+          <div className="bg-gradient-to-r from-saffron-500 via-white to-green-600 relative overflow-hidden py-20">
+            <div className="absolute inset-0 bg-gradient-to-r from-saffron-500/90 via-white/95 to-green-600/90"></div>
             <div className="relative max-w-4xl mx-auto text-center px-4">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-800">Ready to Transform Your Spiritual Journey?</h2>
-              <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-gray-700 font-semibold">Join thousands of souls finding peace through AapkaSarthy 🙏</p>
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+              <h2 className="text-4xl font-bold mb-6 text-gray-800">Ready to Transform Your Spiritual Journey?</h2>
+              <p className="text-xl mb-8 text-gray-700 font-medium">Join thousands of souls finding peace through AapkaSarthy 🙏</p>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button 
                   size="lg" 
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg font-bold px-6 sm:px-10 py-3 sm:py-4 transition-all duration-300"
+                  className="bg-gradient-to-r from-saffron-500 to-saffron-600 hover:from-saffron-600 hover:to-saffron-700 text-white shadow-2xl font-bold px-10 py-4 transition-all duration-300 rounded-xl hover:scale-105"
                   onClick={() => {
                     toast.success('Welcome to the spiritual community!');
                     navigate('/register');
                   }}
                 >
-                  <Users className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
+                  <Users className="mr-2 h-6 w-6" />
                   Join as User
                 </Button>
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="border-2 border-green-600 text-green-700 bg-white hover:bg-green-50 font-bold shadow-lg px-6 sm:px-10 py-3 sm:py-4 transition-all duration-300"
+                  className="border-2 border-green-600 text-green-700 bg-white hover:bg-green-50 font-bold shadow-xl px-10 py-4 transition-all duration-300 rounded-xl hover:scale-105"
                   onClick={() => navigate('/login-admin')}
                 >
-                  <Star className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
+                  <Star className="mr-2 h-6 w-6" />
                   Admin Login
                 </Button>
               </div>
