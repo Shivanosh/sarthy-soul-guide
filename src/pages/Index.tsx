@@ -13,11 +13,14 @@ const Header = ({ currentUser, streakCount, onLogout, onQuickMeditation, onShowN
       <div className="max-w-7xl mx-auto flex justify-between items-center p-4 sm:p-6">
         <div className="flex items-center space-x-4 sm:space-x-6">
           <div className="flex items-center space-x-4">
-            <img 
-              src="/lovable-uploads/207006c0-81c0-4fcc-a599-d46ae09bb99d.png" 
-              alt="AapkaSarthy Logo" 
-              className="w-14 h-14 sm:w-18 sm:h-18 object-contain transition-transform duration-300 hover:scale-105"
-            />
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-saffron-400 to-saffron-600 rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition-all duration-300"></div>
+              <img 
+                src="/lovable-uploads/207006c0-81c0-4fcc-a599-d46ae09bb99d.png" 
+                alt="AapkaSarthy Logo" 
+                className="relative w-16 h-16 sm:w-20 sm:h-20 object-contain transition-all duration-300 hover:scale-110 drop-shadow-lg"
+              />
+            </div>
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-saffron-600">AapkaSarthy</h1>
               <p className="text-sm text-gray-600 font-medium">Guide to Your Soul</p>
@@ -497,11 +500,11 @@ const Index = () => {
             <div className="absolute top-40 left-1/2 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
             
             {/* Large Background Logo */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-5">
+            <div className="absolute inset-0 flex items-center justify-center opacity-3">
               <img 
                 src="/lovable-uploads/207006c0-81c0-4fcc-a599-d46ae09bb99d.png" 
                 alt="AapkaSarthy Background Logo" 
-                className="w-96 h-96 sm:w-[500px] sm:h-[500px] lg:w-[600px] lg:h-[600px] object-contain"
+                className="w-[700px] h-[700px] sm:w-[800px] sm:h-[800px] lg:w-[900px] lg:h-[900px] object-contain"
               />
             </div>
           </div>
@@ -509,18 +512,32 @@ const Index = () => {
           {/* Hero Section */}
           <div className="relative overflow-hidden">
             <div className="relative max-w-6xl mx-auto px-4 py-20 sm:py-32 text-center">
-              <div className="flex justify-center mb-12">
-                <div className="transition-transform duration-500 hover:scale-110">
-                  <img 
-                    src="/lovable-uploads/207006c0-81c0-4fcc-a599-d46ae09bb99d.png" 
-                    alt="AapkaSarthy Logo" 
-                    className="w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 object-contain drop-shadow-2xl"
-                  />
+              <div className="flex justify-center mb-16">
+                <div className="relative group transition-all duration-700 hover:scale-110">
+                  {/* Glowing backdrop */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-saffron-400 via-orange-300 to-saffron-500 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-all duration-700 scale-125"></div>
+                  
+                  {/* Secondary glow */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full blur-2xl opacity-10 group-hover:opacity-25 transition-all duration-700 scale-110 animate-pulse"></div>
+                  
+                  {/* Main logo container */}
+                  <div className="relative bg-white/10 backdrop-blur-sm rounded-full p-8 shadow-2xl border border-white/20">
+                    <img 
+                      src="/lovable-uploads/207006c0-81c0-4fcc-a599-d46ae09bb99d.png" 
+                      alt="AapkaSarthy Logo" 
+                      className="w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 object-contain drop-shadow-2xl filter brightness-110 contrast-110"
+                    />
+                  </div>
+                  
+                  {/* Floating particles effect */}
+                  <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-saffron-400 rounded-full opacity-60 animate-ping"></div>
+                  <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-green-500 rounded-full opacity-50 animate-pulse"></div>
+                  <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-orange-400 rounded-full opacity-70 animate-bounce"></div>
                 </div>
               </div>
               
               <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-800 mb-6 tracking-tight">
-                <span className="bg-gradient-to-r from-saffron-600 to-saffron-700 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-saffron-600 via-orange-500 to-saffron-700 bg-clip-text text-transparent drop-shadow-sm">
                   AapkaSarthy
                 </span>
               </h1>
