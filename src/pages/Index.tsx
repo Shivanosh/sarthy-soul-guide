@@ -16,7 +16,7 @@ const Header = ({ currentUser, streakCount, onLogout, onQuickMeditation, onShowN
             <img 
               src="/lovable-uploads/207006c0-81c0-4fcc-a599-d46ae09bb99d.png" 
               alt="AapkaSarthy Logo" 
-              className="w-12 h-12 sm:w-16 sm:h-16 object-contain transition-transform duration-300 hover:scale-105"
+              className="w-14 h-14 sm:w-18 sm:h-18 object-contain transition-transform duration-300 hover:scale-105"
             />
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-saffron-600">AapkaSarthy</h1>
@@ -490,22 +490,31 @@ const Index = () => {
         </div>
       ) : (
         <div className="min-h-screen bg-gradient-to-br from-saffron-50 via-white to-green-50 relative">
-          {/* Hero Background */}
+          {/* Enhanced Hero Background with Logo */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-40 w-80 h-80 bg-saffron-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
             <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
             <div className="absolute top-40 left-1/2 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+            
+            {/* Large Background Logo */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-5">
+              <img 
+                src="/lovable-uploads/207006c0-81c0-4fcc-a599-d46ae09bb99d.png" 
+                alt="AapkaSarthy Background Logo" 
+                className="w-96 h-96 sm:w-[500px] sm:h-[500px] lg:w-[600px] lg:h-[600px] object-contain"
+              />
+            </div>
           </div>
           
           {/* Hero Section */}
           <div className="relative overflow-hidden">
             <div className="relative max-w-6xl mx-auto px-4 py-20 sm:py-32 text-center">
               <div className="flex justify-center mb-12">
-                <div className="transition-transform duration-500 hover:scale-110 bg-white rounded-3xl p-8 shadow-2xl">
+                <div className="transition-transform duration-500 hover:scale-110">
                   <img 
                     src="/lovable-uploads/207006c0-81c0-4fcc-a599-d46ae09bb99d.png" 
                     alt="AapkaSarthy Logo" 
-                    className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 object-contain"
+                    className="w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 object-contain drop-shadow-2xl"
                   />
                 </div>
               </div>
