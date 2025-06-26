@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Users, BookOpen, Calendar, Star, ArrowRight, Bell, Settings, User, LogOut, Home, Sparkles, Plane, ShoppingCart, MessageCircle, Phone, Upload, FileText } from 'lucide-react';
+import { Heart, Users, BookOpen, Calendar, Star, ArrowRight, Bell, User, LogOut, Home, Sparkles, Plane, ShoppingCart, MessageCircle, Phone } from 'lucide-react';
 import { toast } from 'sonner';
 import NaradAIChat from '@/components/NaradAIChat';
 
@@ -14,7 +14,7 @@ const Header = ({ currentUser, streakCount, onLogout, onQuickMeditation, onShowN
         <div className="flex items-center space-x-4 sm:space-x-6">
           <div className="flex items-center space-x-4">
             <img 
-              src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
+              src="/lovable-uploads/207006c0-81c0-4fcc-a599-d46ae09bb99d.png" 
               alt="AapkaSarthy Logo" 
               className="w-12 h-12 sm:w-16 sm:h-16 object-contain transition-transform duration-300 hover:scale-105"
             />
@@ -503,7 +503,7 @@ const Index = () => {
               <div className="flex justify-center mb-12">
                 <div className="transition-transform duration-500 hover:scale-110 bg-white rounded-3xl p-8 shadow-2xl">
                   <img 
-                    src="/lovable-uploads/e81fabc3-1be6-4500-afbd-503816b027c1.png" 
+                    src="/lovable-uploads/207006c0-81c0-4fcc-a599-d46ae09bb99d.png" 
                     alt="AapkaSarthy Logo" 
                     className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 object-contain"
                   />
