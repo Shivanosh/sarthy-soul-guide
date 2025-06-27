@@ -1,5 +1,5 @@
 
-# AapkaSarthy - Guide to Your Soul 🕉️
+# Sarthi App - Guide to Your Soul 🕉️
 
 A comprehensive spiritual super app built with React + Express + SQLite featuring AI-powered mood meditation, sacred media library, and ritual booking system.
 
