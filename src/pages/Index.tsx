@@ -27,7 +27,7 @@ const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToC
                 variant="ghost" 
                 size="sm" 
                 onClick={onShowNaradAI}
-                className="text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
               >
                 <MessageCircle className="h-4 w-4 mr-2" />
                 Narad AI
@@ -36,7 +36,7 @@ const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToC
                 variant="ghost" 
                 size="sm" 
                 onClick={onScrollToContact}
-                className="text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
               >
                 <Phone className="h-4 w-4 mr-2" />
                 Contact
@@ -60,8 +60,9 @@ const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToC
               <Button 
                 variant="ghost" 
                 onClick={onScrollToContact}
-                className="text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
               >
+                <Phone className="h-4 w-4 mr-2" />
                 Contact Us
               </Button>
               <Button 
@@ -75,13 +76,13 @@ const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToC
               <Button 
                 variant="outline" 
                 onClick={() => window.location.href = '/login-user'}
-                className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                className="text-orange-600 border-orange-600 hover:bg-orange-50"
               >
                 Sign In
               </Button>
               <Button 
                 onClick={() => window.location.href = '/register'}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Register
               </Button>
@@ -95,27 +96,27 @@ const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToC
 
 const HeroSection = ({ currentUser, onQuickMeditation, onDailyChallenge }) => {
   return (
-    <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 text-white py-24 relative overflow-hidden">
+    <div className="bg-gradient-to-br from-orange-500 via-yellow-500 to-green-500 text-white py-24 relative overflow-hidden">
       {/* Background decorative elements */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-green-600/20"></div>
       <div className="absolute inset-0 opacity-10" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
       }}></div>
       
       <div className="relative max-w-7xl mx-auto px-6 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-6xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
+          <h1 className="text-6xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-orange-100 to-green-100 bg-clip-text text-transparent">
             Find Your Inner Peace
           </h1>
-          <p className="text-xl md:text-2xl mb-12 text-blue-100 leading-relaxed max-w-3xl mx-auto">
-            Experience personalized spiritual guidance with AI-powered meditation, sacred music, and authentic ritual bookings across India
+          <p className="text-xl md:text-2xl mb-12 text-orange-100 leading-relaxed max-w-3xl mx-auto">
+            Experience personalized spiritual guidance with AI-powered meditation, sacred music, and authentic ritual bookings across India 🇮🇳
           </p>
           {currentUser && (
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button 
                 size="lg" 
                 onClick={onQuickMeditation}
-                className="bg-white text-blue-600 hover:bg-blue-50 shadow-lg hover:shadow-xl transition-all duration-300 text-lg px-8 py-4"
+                className="bg-white text-orange-600 hover:bg-orange-50 shadow-lg hover:shadow-xl transition-all duration-300 text-lg px-8 py-4"
               >
                 <Sparkles className="mr-2 h-5 w-5" />
                 Quick Meditation (5 min)
@@ -124,7 +125,7 @@ const HeroSection = ({ currentUser, onQuickMeditation, onDailyChallenge }) => {
                 size="lg" 
                 variant="outline" 
                 onClick={onDailyChallenge}
-                className="border-2 border-white text-white hover:bg-white hover:text-blue-600 shadow-lg hover:shadow-xl transition-all duration-300 text-lg px-8 py-4"
+                className="border-2 border-white text-white hover:bg-white hover:text-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 text-lg px-8 py-4"
               >
                 <Heart className="mr-2 h-5 w-5" />
                 Daily Challenge
@@ -139,10 +140,10 @@ const HeroSection = ({ currentUser, onQuickMeditation, onDailyChallenge }) => {
 
 const DailyWisdomCard = ({ dailyQuote, dailyGoodDeed, onQuickMeditation, onDailyChallenge, onDevotionalShop }) => {
   return (
-    <Card className="mb-8 bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100 border-orange-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <Card className="mb-8 bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50 border-orange-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-8">
         <div className="flex items-center space-x-4 mb-6">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center shadow-lg">
             <Sparkles className="h-8 w-8 text-white" />
           </div>
           <h3 className="font-bold text-orange-700 text-2xl">Daily Wisdom</h3>
@@ -192,49 +193,74 @@ const DailyWisdomCard = ({ dailyQuote, dailyGoodDeed, onQuickMeditation, onDaily
   );
 };
 
-const FeatureCard = ({ icon: Icon, title, description, badgeText, buttonText = "Explore" }) => {
+const FeatureCard = ({ icon: Icon, title, description, badgeText, buttonText = "Explore", path, navigate, currentUser }) => {
+  const handleFeatureClick = () => {
+    if (!currentUser) {
+      toast.error('Please sign in to access this feature');
+      return;
+    }
+    
+    if (path) {
+      navigate(path);
+    } else {
+      toast.success(`Opening ${title}...`);
+    }
+  };
+
   return (
-    <Card className="hover:shadow-xl transition-all duration-300 h-full group border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
+    <Card className="hover:shadow-xl transition-all duration-300 h-full group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30">
       <CardHeader className="text-center pb-4">
-        <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+        <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
           <Icon className="h-10 w-10 text-white" />
         </div>
-        <CardTitle className="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">{title}</CardTitle>
+        <CardTitle className="text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{title}</CardTitle>
         <CardDescription className="text-gray-600 text-base leading-relaxed">{description}</CardDescription>
         {badgeText && (
-          <Badge className="w-fit mx-auto bg-blue-100 text-blue-800 mt-3 px-3 py-1">
+          <Badge className="w-fit mx-auto bg-orange-100 text-orange-800 mt-3 px-3 py-1">
             {badgeText}
           </Badge>
         )}
       </CardHeader>
       <CardContent className="pt-0">
         <Button 
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 py-3"
-          disabled
+          className="w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 py-3"
+          onClick={handleFeatureClick}
         >
           {buttonText} <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
-        <p className="text-xs text-gray-500 text-center mt-2">Sign in to access</p>
+        {!currentUser && (
+          <p className="text-xs text-gray-500 text-center mt-2">Sign in to access</p>
+        )}
       </CardContent>
     </Card>
   );
 };
 
-const StatsCard = ({ count, label, buttonText }) => {
+const StatsCard = ({ count, label, buttonText, currentUser }) => {
+  const handleStatsClick = () => {
+    if (!currentUser) {
+      toast.error('Please sign in to view your stats');
+      return;
+    }
+    toast.success(`Opening ${label}...`);
+  };
+
   return (
-    <Card className="text-center hover:shadow-xl transition-all duration-300 group border-0 shadow-lg bg-gradient-to-br from-white to-blue-50">
+    <Card className="text-center hover:shadow-xl transition-all duration-300 group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30">
       <CardContent className="p-8">
-        <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text mb-3 group-hover:scale-110 transition-transform duration-300">{count}</div>
+        <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text mb-3 group-hover:scale-110 transition-transform duration-300">{count}</div>
         <div className="text-sm text-gray-600 mb-4 font-medium">{label}</div>
         <Button 
           size="sm" 
           variant="ghost" 
-          className="text-blue-600 hover:bg-blue-50 transition-all duration-300"
-          disabled
+          className="text-orange-600 hover:bg-orange-50 transition-all duration-300"
+          onClick={handleStatsClick}
         >
           {buttonText}
         </Button>
-        <p className="text-xs text-gray-500 mt-1">Sign in required</p>
+        {!currentUser && (
+          <p className="text-xs text-gray-500 mt-1">Sign in required</p>
+        )}
       </CardContent>
     </Card>
   );
@@ -242,7 +268,7 @@ const StatsCard = ({ count, label, buttonText }) => {
 
 const ContactSection = () => {
   return (
-    <div id="contact" className="bg-gradient-to-br from-gray-50 to-blue-50 py-20">
+    <div id="contact" className="bg-gradient-to-br from-orange-50 to-green-50 py-20">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-800 mb-6">Contact Us</h2>
@@ -251,7 +277,7 @@ const ContactSection = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
               <Phone className="h-8 w-8 text-white" />
             </div>
             <h3 className="font-bold text-gray-800 mb-3 text-lg">Phone</h3>
@@ -259,7 +285,7 @@ const ContactSection = () => {
           </div>
           
           <div className="text-center p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
               <Mail className="h-8 w-8 text-white" />
             </div>
             <h3 className="font-bold text-gray-800 mb-3 text-lg">Email</h3>
@@ -267,7 +293,7 @@ const ContactSection = () => {
           </div>
           
           <div className="text-center p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
               <MapPin className="h-8 w-8 text-white" />
             </div>
             <h3 className="font-bold text-gray-800 mb-3 text-lg">Address</h3>
@@ -289,18 +315,32 @@ const Index = () => {
   const [showNaradAI, setShowNaradAI] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    if (token && user) {
-      setCurrentUser(JSON.parse(user));
-      calculateStreak();
-    }
-    
+    checkAuthState();
     loadDailyContent();
     
     const mood = localStorage.getItem('todaysMood');
     if (mood) setTodaysMood(mood);
   }, []);
+
+  const checkAuthState = () => {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    
+    console.log('Checking auth state:', { token: !!token, user: !!user });
+    
+    if (token && user) {
+      try {
+        const parsedUser = JSON.parse(user);
+        console.log('Setting current user:', parsedUser);
+        setCurrentUser(parsedUser);
+        calculateStreak();
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
+    }
+  };
 
   const calculateStreak = () => {
     const today = new Date().toDateString();
@@ -403,6 +443,11 @@ const Index = () => {
   };
 
   const handleQuickMeditation = () => {
+    if (!currentUser) {
+      toast.error('Please sign in to access meditation features');
+      return;
+    }
+
     const currentStats = JSON.parse(localStorage.getItem('meditationStats') || '{}');
     
     const updatedStats = {
@@ -423,6 +468,11 @@ const Index = () => {
   };
 
   const handleDailyChallenge = () => {
+    if (!currentUser) {
+      toast.error('Please sign in to access daily challenges');
+      return;
+    }
+
     const challenges = [
       'Recite Gayatri Mantra 21 times',
       'Practice gratitude for 5 minutes',
@@ -435,6 +485,10 @@ const Index = () => {
   };
 
   const handleDevotionalShop = () => {
+    if (!currentUser) {
+      toast.error('Please sign in to access the devotional shop');
+      return;
+    }
     toast.success('Opening Devotional Item Shop... (Amazon API integration coming soon!)');
   };
 
@@ -459,7 +513,7 @@ const Index = () => {
       {showNaradAI && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-4xl w-full h-[85vh] flex flex-col shadow-2xl border-0">
-            <div className="flex justify-between items-center p-6 border-b bg-gradient-to-r from-blue-50 to-purple-50 rounded-t-2xl">
+            <div className="flex justify-between items-center p-6 border-b bg-gradient-to-r from-orange-50 to-green-50 rounded-t-2xl">
               <h2 className="text-2xl font-bold text-gray-800">Narad AI - Your Spiritual Guide</h2>
               <Button 
                 variant="ghost" 
@@ -471,7 +525,7 @@ const Index = () => {
             </div>
             <div className="flex-1 overflow-hidden">
               <ScrollArea className="h-full">
-                <div className="p-6 bg-gradient-to-br from-blue-50/30 to-purple-50/30">
+                <div className="p-6 bg-gradient-to-br from-orange-50/30 to-green-50/30">
                   <NaradAIChat />
                 </div>
               </ScrollArea>
@@ -514,6 +568,9 @@ const Index = () => {
               description="Chat with AI for mood-based meditation and spiritual guidance"
               badgeText={todaysMood ? `Today: ${todaysMood}` : "AI Powered"}
               buttonText="Start Chat"
+              path="/mood-selection"
+              navigate={navigate}
+              currentUser={currentUser}
             />
             <FeatureCard 
               icon={BookOpen}
@@ -521,6 +578,9 @@ const Index = () => {
               description="108+ Bhajans, chants, and spiritual content"
               badgeText="15 Languages"
               buttonText="Browse Library"
+              path="/media-library"
+              navigate={navigate}
+              currentUser={currentUser}
             />
             <FeatureCard 
               icon={Calendar}
@@ -528,6 +588,9 @@ const Index = () => {
               description="Schedule poojas with verified priests"
               badgeText="42+ Temples"
               buttonText="Book Now"
+              path="/ritual-booking"
+              navigate={navigate}
+              currentUser={currentUser}
             />
             <FeatureCard 
               icon={Plane}
@@ -535,6 +598,9 @@ const Index = () => {
               description="Plan sacred journeys to spiritual destinations"
               badgeText="12+ Destinations"
               buttonText="Plan Trip"
+              path="/trip-planning"
+              navigate={navigate}
+              currentUser={currentUser}
             />
           </div>
         </div>
@@ -550,21 +616,25 @@ const Index = () => {
               count={108} 
               label="Meditations" 
               buttonText="Explore →" 
+              currentUser={currentUser}
             />
             <StatsCard 
               count={42} 
               label="Bhajans" 
               buttonText="Listen →" 
+              currentUser={currentUser}
             />
             <StatsCard 
               count={15} 
               label="Rituals" 
               buttonText="Book →" 
+              currentUser={currentUser}
             />
             <StatsCard 
               count={streakCount || "5+"} 
               label="Day Streak" 
               buttonText="Continue →" 
+              currentUser={currentUser}
             />
           </div>
         </div>
