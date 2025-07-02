@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Send, Bot, User, Sparkles, Heart, Star, Moon, Sun } from 'lucide-react';
 import { toast } from 'sonner';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Message {
   id: string;
@@ -25,6 +25,7 @@ interface AdminSettings {
 }
 
 const NaradAIChat = () => {
+  const isMobile = useIsMobile();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -259,12 +260,14 @@ const NaradAIChat = () => {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col">
-      <CardHeader className="bg-gradient-to-r from-orange-500 via-yellow-500 to-green-500 text-white rounded-t-lg">
-        <CardTitle className="flex items-center space-x-2">
-          <Bot className="h-6 w-6" />
-          <span>Narad AI - Spiritual Guide</span>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+    <Card className={`w-full mx-auto flex flex-col ${isMobile ? 'h-[80vh] max-w-full' : 'h-[600px] max-w-4xl'}`}>
+      <CardHeader className={`bg-gradient-to-r from-orange-500 via-yellow-500 to-green-500 text-white rounded-t-lg ${isMobile ? 'p-3' : 'p-6'}`}>
+        <CardTitle className={`flex items-center justify-between ${isMobile ? 'text-lg' : 'text-xl'}`}>
+          <div className="flex items-center space-x-2">
+            <Bot className={`${isMobile ? 'h-5 w-5' : 'h-6 w-6'}`} />
+            <span className={isMobile ? 'text-sm' : ''}>Narad AI - Spiritual Guide</span>
+          </div>
+          <Badge variant="secondary" className={`bg-white/20 text-white ${isMobile ? 'text-xs px-2 py-1' : ''}`}>
             {adminSettings?.aiProvider === 'openai' && adminSettings.openaiApiKey ? 'GPT Powered' :
              adminSettings?.aiProvider === 'gemini' && adminSettings.geminiApiKey ? 'Gemini Powered' :
              'Offline Mode'}
@@ -272,15 +275,15 @@ const NaradAIChat = () => {
         </CardTitle>
       </CardHeader>
       
-      <CardContent className="flex-1 flex flex-col p-0">
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
+        <div className={`flex-1 overflow-y-auto space-y-3 ${isMobile ? 'p-3' : 'p-4'}`}>
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] p-3 rounded-lg ${
+                className={`${isMobile ? 'max-w-[85%]' : 'max-w-[80%]'} p-3 rounded-lg ${
                   message.isUser
                     ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white'
                     : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800'
@@ -292,10 +295,15 @@ const NaradAIChat = () => {
                       {getMoodIcon(message.mood)}
                     </div>
                   )}
-                  <div className="flex-1">
-                    <p className="whitespace-pre-wrap">{message.content}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className={`whitespace-pre-wrap break-words ${isMobile ? 'text-sm' : ''}`}>
+                      {message.content}
+                    </p>
                     <p className={`text-xs mt-1 ${message.isUser ? 'text-orange-100' : 'text-gray-500'}`}>
-                      {message.timestamp.toLocaleTimeString()}
+                      {message.timestamp.toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })}
                     </p>
                   </div>
                   {message.isUser && (
@@ -310,7 +318,9 @@ const NaradAIChat = () => {
               <div className="bg-gray-100 p-3 rounded-lg">
                 <div className="flex items-center space-x-2">
                   <Bot className="h-4 w-4 text-purple-500 animate-pulse" />
-                  <span className="text-gray-600">Narad AI is thinking...</span>
+                  <span className={`text-gray-600 ${isMobile ? 'text-sm' : ''}`}>
+                    Narad AI is thinking...
+                  </span>
                 </div>
               </div>
             </div>
@@ -318,20 +328,21 @@ const NaradAIChat = () => {
           <div ref={messagesEndRef} />
         </div>
         
-        <div className="border-t p-4">
+        <div className={`border-t bg-white ${isMobile ? 'p-3' : 'p-4'}`}>
           <div className="flex space-x-2">
             <Input
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about meditation, astrology, or spiritual guidance..."
-              className="flex-1"
+              placeholder={isMobile ? "Ask about meditation..." : "Ask about meditation, astrology, or spiritual guidance..."}
+              className={`flex-1 ${isMobile ? 'text-sm' : ''}`}
               disabled={isLoading}
             />
             <Button
               onClick={sendMessage}
               disabled={isLoading || !inputMessage.trim()}
-              className="bg-gradient-to-r from-orange-500 to-green-500"
+              className={`bg-gradient-to-r from-orange-500 to-green-500 ${isMobile ? 'px-3' : ''}`}
+              size={isMobile ? "sm" : "default"}
             >
               <Send className="h-4 w-4" />
             </Button>

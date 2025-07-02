@@ -7,6 +7,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Heart, Users, BookOpen, Calendar, Star, ArrowRight, Bell, User, LogOut, Home, Sparkles, Plane, ShoppingCart, MessageCircle, Phone, Mail, MapPin, Shield } from 'lucide-react';
 import { toast } from 'sonner';
 import NaradAIChat from '@/components/NaradAIChat';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToContact }) => {
   return (
@@ -307,6 +308,7 @@ const ContactSection = () => {
 
 const Index = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [dailyQuote, setDailyQuote] = useState('');
   const [dailyGoodDeed, setDailyGoodDeed] = useState('');
@@ -509,26 +511,27 @@ const Index = () => {
         onScrollToContact={scrollToContact} 
       />
 
-      {/* Narad AI Chat Modal with Enhanced Scrollable Content */}
+      {/* Mobile-Responsive Narad AI Chat Modal */}
       {showNaradAI && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full h-[85vh] flex flex-col shadow-2xl border-0">
-            <div className="flex justify-between items-center p-6 border-b bg-gradient-to-r from-orange-50 to-green-50 rounded-t-2xl">
-              <h2 className="text-2xl font-bold text-gray-800">Narad AI - Your Spiritual Guide</h2>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className={`bg-white rounded-2xl w-full h-full sm:h-[85vh] flex flex-col shadow-2xl border-0 ${isMobile ? 'max-w-full' : 'max-w-4xl'}`}>
+            <div className={`flex justify-between items-center border-b bg-gradient-to-r from-orange-50 to-green-50 rounded-t-2xl ${isMobile ? 'p-4' : 'p-6'}`}>
+              <h2 className={`font-bold text-gray-800 ${isMobile ? 'text-lg' : 'text-2xl'}`}>
+                {isMobile ? 'Narad AI' : 'Narad AI - Your Spiritual Guide'}
+              </h2>
               <Button 
                 variant="ghost" 
                 onClick={() => setShowNaradAI(false)}
                 className="text-gray-500 hover:text-gray-700 hover:bg-white/50 rounded-full p-2"
+                size={isMobile ? "sm" : "default"}
               >
                 ✕
               </Button>
             </div>
             <div className="flex-1 overflow-hidden">
-              <ScrollArea className="h-full">
-                <div className="p-6 bg-gradient-to-br from-orange-50/30 to-green-50/30">
-                  <NaradAIChat />
-                </div>
-              </ScrollArea>
+              <div className={`h-full bg-gradient-to-br from-orange-50/30 to-green-50/30 ${isMobile ? 'p-2' : 'p-6'}`}>
+                <NaradAIChat />
+              </div>
             </div>
           </div>
         </div>
