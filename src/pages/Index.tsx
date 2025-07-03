@@ -52,6 +52,8 @@ interface StatsCardProps {
 }
 
 const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToContact }) => {
+  const navigate = useNavigate();
+
   return (
     <header className="bg-white shadow-lg border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
@@ -111,7 +113,7 @@ const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, on
               </Button>
               <Button 
                 variant="outline" 
-                onClick={() => window.location.href = '/login-admin'}
+                onClick={() => navigate('/login-admin')}
                 size="sm"
                 className="text-orange-600 border-orange-600 hover:bg-orange-50"
               >
@@ -120,14 +122,14 @@ const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, on
               </Button>
               <Button 
                 variant="outline" 
-                onClick={() => window.location.href = '/login-user'}
+                onClick={() => navigate('/login-user')}
                 size="sm"
                 className="text-orange-600 border-orange-600 hover:bg-orange-50"
               >
                 Sign In
               </Button>
               <Button 
-                onClick={() => window.location.href = '/register'}
+                onClick={() => navigate('/register')}
                 size="sm"
                 className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
               >
