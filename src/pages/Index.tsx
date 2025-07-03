@@ -9,7 +9,49 @@ import { toast } from 'sonner';
 import NaradAIChat from '@/components/NaradAIChat';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-const Header = React.memo(({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToContact }) => {
+// TypeScript interfaces for component props
+interface HeaderProps {
+  currentUser: any;
+  streakCount: number;
+  onLogout: () => void;
+  onShowNaradAI: () => void;
+  onScrollToContact: () => void;
+}
+
+interface HeroSectionProps {
+  currentUser: any;
+  onQuickMeditation: () => void;
+  onDailyChallenge: () => void;
+}
+
+interface DailyWisdomCardProps {
+  dailyQuote: string;
+  dailyGoodDeed: string;
+  onQuickMeditation: () => void;
+  onDailyChallenge: () => void;
+  onDevotionalShop: () => void;
+}
+
+interface FeatureCardProps {
+  icon: React.ComponentType<any>;
+  title: string;
+  description: string;
+  badgeText?: string;
+  buttonText?: string;
+  path?: string;
+  navigate: (path: string) => void;
+  currentUser: any;
+  onNaradAIClick?: () => void;
+}
+
+interface StatsCardProps {
+  count: number | string;
+  label: string;
+  buttonText: string;
+  currentUser: any;
+}
+
+const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToContact }) => {
   return (
     <header className="bg-white shadow-lg border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
@@ -99,7 +141,7 @@ const Header = React.memo(({ currentUser, streakCount, onLogout, onShowNaradAI, 
   );
 });
 
-const HeroSection = React.memo(({ currentUser, onQuickMeditation, onDailyChallenge }) => {
+const HeroSection = React.memo<HeroSectionProps>(({ currentUser, onQuickMeditation, onDailyChallenge }) => {
   return (
     <div className="bg-gradient-to-br from-orange-500 via-yellow-500 to-green-500 text-white py-16 sm:py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-green-600/20"></div>
@@ -142,7 +184,7 @@ const HeroSection = React.memo(({ currentUser, onQuickMeditation, onDailyChallen
   );
 });
 
-const DailyWisdomCard = React.memo(({ dailyQuote, dailyGoodDeed, onQuickMeditation, onDailyChallenge, onDevotionalShop }) => {
+const DailyWisdomCard = React.memo<DailyWisdomCardProps>(({ dailyQuote, dailyGoodDeed, onQuickMeditation, onDailyChallenge, onDevotionalShop }) => {
   return (
     <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50 border-orange-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-4 sm:p-8">
@@ -197,7 +239,7 @@ const DailyWisdomCard = React.memo(({ dailyQuote, dailyGoodDeed, onQuickMeditati
   );
 });
 
-const FeatureCard = React.memo(({ icon: Icon, title, description, badgeText, buttonText = "Explore", path, navigate, currentUser, onNaradAIClick }) => {
+const FeatureCard = React.memo<FeatureCardProps>(({ icon: Icon, title, description, badgeText, buttonText = "Explore", path, navigate, currentUser, onNaradAIClick }) => {
   const handleFeatureClick = useCallback(() => {
     if (!currentUser) {
       toast.error('Please sign in to access this feature');
@@ -246,7 +288,7 @@ const FeatureCard = React.memo(({ icon: Icon, title, description, badgeText, but
   );
 });
 
-const StatsCard = React.memo(({ count, label, buttonText, currentUser }) => {
+const StatsCard = React.memo<StatsCardProps>(({ count, label, buttonText, currentUser }) => {
   const handleStatsClick = useCallback(() => {
     if (!currentUser) {
       toast.error('Please sign in to view your stats');
