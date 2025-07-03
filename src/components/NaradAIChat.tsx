@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send, Bot, User, Sparkles, Heart, Star, Moon, Sun } from 'lucide-react';
 import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -40,25 +41,19 @@ const NaradAIChat = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    loadAdminSettings();
-    scrollToBottom();
-  }, [messages]);
-
-  const loadAdminSettings = () => {
     const settings = localStorage.getItem('adminSettings');
     if (settings) {
       setAdminSettings(JSON.parse(settings));
     }
-  };
+  }, []);
 
-  const scrollToBottom = () => {
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, [messages]);
 
   const detectMoodAndContext = (message: string): { mood: string; context: string } => {
     const lowerMessage = message.toLowerCase();
     
-    // Mood detection
     let mood = 'neutral';
     if (lowerMessage.includes('stress') || lowerMessage.includes('anxious') || lowerMessage.includes('worried')) {
       mood = 'stressed';
@@ -72,7 +67,6 @@ const NaradAIChat = () => {
       mood = 'peaceful';
     }
 
-    // Context detection
     let context = 'general';
     if (lowerMessage.includes('meditat') || lowerMessage.includes('breath') || lowerMessage.includes('mindful')) {
       context = 'meditation';
@@ -261,7 +255,7 @@ const NaradAIChat = () => {
 
   return (
     <Card className={`w-full mx-auto flex flex-col ${isMobile ? 'h-[80vh] max-w-full' : 'h-[600px] max-w-4xl'}`}>
-      <CardHeader className={`bg-gradient-to-r from-orange-500 via-yellow-500 to-green-500 text-white rounded-t-lg ${isMobile ? 'p-3' : 'p-6'}`}>
+      <CardHeader className={`bg-gradient-to-r from-orange-500 via-yellow-500 to-green-500 text-white rounded-t-lg flex-shrink-0 ${isMobile ? 'p-3' : 'p-6'}`}>
         <CardTitle className={`flex items-center justify-between ${isMobile ? 'text-lg' : 'text-xl'}`}>
           <div className="flex items-center space-x-2">
             <Bot className={`${isMobile ? 'h-5 w-5' : 'h-6 w-6'}`} />
@@ -276,59 +270,61 @@ const NaradAIChat = () => {
       </CardHeader>
       
       <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
-        <div className={`flex-1 overflow-y-auto space-y-3 ${isMobile ? 'p-3' : 'p-4'}`}>
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
-            >
+        <ScrollArea className="flex-1 h-full">
+          <div className={`space-y-3 ${isMobile ? 'p-3' : 'p-4'}`}>
+            {messages.map((message) => (
               <div
-                className={`${isMobile ? 'max-w-[85%]' : 'max-w-[80%]'} p-3 rounded-lg ${
-                  message.isUser
-                    ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white'
-                    : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800'
-                }`}
+                key={message.id}
+                className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
               >
-                <div className="flex items-start space-x-2">
-                  {!message.isUser && (
-                    <div className="flex-shrink-0 mt-1">
-                      {getMoodIcon(message.mood)}
+                <div
+                  className={`${isMobile ? 'max-w-[85%]' : 'max-w-[80%]'} p-3 rounded-lg ${
+                    message.isUser
+                      ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white'
+                      : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800'
+                  }`}
+                >
+                  <div className="flex items-start space-x-2">
+                    {!message.isUser && (
+                      <div className="flex-shrink-0 mt-1">
+                        {getMoodIcon(message.mood)}
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className={`whitespace-pre-wrap break-words ${isMobile ? 'text-sm' : ''}`}>
+                        {message.content}
+                      </p>
+                      <p className={`text-xs mt-1 ${message.isUser ? 'text-orange-100' : 'text-gray-500'}`}>
+                        {message.timestamp.toLocaleTimeString([], { 
+                          hour: '2-digit', 
+                          minute: '2-digit' 
+                        })}
+                      </p>
                     </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <p className={`whitespace-pre-wrap break-words ${isMobile ? 'text-sm' : ''}`}>
-                      {message.content}
-                    </p>
-                    <p className={`text-xs mt-1 ${message.isUser ? 'text-orange-100' : 'text-gray-500'}`}>
-                      {message.timestamp.toLocaleTimeString([], { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      })}
-                    </p>
+                    {message.isUser && (
+                      <User className="h-4 w-4 mt-1 flex-shrink-0" />
+                    )}
                   </div>
-                  {message.isUser && (
-                    <User className="h-4 w-4 mt-1 flex-shrink-0" />
-                  )}
                 </div>
               </div>
-            </div>
-          ))}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-gray-100 p-3 rounded-lg">
-                <div className="flex items-center space-x-2">
-                  <Bot className="h-4 w-4 text-purple-500 animate-pulse" />
-                  <span className={`text-gray-600 ${isMobile ? 'text-sm' : ''}`}>
-                    Narad AI is thinking...
-                  </span>
+            ))}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="bg-gray-100 p-3 rounded-lg">
+                  <div className="flex items-center space-x-2">
+                    <Bot className="h-4 w-4 text-purple-500 animate-pulse" />
+                    <span className={`text-gray-600 ${isMobile ? 'text-sm' : ''}`}>
+                      Narad AI is thinking...
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+        </ScrollArea>
         
-        <div className={`border-t bg-white ${isMobile ? 'p-3' : 'p-4'}`}>
+        <div className={`border-t bg-white flex-shrink-0 ${isMobile ? 'p-3' : 'p-4'}`}>
           <div className="flex space-x-2">
             <Input
               value={inputMessage}

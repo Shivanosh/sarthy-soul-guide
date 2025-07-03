@@ -365,7 +365,7 @@ const Index = () => {
   const [todaysMood, setTodaysMood] = useState('');
   const [showNaradAI, setShowNaradAI] = useState(false);
 
-  // Memoized daily content
+  // Memoized daily content - only calculate once per day
   const { dailyQuote, dailyGoodDeed } = useMemo(() => {
     const quotes = [
       "The mind is everything. What you think you become. - Buddha",
@@ -393,41 +393,38 @@ const Index = () => {
       "Practice random acts of kindness throughout the day"
     ];
 
-    const dailyIndex = new Date().getDate() % quotes.length;
+    const today = new Date();
+    const dailyIndex = today.getDate() % quotes.length;
     return {
       dailyQuote: quotes[dailyIndex],
       dailyGoodDeed: goodDeeds[dailyIndex]
     };
-  }, []);
+  }, []); // Empty dependency - only calculate once
 
-  // Auth state check
+  // Auth state check - optimized to run only once
   useEffect(() => {
-    const checkAuthState = () => {
-      const token = localStorage.getItem('token');
-      const user = localStorage.getItem('user');
-      
-      if (token && user) {
-        try {
-          const parsedUser = JSON.parse(user);
-          setCurrentUser(parsedUser);
-          
-          const currentStreak = parseInt(localStorage.getItem('streakCount') || '0');
-          setStreakCount(currentStreak);
-        } catch (error) {
-          console.error('Error parsing user data:', error);
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-        }
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    
+    if (token && user) {
+      try {
+        const parsedUser = JSON.parse(user);
+        setCurrentUser(parsedUser);
+        
+        const currentStreak = parseInt(localStorage.getItem('streakCount') || '0');
+        setStreakCount(currentStreak);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
       }
-    };
-
-    checkAuthState();
+    }
     
     const mood = localStorage.getItem('todaysMood');
     if (mood) setTodaysMood(mood);
   }, []);
 
-  // Memoized handlers
+  // Memoized handlers to prevent unnecessary re-renders
   const handleLogout = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -487,15 +484,59 @@ const Index = () => {
   }, [currentUser]);
 
   const scrollToContact = useCallback(() => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   const handleShowNaradAI = useCallback(() => {
     setShowNaradAI(true);
   }, []);
+
+  const handleCloseNaradAI = useCallback(() => {
+    setShowNaradAI(false);
+  }, []);
+
+  // Memoized feature cards data to prevent recreation on every render
+  const featureCardsData = useMemo(() => [
+    {
+      icon: MessageCircle,
+      title: "Narad AI Chat",
+      description: "Chat with AI for mood-based meditation and spiritual guidance",
+      badgeText: todaysMood ? `Today: ${todaysMood}` : "AI Powered",
+      buttonText: "Start Chat",
+      onNaradAIClick: handleShowNaradAI
+    },
+    {
+      icon: BookOpen,
+      title: "Spiritual Library",
+      description: "108+ Bhajans, chants, and spiritual content",
+      badgeText: "15 Languages",
+      buttonText: "Browse Library",
+      path: "/media-library"
+    },
+    {
+      icon: Calendar,
+      title: "Book Rituals",
+      description: "Schedule poojas with verified priests",
+      badgeText: "42+ Temples",
+      buttonText: "Book Now",
+      path: "/ritual-booking"
+    },
+    {
+      icon: Plane,
+      title: "Trip Planning",
+      description: "Plan sacred journeys to spiritual destinations",
+      badgeText: "12+ Destinations",
+      buttonText: "Plan Trip",
+      path: "/trip-planning"
+    }
+  ], [todaysMood, handleShowNaradAI]);
+
+  const statsCardsData = useMemo(() => [
+    { count: 108, label: "Meditations", buttonText: "Explore →" },
+    { count: 42, label: "Bhajans", buttonText: "Listen →" },
+    { count: 15, label: "Rituals", buttonText: "Book →" },
+    { count: streakCount || "5+", label: "Day Streak", buttonText: "Continue →" }
+  ], [streakCount]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -507,17 +548,17 @@ const Index = () => {
         onScrollToContact={scrollToContact} 
       />
 
-      {/* Mobile-Responsive Narad AI Chat Modal */}
+      {/* Optimized Narad AI Chat Modal - only render when needed */}
       {showNaradAI && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
           <div className={`bg-white rounded-2xl w-full h-full sm:h-[85vh] flex flex-col shadow-2xl border-0 ${isMobile ? 'max-w-full' : 'max-w-4xl'}`}>
-            <div className={`flex justify-between items-center border-b bg-gradient-to-r from-orange-50 to-green-50 rounded-t-2xl ${isMobile ? 'p-4' : 'p-6'}`}>
+            <div className={`flex justify-between items-center border-b bg-gradient-to-r from-orange-50 to-green-50 rounded-t-2xl flex-shrink-0 ${isMobile ? 'p-4' : 'p-6'}`}>
               <h2 className={`font-bold text-gray-800 ${isMobile ? 'text-lg' : 'text-2xl'}`}>
                 {isMobile ? 'Narad AI' : 'Narad AI - Your Spiritual Guide'}
               </h2>
               <Button 
                 variant="ghost" 
-                onClick={() => setShowNaradAI(false)}
+                onClick={handleCloseNaradAI}
                 className="text-gray-500 hover:text-gray-700 hover:bg-white/50 rounded-full p-2"
                 size={isMobile ? "sm" : "default"}
               >
@@ -561,46 +602,20 @@ const Index = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            <FeatureCard 
-              icon={MessageCircle}
-              title="Narad AI Chat"
-              description="Chat with AI for mood-based meditation and spiritual guidance"
-              badgeText={todaysMood ? `Today: ${todaysMood}` : "AI Powered"}
-              buttonText="Start Chat"
-              navigate={navigate}
-              currentUser={currentUser}
-              onNaradAIClick={handleShowNaradAI}
-            />
-            <FeatureCard 
-              icon={BookOpen}
-              title="Spiritual Library"
-              description="108+ Bhajans, chants, and spiritual content"
-              badgeText="15 Languages"
-              buttonText="Browse Library"
-              path="/media-library"
-              navigate={navigate}
-              currentUser={currentUser}
-            />
-            <FeatureCard 
-              icon={Calendar}
-              title="Book Rituals"
-              description="Schedule poojas with verified priests"
-              badgeText="42+ Temples"
-              buttonText="Book Now"
-              path="/ritual-booking"
-              navigate={navigate}
-              currentUser={currentUser}
-            />
-            <FeatureCard 
-              icon={Plane}
-              title="Trip Planning"
-              description="Plan sacred journeys to spiritual destinations"
-              badgeText="12+ Destinations"
-              buttonText="Plan Trip"
-              path="/trip-planning"
-              navigate={navigate}
-              currentUser={currentUser}
-            />
+            {featureCardsData.map((card, index) => (
+              <FeatureCard 
+                key={index}
+                icon={card.icon}
+                title={card.title}
+                description={card.description}
+                badgeText={card.badgeText}
+                buttonText={card.buttonText}
+                path={card.path}
+                navigate={navigate}
+                currentUser={currentUser}
+                onNaradAIClick={card.onNaradAIClick}
+              />
+            ))}
           </div>
         </div>
 
@@ -611,30 +626,15 @@ const Index = () => {
             <p className="text-lg sm:text-xl text-gray-600">Join thousands on their spiritual journey</p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
-            <StatsCard 
-              count={108} 
-              label="Meditations" 
-              buttonText="Explore →" 
-              currentUser={currentUser}
-            />
-            <StatsCard 
-              count={42} 
-              label="Bhajans" 
-              buttonText="Listen →" 
-              currentUser={currentUser}
-            />
-            <StatsCard 
-              count={15} 
-              label="Rituals" 
-              buttonText="Book →" 
-              currentUser={currentUser}
-            />
-            <StatsCard 
-              count={streakCount || "5+"} 
-              label="Day Streak" 
-              buttonText="Continue →" 
-              currentUser={currentUser}
-            />
+            {statsCardsData.map((stat, index) => (
+              <StatsCard 
+                key={index}
+                count={stat.count} 
+                label={stat.label} 
+                buttonText={stat.buttonText} 
+                currentUser={currentUser}
+              />
+            ))}
           </div>
         </div>
       </div>
