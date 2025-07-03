@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Heart, Users, BookOpen, Calendar, Star, ArrowRight, Bell, User, LogOut, Home, Sparkles, Plane, ShoppingCart, MessageCircle, Phone, Mail, MapPin, Shield } from 'lucide-react';
 import { toast } from 'sonner';
 import NaradAIChat from '@/components/NaradAIChat';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToContact }) => {
+const Header = React.memo(({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToContact }) => {
   return (
     <header className="bg-white shadow-lg border-b sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <img 
               src="/lovable-uploads/b272acdb-7757-4417-b550-561c69ec192a.png" 
               alt="AapkaSarthy" 
-              className="h-16 w-auto"
+              className="h-12 sm:h-16 w-auto"
             />
           </div>
           
           {currentUser ? (
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={onShowNaradAI}
-                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
+                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors hidden sm:flex"
               >
                 <MessageCircle className="h-4 w-4 mr-2" />
                 Narad AI
@@ -37,14 +37,14 @@ const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToC
                 variant="ghost" 
                 size="sm" 
                 onClick={onScrollToContact}
-                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
+                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors hidden sm:flex"
               >
                 <Phone className="h-4 w-4 mr-2" />
                 Contact
               </Button>
-              <div className="text-right">
-                <span className="text-gray-700 font-medium">Namaste, {currentUser.name}</span>
-                <div className="text-sm text-gray-500">🔥 {streakCount} day streak</div>
+              <div className="text-right hidden sm:block">
+                <span className="text-gray-700 font-medium text-sm">Namaste, {currentUser.name}</span>
+                <div className="text-xs text-gray-500">🔥 {streakCount} day streak</div>
               </div>
               <Button 
                 variant="outline" 
@@ -52,16 +52,17 @@ const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToC
                 onClick={onLogout}
                 className="text-gray-700 border-gray-300 hover:bg-gray-50"
               >
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
+                <LogOut className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Logout</span>
               </Button>
             </div>
           ) : (
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <Button 
                 variant="ghost" 
                 onClick={onScrollToContact}
-                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
+                size="sm"
+                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors hidden sm:flex"
               >
                 <Phone className="h-4 w-4 mr-2" />
                 Contact Us
@@ -69,20 +70,23 @@ const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToC
               <Button 
                 variant="outline" 
                 onClick={() => window.location.href = '/login-admin'}
+                size="sm"
                 className="text-orange-600 border-orange-600 hover:bg-orange-50"
               >
-                <Shield className="h-4 w-4 mr-2" />
-                Admin
+                <Shield className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Admin</span>
               </Button>
               <Button 
                 variant="outline" 
                 onClick={() => window.location.href = '/login-user'}
+                size="sm"
                 className="text-orange-600 border-orange-600 hover:bg-orange-50"
               >
                 Sign In
               </Button>
               <Button 
                 onClick={() => window.location.href = '/register'}
+                size="sm"
                 className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Register
@@ -93,42 +97,41 @@ const Header = ({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToC
       </div>
     </header>
   );
-};
+});
 
-const HeroSection = ({ currentUser, onQuickMeditation, onDailyChallenge }) => {
+const HeroSection = React.memo(({ currentUser, onQuickMeditation, onDailyChallenge }) => {
   return (
-    <div className="bg-gradient-to-br from-orange-500 via-yellow-500 to-green-500 text-white py-24 relative overflow-hidden">
-      {/* Background decorative elements */}
+    <div className="bg-gradient-to-br from-orange-500 via-yellow-500 to-green-500 text-white py-16 sm:py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-green-600/20"></div>
       <div className="absolute inset-0 opacity-10" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
       }}></div>
       
-      <div className="relative max-w-7xl mx-auto px-6 text-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-6xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-orange-100 to-green-100 bg-clip-text text-transparent">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 sm:mb-8 bg-gradient-to-r from-white via-orange-100 to-green-100 bg-clip-text text-transparent">
             Find Your Inner Peace
           </h1>
-          <p className="text-xl md:text-2xl mb-12 text-orange-100 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-12 text-orange-100 leading-relaxed max-w-3xl mx-auto px-4">
             Experience personalized spiritual guidance with AI-powered meditation, sacred music, and authentic ritual bookings across India 🇮🇳
           </p>
           {currentUser && (
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 px-4">
               <Button 
                 size="lg" 
                 onClick={onQuickMeditation}
-                className="bg-white text-orange-600 hover:bg-orange-50 shadow-lg hover:shadow-xl transition-all duration-300 text-lg px-8 py-4"
+                className="bg-white text-orange-600 hover:bg-orange-50 shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
               >
-                <Sparkles className="mr-2 h-5 w-5" />
+                <Sparkles className="mr-2 h-4 sm:h-5 w-4 sm:w-5" />
                 Quick Meditation (5 min)
               </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
                 onClick={onDailyChallenge}
-                className="border-2 border-white text-white hover:bg-white hover:text-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 text-lg px-8 py-4"
+                className="border-2 border-white text-white hover:bg-white hover:text-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
               >
-                <Heart className="mr-2 h-5 w-5" />
+                <Heart className="mr-2 h-4 sm:h-5 w-4 sm:w-5" />
                 Daily Challenge
               </Button>
             </div>
@@ -137,67 +140,73 @@ const HeroSection = ({ currentUser, onQuickMeditation, onDailyChallenge }) => {
       </div>
     </div>
   );
-};
+});
 
-const DailyWisdomCard = ({ dailyQuote, dailyGoodDeed, onQuickMeditation, onDailyChallenge, onDevotionalShop }) => {
+const DailyWisdomCard = React.memo(({ dailyQuote, dailyGoodDeed, onQuickMeditation, onDailyChallenge, onDevotionalShop }) => {
   return (
-    <Card className="mb-8 bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50 border-orange-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <CardContent className="p-8">
-        <div className="flex items-center space-x-4 mb-6">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center shadow-lg">
-            <Sparkles className="h-8 w-8 text-white" />
+    <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50 border-orange-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <CardContent className="p-4 sm:p-8">
+        <div className="flex items-center space-x-4 mb-4 sm:mb-6">
+          <div className="w-12 sm:w-16 h-12 sm:h-16 rounded-full bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center shadow-lg">
+            <Sparkles className="h-6 sm:h-8 w-6 sm:w-8 text-white" />
           </div>
-          <h3 className="font-bold text-orange-700 text-2xl">Daily Wisdom</h3>
+          <h3 className="font-bold text-orange-700 text-xl sm:text-2xl">Daily Wisdom</h3>
         </div>
-        <blockquote className="text-gray-700 italic mb-6 p-6 bg-white rounded-xl border-l-4 border-orange-400 shadow-sm text-lg">
+        <blockquote className="text-gray-700 italic mb-4 sm:mb-6 p-4 sm:p-6 bg-white rounded-xl border-l-4 border-orange-400 shadow-sm text-base sm:text-lg">
           "{dailyQuote}"
         </blockquote>
         {dailyGoodDeed && (
-          <div className="mb-6 p-6 bg-green-50 rounded-xl border-l-4 border-green-400 shadow-sm">
-            <h4 className="font-bold text-green-700 mb-3 flex items-center text-lg">
-              <Heart className="h-5 w-5 mr-2" />
+          <div className="mb-4 sm:mb-6 p-4 sm:p-6 bg-green-50 rounded-xl border-l-4 border-green-400 shadow-sm">
+            <h4 className="font-bold text-green-700 mb-3 flex items-center text-base sm:text-lg">
+              <Heart className="h-4 sm:h-5 w-4 sm:w-5 mr-2" />
               Good Deed of the Day
             </h4>
-            <p className="text-green-600 text-base">{dailyGoodDeed}</p>
+            <p className="text-green-600 text-sm sm:text-base">{dailyGoodDeed}</p>
           </div>
         )}
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
           <Button 
             size="sm" 
             onClick={onQuickMeditation}
-            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-md hover:shadow-lg transition-all duration-300"
+            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm"
           >
-            <Sparkles className="h-4 w-4 mr-2" />
+            <Sparkles className="h-3 sm:h-4 w-3 sm:w-4 mr-1 sm:mr-2" />
             Quick Meditation
           </Button>
           <Button 
             size="sm" 
             variant="outline" 
             onClick={onDailyChallenge}
-            className="border-green-500 text-green-600 hover:bg-green-50 shadow-md hover:shadow-lg transition-all duration-300"
+            className="border-green-500 text-green-600 hover:bg-green-50 shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm"
           >
-            <Heart className="h-4 w-4 mr-2" />
+            <Heart className="h-3 sm:h-4 w-3 sm:w-4 mr-1 sm:mr-2" />
             Daily Challenge
           </Button>
           <Button 
             size="sm" 
             variant="outline" 
             onClick={onDevotionalShop}
-            className="border-purple-500 text-purple-600 hover:bg-purple-50 shadow-md hover:shadow-lg transition-all duration-300"
+            className="border-purple-500 text-purple-600 hover:bg-purple-50 shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm"
           >
-            <ShoppingCart className="h-4 w-4 mr-2" />
+            <ShoppingCart className="h-3 sm:h-4 w-3 sm:w-4 mr-1 sm:mr-2" />
             Shop
           </Button>
         </div>
       </CardContent>
     </Card>
   );
-};
+});
 
-const FeatureCard = ({ icon: Icon, title, description, badgeText, buttonText = "Explore", path, navigate, currentUser }) => {
-  const handleFeatureClick = () => {
+const FeatureCard = React.memo(({ icon: Icon, title, description, badgeText, buttonText = "Explore", path, navigate, currentUser, onNaradAIClick }) => {
+  const handleFeatureClick = useCallback(() => {
     if (!currentUser) {
       toast.error('Please sign in to access this feature');
+      return;
+    }
+    
+    // Special handling for Narad AI Chat
+    if (title === "Narad AI Chat" && onNaradAIClick) {
+      onNaradAIClick();
       return;
     }
     
@@ -206,28 +215,28 @@ const FeatureCard = ({ icon: Icon, title, description, badgeText, buttonText = "
     } else {
       toast.success(`Opening ${title}...`);
     }
-  };
+  }, [currentUser, title, path, navigate, onNaradAIClick]);
 
   return (
     <Card className="hover:shadow-xl transition-all duration-300 h-full group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30">
-      <CardHeader className="text-center pb-4">
-        <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-          <Icon className="h-10 w-10 text-white" />
+      <CardHeader className="text-center pb-4 p-4 sm:p-6">
+        <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+          <Icon className="h-8 sm:h-10 w-8 sm:w-10 text-white" />
         </div>
-        <CardTitle className="text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{title}</CardTitle>
-        <CardDescription className="text-gray-600 text-base leading-relaxed">{description}</CardDescription>
+        <CardTitle className="text-lg sm:text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{title}</CardTitle>
+        <CardDescription className="text-gray-600 text-sm sm:text-base leading-relaxed">{description}</CardDescription>
         {badgeText && (
-          <Badge className="w-fit mx-auto bg-orange-100 text-orange-800 mt-3 px-3 py-1">
+          <Badge className="w-fit mx-auto bg-orange-100 text-orange-800 mt-3 px-2 sm:px-3 py-1 text-xs">
             {badgeText}
           </Badge>
         )}
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent className="pt-0 p-4 sm:p-6">
         <Button 
-          className="w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 py-3"
+          className="w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 py-2 sm:py-3 text-sm sm:text-base"
           onClick={handleFeatureClick}
         >
-          {buttonText} <ArrowRight className="ml-2 h-4 w-4" />
+          {buttonText} <ArrowRight className="ml-2 h-3 sm:h-4 w-3 sm:w-4" />
         </Button>
         {!currentUser && (
           <p className="text-xs text-gray-500 text-center mt-2">Sign in to access</p>
@@ -235,26 +244,26 @@ const FeatureCard = ({ icon: Icon, title, description, badgeText, buttonText = "
       </CardContent>
     </Card>
   );
-};
+});
 
-const StatsCard = ({ count, label, buttonText, currentUser }) => {
-  const handleStatsClick = () => {
+const StatsCard = React.memo(({ count, label, buttonText, currentUser }) => {
+  const handleStatsClick = useCallback(() => {
     if (!currentUser) {
       toast.error('Please sign in to view your stats');
       return;
     }
     toast.success(`Opening ${label}...`);
-  };
+  }, [currentUser, label]);
 
   return (
     <Card className="text-center hover:shadow-xl transition-all duration-300 group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30">
-      <CardContent className="p-8">
-        <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text mb-3 group-hover:scale-110 transition-transform duration-300">{count}</div>
-        <div className="text-sm text-gray-600 mb-4 font-medium">{label}</div>
+      <CardContent className="p-4 sm:p-8">
+        <div className="text-3xl sm:text-4xl font-bold text-transparent bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-300">{count}</div>
+        <div className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 font-medium">{label}</div>
         <Button 
           size="sm" 
           variant="ghost" 
-          className="text-orange-600 hover:bg-orange-50 transition-all duration-300"
+          className="text-orange-600 hover:bg-orange-50 transition-all duration-300 text-xs sm:text-sm"
           onClick={handleStatsClick}
         >
           {buttonText}
@@ -265,186 +274,127 @@ const StatsCard = ({ count, label, buttonText, currentUser }) => {
       </CardContent>
     </Card>
   );
-};
+});
 
-const ContactSection = () => {
+const ContactSection = React.memo(() => {
   return (
-    <div id="contact" className="bg-gradient-to-br from-orange-50 to-green-50 py-20">
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-6">Contact Us</h2>
-          <p className="text-xl text-gray-600">Get in touch with our spiritual support team</p>
+    <div id="contact" className="bg-gradient-to-br from-orange-50 to-green-50 py-16 sm:py-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 sm:mb-6">Contact Us</h2>
+          <p className="text-lg sm:text-xl text-gray-600">Get in touch with our spiritual support team</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Phone className="h-8 w-8 text-white" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          <div className="text-center p-6 sm:p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-r from-orange-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Phone className="h-6 sm:h-8 w-6 sm:w-8 text-white" />
             </div>
-            <h3 className="font-bold text-gray-800 mb-3 text-lg">Phone</h3>
-            <p className="text-gray-600 text-lg">+91 9876543210</p>
+            <h3 className="font-bold text-gray-800 mb-3 text-base sm:text-lg">Phone</h3>
+            <p className="text-gray-600 text-base sm:text-lg">+91 9876543210</p>
           </div>
           
-          <div className="text-center p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Mail className="h-8 w-8 text-white" />
+          <div className="text-center p-6 sm:p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-r from-green-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Mail className="h-6 sm:h-8 w-6 sm:w-8 text-white" />
             </div>
-            <h3 className="font-bold text-gray-800 mb-3 text-lg">Email</h3>
-            <p className="text-gray-600 text-lg">support@aapkasarthy.com</p>
+            <h3 className="font-bold text-gray-800 mb-3 text-base sm:text-lg">Email</h3>
+            <p className="text-gray-600 text-base sm:text-lg">support@aapkasarthy.com</p>
           </div>
           
-          <div className="text-center p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <MapPin className="h-8 w-8 text-white" />
+          <div className="text-center p-6 sm:p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-r from-orange-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <MapPin className="h-6 sm:h-8 w-6 sm:w-8 text-white" />
             </div>
-            <h3 className="font-bold text-gray-800 mb-3 text-lg">Address</h3>
-            <p className="text-gray-600 text-lg">Spiritual Center, New Delhi, India</p>
+            <h3 className="font-bold text-gray-800 mb-3 text-base sm:text-lg">Address</h3>
+            <p className="text-gray-600 text-base sm:text-lg">Spiritual Center, New Delhi, India</p>
           </div>
         </div>
       </div>
     </div>
   );
-};
+});
 
 const Index = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const [currentUser, setCurrentUser] = useState<any>(null);
-  const [dailyQuote, setDailyQuote] = useState('');
-  const [dailyGoodDeed, setDailyGoodDeed] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
   const [streakCount, setStreakCount] = useState(0);
   const [todaysMood, setTodaysMood] = useState('');
   const [showNaradAI, setShowNaradAI] = useState(false);
 
+  // Memoized daily content
+  const { dailyQuote, dailyGoodDeed } = useMemo(() => {
+    const quotes = [
+      "The mind is everything. What you think you become. - Buddha",
+      "Yoga is a light, which once lit will never dim. - B.K.S. Iyengar",
+      "The soul that sees beauty may sometimes walk alone. - Johann Wolfgang von Goethe",
+      "Peace comes from within. Do not seek it without. - Buddha",
+      "The best way to find yourself is to lose yourself in service. - Mahatma Gandhi",
+      "Your task is not to seek for love, but merely to seek and find all the barriers within yourself. - Rumi",
+      "The whole purpose of religion is to facilitate love and compassion, patience, tolerance, humility, and forgiveness. - Dalai Lama",
+      "In the end, just three things matter: How well we have lived, How well we have loved, How well we have learned to let go. - Jack Kornfield",
+      "Be yourself and you will be at peace. - Lao Tzu",
+      "The greatest revolution of our generation is the discovery that human beings can alter their lives by altering their attitudes. - William James"
+    ];
+
+    const goodDeeds = [
+      "Smile at a stranger and brighten their day",
+      "Help someone carry their groceries",
+      "Call a friend or family member you haven't spoken to in a while",
+      "Donate to a local charity or food bank",
+      "Volunteer at a community center",
+      "Plant a tree or tend to a garden",
+      "Write a thank you note to someone who has helped you",
+      "Offer to help a neighbor with their chores",
+      "Listen to someone who needs to talk",
+      "Practice random acts of kindness throughout the day"
+    ];
+
+    const dailyIndex = new Date().getDate() % quotes.length;
+    return {
+      dailyQuote: quotes[dailyIndex],
+      dailyGoodDeed: goodDeeds[dailyIndex]
+    };
+  }, []);
+
+  // Auth state check
   useEffect(() => {
+    const checkAuthState = () => {
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      
+      if (token && user) {
+        try {
+          const parsedUser = JSON.parse(user);
+          setCurrentUser(parsedUser);
+          
+          const currentStreak = parseInt(localStorage.getItem('streakCount') || '0');
+          setStreakCount(currentStreak);
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+        }
+      }
+    };
+
     checkAuthState();
-    loadDailyContent();
     
     const mood = localStorage.getItem('todaysMood');
     if (mood) setTodaysMood(mood);
   }, []);
 
-  const checkAuthState = () => {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    
-    console.log('Checking auth state:', { token: !!token, user: !!user });
-    
-    if (token && user) {
-      try {
-        const parsedUser = JSON.parse(user);
-        console.log('Setting current user:', parsedUser);
-        setCurrentUser(parsedUser);
-        calculateStreak();
-      } catch (error) {
-        console.error('Error parsing user data:', error);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-      }
-    }
-  };
-
-  const calculateStreak = () => {
-    const today = new Date().toDateString();
-    const lastLogin = localStorage.getItem('lastLoginDate');
-    const currentStreak = parseInt(localStorage.getItem('streakCount') || '0');
-    
-    if (!lastLogin) {
-      setStreakCount(1);
-      localStorage.setItem('streakCount', '1');
-      localStorage.setItem('lastLoginDate', today);
-      return;
-    }
-    
-    const lastLoginDate = new Date(lastLogin);
-    const todayDate = new Date(today);
-    const diffTime = Math.abs(todayDate.getTime() - lastLoginDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 1) {
-      const newStreak = currentStreak + 1;
-      setStreakCount(newStreak);
-      localStorage.setItem('streakCount', newStreak.toString());
-      localStorage.setItem('lastLoginDate', today);
-    } else if (diffDays > 1) {
-      setStreakCount(1);
-      localStorage.setItem('streakCount', '1');
-      localStorage.setItem('lastLoginDate', today);
-    } else {
-      setStreakCount(currentStreak);
-    }
-  };
-
-  const loadDailyContent = () => {
-    const today = new Date().toDateString();
-    const savedQuoteDate = localStorage.getItem('dailyQuoteDate');
-    const savedQuote = localStorage.getItem('dailyQuote');
-    const savedGoodDeed = localStorage.getItem('dailyGoodDeed');
-    
-    if (savedQuoteDate === today && savedQuote) {
-      setDailyQuote(savedQuote);
-      setDailyGoodDeed(savedGoodDeed || '');
-    } else {
-      fetchDailyContent();
-    }
-  };
-
-  const fetchDailyContent = async () => {
-    try {
-      const quotes = [
-        "The mind is everything. What you think you become. - Buddha",
-        "Yoga is a light, which once lit will never dim. - B.K.S. Iyengar",
-        "The soul that sees beauty may sometimes walk alone. - Johann Wolfgang von Goethe",
-        "Peace comes from within. Do not seek it without. - Buddha",
-        "The best way to find yourself is to lose yourself in service. - Mahatma Gandhi",
-        "Your task is not to seek for love, but merely to seek and find all the barriers within yourself. - Rumi",
-        "The whole purpose of religion is to facilitate love and compassion, patience, tolerance, humility, and forgiveness. - Dalai Lama",
-        "In the end, just three things matter: How well we have lived, How well we have loved, How well we have learned to let go. - Jack Kornfield",
-        "Be yourself and you will be at peace. - Lao Tzu",
-        "The greatest revolution of our generation is the discovery that human beings can alter their lives by altering their attitudes. - William James"
-      ];
-
-      const goodDeeds = [
-        "Smile at a stranger and brighten their day",
-        "Help someone carry their groceries",
-        "Call a friend or family member you haven't spoken to in a while",
-        "Donate to a local charity or food bank",
-        "Volunteer at a community center",
-        "Plant a tree or tend to a garden",
-        "Write a thank you note to someone who has helped you",
-        "Offer to help a neighbor with their chores",
-        "Listen to someone who needs to talk",
-        "Practice random acts of kindness throughout the day"
-      ];
-
-      const dailyIndex = new Date().getDate() % quotes.length;
-      const randomQuote = quotes[dailyIndex];
-      const randomGoodDeed = goodDeeds[dailyIndex];
-      
-      setDailyQuote(randomQuote);
-      setDailyGoodDeed(randomGoodDeed);
-      
-      const today = new Date().toDateString();
-      localStorage.setItem('dailyQuote', randomQuote);
-      localStorage.setItem('dailyGoodDeed', randomGoodDeed);
-      localStorage.setItem('dailyQuoteDate', today);
-      
-    } catch (error) {
-      console.error('Error fetching daily content:', error);
-      setDailyQuote("The mind is everything. What you think you become. - Buddha");
-      setDailyGoodDeed("Smile at a stranger and brighten their day");
-    }
-  };
-
-  const handleLogout = () => {
+  // Memoized handlers
+  const handleLogout = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('todaysMood');
     setCurrentUser(null);
     toast.success('Logged out successfully');
-  };
+  }, []);
 
-  const handleQuickMeditation = () => {
+  const handleQuickMeditation = useCallback(() => {
     if (!currentUser) {
       toast.error('Please sign in to access meditation features');
       return;
@@ -467,9 +417,9 @@ const Index = () => {
     setTimeout(() => {
       toast.success('Meditation completed! +50 spiritual points earned');
     }, 3000);
-  };
+  }, [currentUser]);
 
-  const handleDailyChallenge = () => {
+  const handleDailyChallenge = useCallback(() => {
     if (!currentUser) {
       toast.error('Please sign in to access daily challenges');
       return;
@@ -484,22 +434,26 @@ const Index = () => {
     ];
     const todaysChallenge = challenges[Math.floor(Math.random() * challenges.length)];
     toast.success(`Today's Challenge: ${todaysChallenge}`);
-  };
+  }, [currentUser]);
 
-  const handleDevotionalShop = () => {
+  const handleDevotionalShop = useCallback(() => {
     if (!currentUser) {
       toast.error('Please sign in to access the devotional shop');
       return;
     }
     toast.success('Opening Devotional Item Shop... (Amazon API integration coming soon!)');
-  };
+  }, [currentUser]);
 
-  const scrollToContact = () => {
+  const scrollToContact = useCallback(() => {
     const contactSection = document.getElementById('contact');
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     }
-  };
+  }, []);
+
+  const handleShowNaradAI = useCallback(() => {
+    setShowNaradAI(true);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white">
@@ -507,7 +461,7 @@ const Index = () => {
         currentUser={currentUser} 
         streakCount={streakCount} 
         onLogout={handleLogout} 
-        onShowNaradAI={() => setShowNaradAI(true)} 
+        onShowNaradAI={handleShowNaradAI} 
         onScrollToContact={scrollToContact} 
       />
 
@@ -543,7 +497,7 @@ const Index = () => {
         onDailyChallenge={handleDailyChallenge}
       />
 
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         {currentUser && (
           <DailyWisdomCard 
             dailyQuote={dailyQuote} 
@@ -555,25 +509,25 @@ const Index = () => {
         )}
 
         {/* Features Section */}
-        <div className="mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">
+        <div className="mb-12 sm:mb-16">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 sm:mb-6">
               Explore Our Spiritual Services
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
               Discover a comprehensive suite of spiritual tools and services designed to enhance your journey
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <FeatureCard 
               icon={MessageCircle}
               title="Narad AI Chat"
               description="Chat with AI for mood-based meditation and spiritual guidance"
               badgeText={todaysMood ? `Today: ${todaysMood}` : "AI Powered"}
               buttonText="Start Chat"
-              path="/mood-selection"
               navigate={navigate}
               currentUser={currentUser}
+              onNaradAIClick={handleShowNaradAI}
             />
             <FeatureCard 
               icon={BookOpen}
@@ -609,12 +563,12 @@ const Index = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">Our Impact</h2>
-            <p className="text-xl text-gray-600">Join thousands on their spiritual journey</p>
+        <div className="mb-12 sm:mb-16">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 sm:mb-6">Our Impact</h2>
+            <p className="text-lg sm:text-xl text-gray-600">Join thousands on their spiritual journey</p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
             <StatsCard 
               count={108} 
               label="Meditations" 
