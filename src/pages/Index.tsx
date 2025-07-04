@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Users, BookOpen, Calendar, Star, ArrowRight, Bell, User, LogOut, Home, Sparkles, Plane, ShoppingCart, MessageCircle, Phone, Mail, MapPin, Shield } from 'lucide-react';
+import { Heart, Users, BookOpen, Calendar, Star, ArrowRight, Bell, User, LogOut, Home, Sparkles, Plane, ShoppingCart, MessageCircle, Phone, Mail, MapPin, Shield, Menu, X } from 'lucide-react';
 import { toast } from 'sonner';
 import NaradAIChat from '@/components/NaradAIChat';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -53,89 +53,167 @@ interface StatsCardProps {
 
 const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, onShowNaradAI, onScrollToContact }) => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="bg-white shadow-lg border-b sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <img 
               src="/lovable-uploads/b272acdb-7757-4417-b550-561c69ec192a.png" 
               alt="AapkaSarthy" 
-              className="h-12 sm:h-16 w-auto"
+              className="h-10 sm:h-12 md:h-16 w-auto"
             />
           </div>
           
           {currentUser ? (
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={onShowNaradAI}
-                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors hidden sm:flex"
-              >
-                <MessageCircle className="h-4 w-4 mr-2" />
-                Narad AI
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={onScrollToContact}
-                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors hidden sm:flex"
-              >
-                <Phone className="h-4 w-4 mr-2" />
-                Contact
-              </Button>
-              <div className="text-right hidden sm:block">
-                <span className="text-gray-700 font-medium text-sm">Namaste, {currentUser.name}</span>
-                <div className="text-xs text-gray-500">🔥 {streakCount} day streak</div>
+            <>
+              {/* Desktop Menu */}
+              <div className="hidden md:flex items-center space-x-3 lg:space-x-4">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={onShowNaradAI}
+                  className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
+                >
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  Narad AI
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={onScrollToContact}
+                  className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
+                >
+                  <Phone className="h-4 w-4 mr-2" />
+                  Contact
+                </Button>
+                <div className="text-right hidden lg:block">
+                  <span className="text-gray-700 font-medium text-sm">Namaste, {currentUser.name}</span>
+                  <div className="text-xs text-gray-500">🔥 {streakCount} day streak</div>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={onLogout}
+                  className="text-gray-700 border-gray-300 hover:bg-gray-50"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </Button>
               </div>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={onLogout}
-                className="text-gray-700 border-gray-300 hover:bg-gray-50"
-              >
-                <LogOut className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Logout</span>
-              </Button>
-            </div>
+
+              {/* Mobile Menu */}
+              <div className="md:hidden">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="text-gray-700"
+                >
+                  {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </Button>
+              </div>
+
+              {/* Mobile Menu Dropdown */}
+              {mobileMenuOpen && (
+                <div className="absolute top-full left-0 right-0 bg-white shadow-lg border-t md:hidden z-50">
+                  <div className="px-4 py-3 space-y-3">
+                    <div className="text-center pb-2 border-b">
+                      <span className="text-gray-700 font-medium text-sm">Namaste, {currentUser.name}</span>
+                      <div className="text-xs text-gray-500">🔥 {streakCount} day streak</div>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => { onShowNaradAI(); setMobileMenuOpen(false); }}
+                      className="w-full justify-start text-gray-700 hover:bg-orange-50 hover:text-orange-700"
+                    >
+                      <MessageCircle className="h-4 w-4 mr-2" />
+                      Narad AI
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => { onScrollToContact(); setMobileMenuOpen(false); }}
+                      className="w-full justify-start text-gray-700 hover:bg-orange-50 hover:text-orange-700"
+                    >
+                      <Phone className="h-4 w-4 mr-2" />
+                      Contact
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => { onLogout(); setMobileMenuOpen(false); }}
+                      className="w-full justify-start text-gray-700 border-gray-300 hover:bg-gray-50"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </>
           ) : (
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <Button 
-                variant="ghost" 
-                onClick={onScrollToContact}
-                size="sm"
-                className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors hidden sm:flex"
-              >
-                <Phone className="h-4 w-4 mr-2" />
-                Contact Us
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => navigate('/login-admin')}
-                size="sm"
-                className="text-orange-600 border-orange-600 hover:bg-orange-50"
-              >
-                <Shield className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Admin</span>
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => navigate('/login-user')}
-                size="sm"
-                className="text-orange-600 border-orange-600 hover:bg-orange-50"
-              >
-                Sign In
-              </Button>
-              <Button 
-                onClick={() => navigate('/register')}
-                size="sm"
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                Register
-              </Button>
-            </div>
+            <>
+              {/* Desktop Guest Menu */}
+              <div className="hidden sm:flex items-center space-x-2 lg:space-x-4">
+                <Button 
+                  variant="ghost" 
+                  onClick={onScrollToContact}
+                  size="sm"
+                  className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
+                >
+                  <Phone className="h-4 w-4 mr-2" />
+                  Contact Us
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/login-admin')}
+                  size="sm"
+                  className="text-orange-600 border-orange-600 hover:bg-orange-50"
+                >
+                  <Shield className="h-4 w-4 mr-1 lg:mr-2" />
+                  <span className="hidden lg:inline">Admin</span>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/login-user')}
+                  size="sm"
+                  className="text-orange-600 border-orange-600 hover:bg-orange-50"
+                >
+                  Sign In
+                </Button>
+                <Button 
+                  onClick={() => navigate('/register')}
+                  size="sm"
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Register
+                </Button>
+              </div>
+
+              {/* Mobile Guest Menu */}
+              <div className="sm:hidden flex items-center space-x-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/login-user')}
+                  size="sm"
+                  className="text-orange-600 border-orange-600 hover:bg-orange-50 text-xs px-2"
+                >
+                  Sign In
+                </Button>
+                <Button 
+                  onClick={() => navigate('/register')}
+                  size="sm"
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-xs px-3"
+                >
+                  Register
+                </Button>
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -145,7 +223,7 @@ const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, on
 
 const HeroSection = React.memo<HeroSectionProps>(({ currentUser, onQuickMeditation, onDailyChallenge }) => {
   return (
-    <div className="bg-gradient-to-br from-orange-500 via-yellow-500 to-green-500 text-white py-16 sm:py-24 relative overflow-hidden">
+    <div className="bg-gradient-to-br from-orange-500 via-yellow-500 to-green-500 text-white py-12 sm:py-16 lg:py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-green-600/20"></div>
       <div className="absolute inset-0 opacity-10" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -153,18 +231,18 @@ const HeroSection = React.memo<HeroSectionProps>(({ currentUser, onQuickMeditati
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 sm:mb-8 bg-gradient-to-r from-white via-orange-100 to-green-100 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 lg:mb-8 bg-gradient-to-r from-white via-orange-100 to-green-100 bg-clip-text text-transparent leading-tight">
             Find Your Inner Peace
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-12 text-orange-100 leading-relaxed max-w-3xl mx-auto px-4">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 lg:mb-12 text-orange-100 leading-relaxed max-w-3xl mx-auto px-2">
             Experience personalized spiritual guidance with AI-powered meditation, sacred music, and authentic ritual bookings across India 🇮🇳
           </p>
           {currentUser && (
-            <div className="flex flex-col sm:flex-row justify-center gap-4 px-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-2">
               <Button 
                 size="lg" 
                 onClick={onQuickMeditation}
-                className="bg-white text-orange-600 hover:bg-orange-50 shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
+                className="bg-white text-orange-600 hover:bg-orange-50 shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base lg:text-lg px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-4"
               >
                 <Sparkles className="mr-2 h-4 sm:h-5 w-4 sm:w-5" />
                 Quick Meditation (5 min)
@@ -173,7 +251,7 @@ const HeroSection = React.memo<HeroSectionProps>(({ currentUser, onQuickMeditati
                 size="lg" 
                 variant="outline" 
                 onClick={onDailyChallenge}
-                className="border-2 border-white text-white hover:bg-white hover:text-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
+                className="border-2 border-white text-white hover:bg-white hover:text-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base lg:text-lg px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-4"
               >
                 <Heart className="mr-2 h-4 sm:h-5 w-4 sm:w-5" />
                 Daily Challenge
@@ -188,21 +266,21 @@ const HeroSection = React.memo<HeroSectionProps>(({ currentUser, onQuickMeditati
 
 const DailyWisdomCard = React.memo<DailyWisdomCardProps>(({ dailyQuote, dailyGoodDeed, onQuickMeditation, onDailyChallenge, onDevotionalShop }) => {
   return (
-    <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50 border-orange-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <CardContent className="p-4 sm:p-8">
-        <div className="flex items-center space-x-4 mb-4 sm:mb-6">
-          <div className="w-12 sm:w-16 h-12 sm:h-16 rounded-full bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center shadow-lg">
-            <Sparkles className="h-6 sm:h-8 w-6 sm:w-8 text-white" />
+    <Card className="mb-4 sm:mb-6 lg:mb-8 bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50 border-orange-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <CardContent className="p-4 sm:p-6 lg:p-8">
+        <div className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-6">
+          <div className="w-10 sm:w-12 lg:w-16 h-10 sm:h-12 lg:h-16 rounded-full bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center shadow-lg flex-shrink-0">
+            <Sparkles className="h-5 sm:h-6 lg:h-8 w-5 sm:w-6 lg:w-8 text-white" />
           </div>
-          <h3 className="font-bold text-orange-700 text-xl sm:text-2xl">Daily Wisdom</h3>
+          <h3 className="font-bold text-orange-700 text-lg sm:text-xl lg:text-2xl">Daily Wisdom</h3>
         </div>
-        <blockquote className="text-gray-700 italic mb-4 sm:mb-6 p-4 sm:p-6 bg-white rounded-xl border-l-4 border-orange-400 shadow-sm text-base sm:text-lg">
+        <blockquote className="text-gray-700 italic mb-4 sm:mb-6 p-3 sm:p-4 lg:p-6 bg-white rounded-xl border-l-4 border-orange-400 shadow-sm text-sm sm:text-base lg:text-lg leading-relaxed">
           "{dailyQuote}"
         </blockquote>
         {dailyGoodDeed && (
-          <div className="mb-4 sm:mb-6 p-4 sm:p-6 bg-green-50 rounded-xl border-l-4 border-green-400 shadow-sm">
-            <h4 className="font-bold text-green-700 mb-3 flex items-center text-base sm:text-lg">
-              <Heart className="h-4 sm:h-5 w-4 sm:w-5 mr-2" />
+          <div className="mb-4 sm:mb-6 p-3 sm:p-4 lg:p-6 bg-green-50 rounded-xl border-l-4 border-green-400 shadow-sm">
+            <h4 className="font-bold text-green-700 mb-2 sm:mb-3 flex items-center text-sm sm:text-base lg:text-lg">
+              <Heart className="h-4 sm:h-5 w-4 sm:w-5 mr-2 flex-shrink-0" />
               Good Deed of the Day
             </h4>
             <p className="text-green-600 text-sm sm:text-base">{dailyGoodDeed}</p>
@@ -212,7 +290,7 @@ const DailyWisdomCard = React.memo<DailyWisdomCardProps>(({ dailyQuote, dailyGoo
           <Button 
             size="sm" 
             onClick={onQuickMeditation}
-            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm"
+            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm flex-shrink-0"
           >
             <Sparkles className="h-3 sm:h-4 w-3 sm:w-4 mr-1 sm:mr-2" />
             Quick Meditation
@@ -221,7 +299,7 @@ const DailyWisdomCard = React.memo<DailyWisdomCardProps>(({ dailyQuote, dailyGoo
             size="sm" 
             variant="outline" 
             onClick={onDailyChallenge}
-            className="border-green-500 text-green-600 hover:bg-green-50 shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm"
+            className="border-green-500 text-green-600 hover:bg-green-50 shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm flex-shrink-0"
           >
             <Heart className="h-3 sm:h-4 w-3 sm:w-4 mr-1 sm:mr-2" />
             Daily Challenge
@@ -230,7 +308,7 @@ const DailyWisdomCard = React.memo<DailyWisdomCardProps>(({ dailyQuote, dailyGoo
             size="sm" 
             variant="outline" 
             onClick={onDevotionalShop}
-            className="border-purple-500 text-purple-600 hover:bg-purple-50 shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm"
+            className="border-purple-500 text-purple-600 hover:bg-purple-50 shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm flex-shrink-0"
           >
             <ShoppingCart className="h-3 sm:h-4 w-3 sm:w-4 mr-1 sm:mr-2" />
             Shop
@@ -263,24 +341,24 @@ const FeatureCard = React.memo<FeatureCardProps>(({ icon: Icon, title, descripti
 
   return (
     <Card className="hover:shadow-xl transition-all duration-300 h-full group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30">
-      <CardHeader className="text-center pb-4 p-4 sm:p-6">
-        <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-          <Icon className="h-8 sm:h-10 w-8 sm:w-10 text-white" />
+      <CardHeader className="text-center pb-3 sm:pb-4 p-3 sm:p-4 lg:p-6">
+        <div className="w-12 sm:w-16 lg:w-20 h-12 sm:h-16 lg:h-20 rounded-2xl bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center mx-auto mb-3 sm:mb-4 lg:mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+          <Icon className="h-6 sm:h-8 lg:h-10 w-6 sm:w-8 lg:w-10 text-white" />
         </div>
-        <CardTitle className="text-lg sm:text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{title}</CardTitle>
-        <CardDescription className="text-gray-600 text-sm sm:text-base leading-relaxed">{description}</CardDescription>
+        <CardTitle className="text-base sm:text-lg lg:text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors duration-300 leading-tight">{title}</CardTitle>
+        <CardDescription className="text-gray-600 text-xs sm:text-sm lg:text-base leading-relaxed">{description}</CardDescription>
         {badgeText && (
-          <Badge className="w-fit mx-auto bg-orange-100 text-orange-800 mt-3 px-2 sm:px-3 py-1 text-xs">
+          <Badge className="w-fit mx-auto bg-orange-100 text-orange-800 mt-2 sm:mt-3 px-2 sm:px-3 py-1 text-xs">
             {badgeText}
           </Badge>
         )}
       </CardHeader>
-      <CardContent className="pt-0 p-4 sm:p-6">
+      <CardContent className="pt-0 p-3 sm:p-4 lg:p-6">
         <Button 
-          className="w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 py-2 sm:py-3 text-sm sm:text-base"
+          className="w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 py-2 sm:py-3 text-xs sm:text-sm lg:text-base"
           onClick={handleFeatureClick}
         >
-          {buttonText} <ArrowRight className="ml-2 h-3 sm:h-4 w-3 sm:w-4" />
+          {buttonText} <ArrowRight className="ml-1 sm:ml-2 h-3 sm:h-4 w-3 sm:w-4" />
         </Button>
         {!currentUser && (
           <p className="text-xs text-gray-500 text-center mt-2">Sign in to access</p>
@@ -301,9 +379,9 @@ const StatsCard = React.memo<StatsCardProps>(({ count, label, buttonText, curren
 
   return (
     <Card className="text-center hover:shadow-xl transition-all duration-300 group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30">
-      <CardContent className="p-4 sm:p-8">
-        <div className="text-3xl sm:text-4xl font-bold text-transparent bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-300">{count}</div>
-        <div className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 font-medium">{label}</div>
+      <CardContent className="p-3 sm:p-4 lg:p-8">
+        <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-transparent bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text mb-1 sm:mb-2 lg:mb-3 group-hover:scale-110 transition-transform duration-300">{count}</div>
+        <div className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 lg:mb-4 font-medium">{label}</div>
         <Button 
           size="sm" 
           variant="ghost" 
@@ -322,36 +400,36 @@ const StatsCard = React.memo<StatsCardProps>(({ count, label, buttonText, curren
 
 const ContactSection = React.memo(() => {
   return (
-    <div id="contact" className="bg-gradient-to-br from-orange-50 to-green-50 py-16 sm:py-20">
+    <div id="contact" className="bg-gradient-to-br from-orange-50 to-green-50 py-12 sm:py-16 lg:py-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 sm:mb-6">Contact Us</h2>
-          <p className="text-lg sm:text-xl text-gray-600">Get in touch with our spiritual support team</p>
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 sm:mb-4 lg:mb-6">Contact Us</h2>
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600">Get in touch with our spiritual support team</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          <div className="text-center p-6 sm:p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-r from-orange-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Phone className="h-6 sm:h-8 w-6 sm:w-8 text-white" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          <div className="text-center p-4 sm:p-6 lg:p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-10 sm:w-12 lg:w-16 h-10 sm:h-12 lg:h-16 bg-gradient-to-r from-orange-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 lg:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Phone className="h-5 sm:h-6 lg:h-8 w-5 sm:w-6 lg:w-8 text-white" />
             </div>
-            <h3 className="font-bold text-gray-800 mb-3 text-base sm:text-lg">Phone</h3>
-            <p className="text-gray-600 text-base sm:text-lg">+91 9876543210</p>
+            <h3 className="font-bold text-gray-800 mb-2 sm:mb-3 text-sm sm:text-base lg:text-lg">Phone</h3>
+            <p className="text-gray-600 text-sm sm:text-base lg:text-lg">+91 9876543210</p>
           </div>
           
-          <div className="text-center p-6 sm:p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-r from-green-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Mail className="h-6 sm:h-8 w-6 sm:w-8 text-white" />
+          <div className="text-center p-4 sm:p-6 lg:p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-10 sm:w-12 lg:w-16 h-10 sm:h-12 lg:h-16 bg-gradient-to-r from-green-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 lg:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Mail className="h-5 sm:h-6 lg:h-8 w-5 sm:w-6 lg:w-8 text-white" />
             </div>
-            <h3 className="font-bold text-gray-800 mb-3 text-base sm:text-lg">Email</h3>
-            <p className="text-gray-600 text-base sm:text-lg">support@aapkasarthy.com</p>
+            <h3 className="font-bold text-gray-800 mb-2 sm:mb-3 text-sm sm:text-base lg:text-lg">Email</h3>
+            <p className="text-gray-600 text-sm sm:text-base lg:text-lg">support@aapkasarthy.com</p>
           </div>
           
-          <div className="text-center p-6 sm:p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-r from-orange-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <MapPin className="h-6 sm:h-8 w-6 sm:w-8 text-white" />
+          <div className="text-center p-4 sm:p-6 lg:p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group sm:col-span-2 lg:col-span-1">
+            <div className="w-10 sm:w-12 lg:w-16 h-10 sm:h-12 lg:h-16 bg-gradient-to-r from-orange-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 lg:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <MapPin className="h-5 sm:h-6 lg:h-8 w-5 sm:w-6 lg:w-8 text-white" />
             </div>
-            <h3 className="font-bold text-gray-800 mb-3 text-base sm:text-lg">Address</h3>
-            <p className="text-gray-600 text-base sm:text-lg">Spiritual Center, New Delhi, India</p>
+            <h3 className="font-bold text-gray-800 mb-2 sm:mb-3 text-sm sm:text-base lg:text-lg">Address</h3>
+            <p className="text-gray-600 text-sm sm:text-base lg:text-lg">Spiritual Center, New Delhi, India</p>
           </div>
         </div>
       </div>
@@ -553,9 +631,9 @@ const Index = () => {
       {/* Optimized Narad AI Chat Modal - only render when needed */}
       {showNaradAI && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
-          <div className={`bg-white rounded-2xl w-full h-full sm:h-[85vh] flex flex-col shadow-2xl border-0 ${isMobile ? 'max-w-full' : 'max-w-4xl'}`}>
-            <div className={`flex justify-between items-center border-b bg-gradient-to-r from-orange-50 to-green-50 rounded-t-2xl flex-shrink-0 ${isMobile ? 'p-4' : 'p-6'}`}>
-              <h2 className={`font-bold text-gray-800 ${isMobile ? 'text-lg' : 'text-2xl'}`}>
+          <div className={`bg-white rounded-2xl w-full h-full sm:h-[90vh] lg:h-[85vh] flex flex-col shadow-2xl border-0 ${isMobile ? 'max-w-full' : 'max-w-4xl'}`}>
+            <div className={`flex justify-between items-center border-b bg-gradient-to-r from-orange-50 to-green-50 rounded-t-2xl flex-shrink-0 ${isMobile ? 'p-3' : 'p-4 lg:p-6'}`}>
+              <h2 className={`font-bold text-gray-800 ${isMobile ? 'text-base' : 'text-lg lg:text-2xl'}`}>
                 {isMobile ? 'Narad AI' : 'Narad AI - Your Spiritual Guide'}
               </h2>
               <Button 
@@ -564,11 +642,11 @@ const Index = () => {
                 className="text-gray-500 hover:text-gray-700 hover:bg-white/50 rounded-full p-2"
                 size={isMobile ? "sm" : "default"}
               >
-                ✕
+                <X className="h-4 w-4" />
               </Button>
             </div>
             <div className="flex-1 overflow-hidden">
-              <div className={`h-full bg-gradient-to-br from-orange-50/30 to-green-50/30 ${isMobile ? 'p-2' : 'p-6'}`}>
+              <div className={`h-full bg-gradient-to-br from-orange-50/30 to-green-50/30 ${isMobile ? 'p-2' : 'p-4 lg:p-6'}`}>
                 <NaradAIChat />
               </div>
             </div>
@@ -582,7 +660,7 @@ const Index = () => {
         onDailyChallenge={handleDailyChallenge}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-8 sm:py-12 lg:py-16">
         {currentUser && (
           <DailyWisdomCard 
             dailyQuote={dailyQuote} 
@@ -594,16 +672,16 @@ const Index = () => {
         )}
 
         {/* Features Section */}
-        <div className="mb-12 sm:mb-16">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 sm:mb-6">
+        <div className="mb-8 sm:mb-12 lg:mb-16">
+          <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 sm:mb-4 lg:mb-6">
               Explore Our Spiritual Services
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-2">
               Discover a comprehensive suite of spiritual tools and services designed to enhance your journey
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {featureCardsData.map((card, index) => (
               <FeatureCard 
                 key={index}
@@ -622,12 +700,12 @@ const Index = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mb-12 sm:mb-16">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 sm:mb-6">Our Impact</h2>
-            <p className="text-lg sm:text-xl text-gray-600">Join thousands on their spiritual journey</p>
+        <div className="mb-8 sm:mb-12 lg:mb-16">
+          <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 sm:mb-4 lg:mb-6">Our Impact</h2>
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600">Join thousands on their spiritual journey</p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-8">
             {statsCardsData.map((stat, index) => (
               <StatsCard 
                 key={index}
