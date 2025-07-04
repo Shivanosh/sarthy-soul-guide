@@ -132,10 +132,12 @@ const Register = React.memo(() => {
     navigate('/');
   }, [navigate]);
 
-  // Memoized password strength indicator
+  // Memoized password strength indicator - fixed to always return object
   const passwordStrength = useMemo(() => {
     const { password } = formData;
-    if (!password) return '';
+    if (!password) {
+      return { level: '', color: '' };
+    }
     
     let strength = 0;
     if (password.length >= 8) strength++;
@@ -147,7 +149,10 @@ const Register = React.memo(() => {
     const levels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
     const colors = ['text-red-500', 'text-orange-500', 'text-yellow-500', 'text-blue-500', 'text-green-500'];
     
-    return { level: levels[strength - 1] || '', color: colors[strength - 1] || '' };
+    return { 
+      level: levels[strength - 1] || 'Very Weak', 
+      color: colors[strength - 1] || 'text-red-500' 
+    };
   }, [formData.password]);
 
   return (
