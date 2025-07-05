@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Shield, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Shield, Eye, EyeOff, Loader2, Mail } from 'lucide-react';
 import { toast } from 'sonner';
 
 const LoginAdmin = React.memo(() => {
@@ -16,6 +16,9 @@ const LoginAdmin = React.memo(() => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
 
   // Enhanced admin validation with security measures
   const validateAdminInput = useCallback((email: string, password: string) => {
@@ -56,7 +59,7 @@ const LoginAdmin = React.memo(() => {
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       // Secure admin credential validation
-      if (sanitizedEmail === 'admin@example.com' && formData.password === 'admin123') {
+      if (sanitizedEmail === 'sanjiv.tewari1973@gmail.com' && formData.password === 'Shreya@1518') {
         const mockAdmin = {
           id: 1,
           name: 'Temple Administrator',
@@ -100,6 +103,44 @@ const LoginAdmin = React.memo(() => {
     }
   }, [formData, validateAdminInput, navigate]);
 
+  const handleForgotPassword = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!resetEmail) {
+      toast.error('Please enter your email address');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(resetEmail)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    setResetLoading(true);
+
+    try {
+      // Simulate OTP sending for admin
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      
+      // Generate and store admin OTP
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      localStorage.setItem('adminPasswordResetOTP', JSON.stringify({
+        email: resetEmail.toLowerCase(),
+        otp: otp,
+        expires: Date.now() + (5 * 60 * 1000) // 5 minutes for admin (shorter for security)
+      }));
+
+      toast.success(`Admin password reset OTP sent to ${resetEmail}. OTP: ${otp} (Demo: This would be sent via secure email)`);
+      setShowForgotPassword(false);
+      setResetEmail('');
+    } catch (error) {
+      toast.error('Failed to send admin reset email. Please try again.');
+    } finally {
+      setResetLoading(false);
+    }
+  }, [resetEmail]);
+
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -119,6 +160,66 @@ const LoginAdmin = React.memo(() => {
     header: "text-center pb-4",
     content: "p-4 sm:p-6"
   }), []);
+
+  if (showForgotPassword) {
+    return (
+      <div className={cardStyles.container}>
+        <div className="w-full max-w-md">
+          <Card className={cardStyles.card}>
+            <CardHeader className={cardStyles.header}>
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Mail className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+              </div>
+              <CardTitle className="text-xl sm:text-2xl font-bold text-gray-800">Admin Password Reset</CardTitle>
+              <CardDescription className="text-sm sm:text-base text-gray-600">
+                Enter your admin email to receive a secure reset OTP
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent className={cardStyles.content}>
+              <form onSubmit={handleForgotPassword} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="resetEmail" className="text-sm sm:text-base">Admin Email</Label>
+                  <Input
+                    id="resetEmail"
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    placeholder="admin@temple.com"
+                    required
+                    className="w-full text-sm sm:text-base h-10 sm:h-12"
+                  />
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-sm sm:text-base h-10 sm:h-12"
+                  disabled={resetLoading}
+                >
+                  {resetLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending Secure OTP...
+                    </>
+                  ) : (
+                    'Send Admin Reset OTP'
+                  )}
+                </Button>
+                
+                <Button 
+                  variant="ghost" 
+                  className="w-full text-gray-600 hover:text-gray-800"
+                  onClick={() => setShowForgotPassword(false)}
+                >
+                  Back to Admin Login
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cardStyles.container}>
@@ -199,20 +300,20 @@ const LoginAdmin = React.memo(() => {
             </form>
             
             <div className="mt-4 sm:mt-6 text-center space-y-2">
+              <Button 
+                variant="ghost" 
+                className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 text-sm"
+                onClick={() => setShowForgotPassword(true)}
+              >
+                Forgot Admin Password?
+              </Button>
+              
               <p className="text-xs sm:text-sm text-gray-600">
                 Regular user?{' '}
                 <Link to="/login-user" className="text-orange-600 hover:text-orange-700 font-medium">
                   User Login
                 </Link>
               </p>
-              <div className="bg-yellow-50 p-2 sm:p-3 rounded-lg border border-yellow-200">
-                <p className="text-xs text-yellow-800 font-medium">
-                  🔒 Demo Admin Access:
-                </p>
-                <p className="text-xs text-yellow-700">
-                  admin@example.com / admin123
-                </p>
-              </div>
             </div>
           </CardContent>
         </Card>

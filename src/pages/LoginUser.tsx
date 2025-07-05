@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Heart, Eye, EyeOff, ArrowLeft, Loader2 } from 'lucide-react';
+import { Heart, Eye, EyeOff, ArrowLeft, Loader2, Mail } from 'lucide-react';
 import { toast } from 'sonner';
 
 const LoginUser = React.memo(() => {
@@ -16,6 +16,9 @@ const LoginUser = React.memo(() => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
 
   // Input validation with enhanced security
   const validateInput = useCallback((email: string, password: string) => {
@@ -53,18 +56,23 @@ const LoginUser = React.memo(() => {
       // Simulate API call with proper error handling
       await new Promise(resolve => setTimeout(resolve, 800));
 
-      // Secure credential validation with sanitized input
+      // Check against stored user credentials
+      const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
       const sanitizedEmail = formData.email.trim().toLowerCase();
       
-      if (sanitizedEmail === 'user@example.com' && formData.password === 'password') {
+      const foundUser = storedUsers.find((user: any) => 
+        user.email === sanitizedEmail && user.password === formData.password
+      );
+
+      if (foundUser) {
         const mockUser = {
-          id: 1,
-          name: 'Spiritual Seeker',
+          id: foundUser.id || Math.floor(Math.random() * 10000),
+          name: foundUser.name,
           email: sanitizedEmail,
           role: 'user',
-          joinDate: new Date().toISOString(),
-          streak: 7,
-          points: 1250
+          joinDate: foundUser.joinDate || new Date().toISOString(),
+          streak: foundUser.streak || 1,
+          points: foundUser.points || 100
         };
         
         // Secure token storage with expiry
@@ -96,20 +104,50 @@ const LoginUser = React.memo(() => {
     }
   }, [formData, validateInput, navigate]);
 
+  const handleForgotPassword = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!resetEmail) {
+      toast.error('Please enter your email address');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(resetEmail)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    setResetLoading(true);
+
+    try {
+      // Simulate OTP sending
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Generate and store OTP
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      localStorage.setItem('passwordResetOTP', JSON.stringify({
+        email: resetEmail.toLowerCase(),
+        otp: otp,
+        expires: Date.now() + (10 * 60 * 1000) // 10 minutes
+      }));
+
+      toast.success(`Password reset OTP sent to ${resetEmail}. OTP: ${otp} (Demo: This would be sent via email)`);
+      setShowForgotPassword(false);
+      setResetEmail('');
+    } catch (error) {
+      toast.error('Failed to send reset email. Please try again.');
+    } finally {
+      setResetLoading(false);
+    }
+  }, [resetEmail]);
+
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-  }, []);
-
-  const handleGuestLogin = useCallback(() => {
-    setFormData({
-      email: 'user@example.com',
-      password: 'password'
-    });
-    toast.info('Demo credentials filled! Click Sign In to continue.');
   }, []);
 
   const togglePasswordVisibility = useCallback(() => {
@@ -126,6 +164,69 @@ const LoginUser = React.memo(() => {
     header: "text-center pb-4 bg-gradient-to-b from-orange-50 to-white",
     content: "p-4 sm:p-6"
   }), []);
+
+  if (showForgotPassword) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 flex items-center justify-center p-2 sm:p-4">
+        <div className="w-full max-w-md">
+          <Button 
+            variant="ghost" 
+            className="mb-4 text-gray-600 hover:text-gray-800 hover:bg-orange-50 text-sm sm:text-base"
+            onClick={() => setShowForgotPassword(false)}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Login
+          </Button>
+
+          <Card className={cardStyles.card}>
+            <div className="h-2 bg-gradient-to-r from-orange-500 via-white via-green-500 to-orange-500"></div>
+            
+            <CardHeader className={cardStyles.header}>
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <Mail className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+              </div>
+              <CardTitle className="text-xl sm:text-2xl font-bold text-gray-800">Reset Password</CardTitle>
+              <CardDescription className="text-sm sm:text-base text-gray-600">
+                Enter your email to receive a reset OTP
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent className={cardStyles.content}>
+              <form onSubmit={handleForgotPassword} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="resetEmail" className="text-gray-700 font-medium text-sm sm:text-base">Email Address</Label>
+                  <Input
+                    id="resetEmail"
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    required
+                    className="w-full focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm sm:text-base h-10 sm:h-12"
+                  />
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium py-2 sm:py-3 text-sm sm:text-base h-10 sm:h-12"
+                  disabled={resetLoading}
+                >
+                  {resetLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending OTP...
+                    </>
+                  ) : (
+                    'Send Reset OTP'
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 flex items-center justify-center p-2 sm:p-4">
@@ -217,30 +318,23 @@ const LoginUser = React.memo(() => {
             </form>
             
             <div className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
-              <Button 
-                variant="outline" 
-                className="w-full border-green-500 text-green-600 hover:bg-green-50 text-sm sm:text-base h-10 sm:h-12"
-                onClick={handleGuestLogin}
-                disabled={loading}
-              >
-                Try Demo Login
-              </Button>
+              <div className="text-center">
+                <Button 
+                  variant="ghost" 
+                  className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 text-sm"
+                  onClick={() => setShowForgotPassword(true)}
+                >
+                  Forgot Password?
+                </Button>
+              </div>
               
-              <div className="text-center space-y-2">
+              <div className="text-center">
                 <p className="text-xs sm:text-sm text-gray-600">
                   Don't have an account?{' '}
                   <Link to="/register" className="text-orange-600 hover:text-orange-700 font-medium underline">
                     Register here
                   </Link>
                 </p>
-                <div className="bg-orange-50 p-2 sm:p-3 rounded-lg border border-orange-200">
-                  <p className="text-xs text-orange-800 font-medium">
-                    🎯 Demo Credentials:
-                  </p>
-                  <p className="text-xs text-orange-700">
-                    user@example.com / password
-                  </p>
-                </div>
               </div>
             </div>
           </CardContent>

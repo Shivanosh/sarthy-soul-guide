@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -444,6 +443,12 @@ const Index = () => {
   const [streakCount, setStreakCount] = useState(0);
   const [todaysMood, setTodaysMood] = useState('');
   const [showNaradAI, setShowNaradAI] = useState(false);
+  const [liveStats, setLiveStats] = useState({
+    meditations: 0,
+    bhajans: 0,
+    rituals: 0,
+    travelBookings: 0
+  });
 
   // Memoized daily content - only calculate once per day
   const { dailyQuote, dailyGoodDeed } = useMemo(() => {
@@ -502,6 +507,19 @@ const Index = () => {
     
     const mood = localStorage.getItem('todaysMood');
     if (mood) setTodaysMood(mood);
+
+    // Load live statistics
+    const meditationStats = JSON.parse(localStorage.getItem('meditationStats') || '{}');
+    const ritualBookings = JSON.parse(localStorage.getItem('ritualBookings') || '[]');
+    const travelBookings = JSON.parse(localStorage.getItem('travelBookings') || '[]');
+    const musicStats = JSON.parse(localStorage.getItem('musicStats') || '{}');
+
+    setLiveStats({
+      meditations: meditationStats.totalSessions || 108,
+      bhajans: musicStats.totalPlayed || 42,
+      rituals: ritualBookings.length || 15,
+      travelBookings: travelBookings.length || 7
+    });
   }, []);
 
   // Memoized handlers to prevent unnecessary re-renders
@@ -612,11 +630,11 @@ const Index = () => {
   ], [todaysMood, handleShowNaradAI]);
 
   const statsCardsData = useMemo(() => [
-    { count: 108, label: "Meditations", buttonText: "Explore →" },
-    { count: 42, label: "Bhajans", buttonText: "Listen →" },
-    { count: 15, label: "Rituals", buttonText: "Book →" },
-    { count: streakCount || "5+", label: "Day Streak", buttonText: "Continue →" }
-  ], [streakCount]);
+    { count: liveStats.meditations, label: "Meditations", buttonText: "Explore →" },
+    { count: liveStats.bhajans, label: "Bhajans", buttonText: "Listen →" },
+    { count: liveStats.rituals, label: "Rituals", buttonText: "Book →" },
+    { count: liveStats.travelBookings, label: "Travel Bookings", buttonText: "Plan →" }
+  ], [liveStats]);
 
   return (
     <div className="min-h-screen bg-white">

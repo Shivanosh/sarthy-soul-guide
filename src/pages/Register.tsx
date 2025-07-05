@@ -41,6 +41,13 @@ const Register = React.memo(() => {
       return false;
     }
     
+    // Check if email already exists
+    const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    if (existingUsers.some((user: any) => user.email === email.trim().toLowerCase())) {
+      toast.error('Email address is already registered');
+      return false;
+    }
+    
     // Strong password validation
     if (password.length < 8) {
       toast.error('Password must be at least 8 characters long');
@@ -85,11 +92,17 @@ const Register = React.memo(() => {
         id: Math.floor(Math.random() * 10000) + 1000,
         name: sanitizedData.name,
         email: sanitizedData.email,
+        password: sanitizedData.password, // In real app, this would be hashed
         role: 'user',
         joinDate: new Date().toISOString(),
         streak: 0,
         points: 0
       };
+      
+      // Store user in registered users list
+      const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      existingUsers.push(mockUser);
+      localStorage.setItem('registeredUsers', JSON.stringify(existingUsers));
       
       // Secure token storage with expiry
       const tokenData = {
@@ -98,7 +111,31 @@ const Register = React.memo(() => {
       };
       
       localStorage.setItem('authToken', JSON.stringify(tokenData));
-      localStorage.setItem('user', JSON.stringify(mockUser));
+      localStorage.setItem('user', JSON.stringify({
+        id: mockUser.id,
+        name: mockUser.name,
+        email: mockUser.email,
+        role: mockUser.role,
+        joinDate: mockUser.joinDate,
+        streak: mockUser.streak,
+        points: mockUser.points
+      }));
+      
+      // Initialize user stats
+      localStorage.setItem('meditationStats', JSON.stringify({
+        totalSessions: 0,
+        totalMinutes: 0,
+        experiencePoints: 0,
+        completedThisWeek: 0
+      }));
+      
+      localStorage.setItem('ritualBookings', JSON.stringify([]));
+      localStorage.setItem('travelBookings', JSON.stringify([]));
+      localStorage.setItem('musicStats', JSON.stringify({
+        totalPlayed: 0,
+        favoriteGenre: '',
+        recentlyPlayed: []
+      }));
       
       toast.success('🎉 Welcome to AapkaSarthy! Your spiritual journey begins now.');
       
