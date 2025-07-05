@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -19,11 +18,9 @@ const Register = React.memo(() => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Enhanced input validation with security measures
   const validateInput = useCallback((data: typeof formData) => {
     const { name, email, password, confirmPassword } = data;
     
-    // Name validation
     if (!name.trim() || name.trim().length < 2) {
       toast.error('Name must be at least 2 characters long');
       return false;
@@ -34,7 +31,6 @@ const Register = React.memo(() => {
       return false;
     }
     
-    // Enhanced email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
       toast.error('Please enter a valid email address');
@@ -48,7 +44,6 @@ const Register = React.memo(() => {
       return false;
     }
     
-    // Strong password validation
     if (password.length < 8) {
       toast.error('Password must be at least 8 characters long');
       return false;
@@ -70,7 +65,6 @@ const Register = React.memo(() => {
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Sanitize inputs
     const sanitizedData = {
       name: formData.name.trim(),
       email: formData.email.trim().toLowerCase(),
@@ -85,14 +79,13 @@ const Register = React.memo(() => {
     setLoading(true);
 
     try {
-      // Simulate API call with realistic delay
       await new Promise(resolve => setTimeout(resolve, 1200));
 
       const mockUser = {
         id: Math.floor(Math.random() * 10000) + 1000,
         name: sanitizedData.name,
         email: sanitizedData.email,
-        password: sanitizedData.password, // In real app, this would be hashed
+        password: sanitizedData.password, // In production, this would be hashed
         role: 'user',
         joinDate: new Date().toISOString(),
         streak: 0,
@@ -104,9 +97,10 @@ const Register = React.memo(() => {
       existingUsers.push(mockUser);
       localStorage.setItem('registeredUsers', JSON.stringify(existingUsers));
       
-      // Secure token storage with expiry
+      // Auto-login after registration
       const tokenData = {
-        token: 'mock-jwt-token-new-user',
+        token: `user-token-${mockUser.id}`,
+        role: 'user',
         expires: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
       };
       
@@ -137,9 +131,8 @@ const Register = React.memo(() => {
         recentlyPlayed: []
       }));
       
-      toast.success('🎉 Welcome to AapkaSarthy! Your spiritual journey begins now.');
+      toast.success('🎉 Welcome to AapkaSarthy! Registration successful.');
       
-      // Clear sensitive form data
       setFormData({ name: '', email: '', password: '', confirmPassword: '' });
       
       setTimeout(() => {
@@ -169,7 +162,6 @@ const Register = React.memo(() => {
     navigate('/');
   }, [navigate]);
 
-  // Memoized password strength indicator - fixed to always return object
   const passwordStrength = useMemo(() => {
     const { password } = formData;
     if (!password) {

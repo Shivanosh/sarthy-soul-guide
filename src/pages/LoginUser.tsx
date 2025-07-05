@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -20,21 +19,18 @@ const LoginUser = React.memo(() => {
   const [resetEmail, setResetEmail] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
 
-  // Input validation with enhanced security
   const validateInput = useCallback((email: string, password: string) => {
     if (!email || !password) {
       toast.error('Please fill in all fields');
       return false;
     }
     
-    // Enhanced email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       toast.error('Please enter a valid email address');
       return false;
     }
     
-    // Basic password security check
     if (password.length < 6) {
       toast.error('Password must be at least 6 characters long');
       return false;
@@ -53,7 +49,6 @@ const LoginUser = React.memo(() => {
     setLoading(true);
 
     try {
-      // Simulate API call with proper error handling
       await new Promise(resolve => setTimeout(resolve, 800));
 
       // Check against stored user credentials
@@ -66,18 +61,18 @@ const LoginUser = React.memo(() => {
 
       if (foundUser) {
         const mockUser = {
-          id: foundUser.id || Math.floor(Math.random() * 10000),
+          id: foundUser.id,
           name: foundUser.name,
           email: sanitizedEmail,
           role: 'user',
-          joinDate: foundUser.joinDate || new Date().toISOString(),
+          joinDate: foundUser.joinDate,
           streak: foundUser.streak || 1,
           points: foundUser.points || 100
         };
         
-        // Secure token storage with expiry
         const tokenData = {
-          token: 'mock-jwt-token-user',
+          token: `user-token-${foundUser.id}`,
+          role: 'user',
           expires: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
         };
         
@@ -86,14 +81,12 @@ const LoginUser = React.memo(() => {
         
         toast.success('🙏 Welcome back to your spiritual journey!');
         
-        // Clear sensitive form data
         setFormData({ email: '', password: '' });
         
         setTimeout(() => {
           navigate('/');
         }, 500);
       } else {
-        // Generic error message for security
         toast.error('Invalid credentials. Please check your email and password.');
       }
     } catch (error) {
@@ -121,10 +114,8 @@ const LoginUser = React.memo(() => {
     setResetLoading(true);
 
     try {
-      // Simulate OTP sending
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Generate and store OTP
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
       localStorage.setItem('passwordResetOTP', JSON.stringify({
         email: resetEmail.toLowerCase(),
@@ -158,7 +149,6 @@ const LoginUser = React.memo(() => {
     navigate('/');
   }, [navigate]);
 
-  // Memoized styles for better performance
   const cardStyles = useMemo(() => ({
     card: "shadow-2xl border-0 overflow-hidden",
     header: "text-center pb-4 bg-gradient-to-b from-orange-50 to-white",
