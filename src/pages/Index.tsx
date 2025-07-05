@@ -484,23 +484,39 @@ const Index = () => {
       dailyQuote: quotes[dailyIndex],
       dailyGoodDeed: goodDeeds[dailyIndex]
     };
-  }, []); // Empty dependency - only calculate once
+  }, []);
 
   // Auth state check - optimized to run only once
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    // Check both token and authToken for compatibility
+    const token = localStorage.getItem('token') || localStorage.getItem('authToken');
     const user = localStorage.getItem('user');
+    
+    console.log('Auth check:', { token, user }); // Debug log
     
     if (token && user) {
       try {
         const parsedUser = JSON.parse(user);
+        const parsedToken = JSON.parse(token);
+        
+        // Check if token is expired
+        if (parsedToken.expires && Date.now() > parsedToken.expires) {
+          console.log('Token expired, clearing auth');
+          localStorage.removeItem('token');
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('user');
+          return;
+        }
+        
+        console.log('Setting current user:', parsedUser); // Debug log
         setCurrentUser(parsedUser);
         
-        const currentStreak = parseInt(localStorage.getItem('streakCount') || '0');
+        const currentStreak = parseInt(localStorage.getItem('streakCount') || '1');
         setStreakCount(currentStreak);
       } catch (error) {
         console.error('Error parsing user data:', error);
         localStorage.removeItem('token');
+        localStorage.removeItem('authToken');
         localStorage.removeItem('user');
       }
     }
@@ -525,6 +541,7 @@ const Index = () => {
   // Memoized handlers to prevent unnecessary re-renders
   const handleLogout = useCallback(() => {
     localStorage.removeItem('token');
+    localStorage.removeItem('authToken');
     localStorage.removeItem('user');
     localStorage.removeItem('todaysMood');
     setCurrentUser(null);
@@ -549,6 +566,12 @@ const Index = () => {
     };
     
     localStorage.setItem('meditationStats', JSON.stringify(updatedStats));
+    
+    // Update live stats
+    setLiveStats(prev => ({
+      ...prev,
+      meditations: updatedStats.totalSessions
+    }));
     
     toast.success('Starting 5-minute guided meditation...');
     setTimeout(() => {

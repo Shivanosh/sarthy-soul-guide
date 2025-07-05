@@ -76,7 +76,9 @@ const LoginUser = React.memo(() => {
           expires: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
         };
         
+        // Store both authToken and token for compatibility
         localStorage.setItem('authToken', JSON.stringify(tokenData));
+        localStorage.setItem('token', JSON.stringify(tokenData));
         localStorage.setItem('user', JSON.stringify(mockUser));
         
         toast.success('🙏 Welcome back to your spiritual journey!');
