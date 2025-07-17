@@ -56,14 +56,14 @@ const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, on
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-lg border-b sticky top-0 z-50">
+    <header className="bg-white/90 backdrop-blur-md shadow-xl border-b border-orange-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <img 
               src="/lovable-uploads/b272acdb-7757-4417-b550-561c69ec192a.png" 
               alt="AapkaSarthy" 
-              className="h-10 sm:h-12 md:h-16 w-auto"
+              className="h-10 sm:h-12 md:h-16 w-auto hover:scale-105 transition-transform duration-300"
             />
           </div>
           
@@ -75,7 +75,7 @@ const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, on
                   variant="ghost" 
                   size="sm" 
                   onClick={onShowNaradAI}
-                  className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
+                  className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-all duration-300 hover:scale-105 btn-premium rounded-full px-4"
                 >
                   <MessageCircle className="h-4 w-4 mr-2" />
                   Narad AI
@@ -84,7 +84,7 @@ const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, on
                   variant="ghost" 
                   size="sm" 
                   onClick={onScrollToContact}
-                  className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
+                  className="text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-all duration-300 hover:scale-105 btn-secondary-premium rounded-full px-4"
                 >
                   <Phone className="h-4 w-4 mr-2" />
                   Contact
@@ -339,9 +339,9 @@ const FeatureCard = React.memo<FeatureCardProps>(({ icon: Icon, title, descripti
   }, [currentUser, title, path, navigate, onNaradAIClick]);
 
   return (
-    <Card className="hover:shadow-xl transition-all duration-300 h-full group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30">
+    <Card className="feature-card hover:shadow-xl transition-all duration-300 h-full group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30">
       <CardHeader className="text-center pb-3 sm:pb-4 p-3 sm:p-4 lg:p-6">
-        <div className="w-12 sm:w-16 lg:w-20 h-12 sm:h-16 lg:h-20 rounded-2xl bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center mx-auto mb-3 sm:mb-4 lg:mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+        <div className="w-12 sm:w-16 lg:w-20 h-12 sm:h-16 lg:h-20 rounded-2xl bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center mx-auto mb-3 sm:mb-4 lg:mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110 pulse-glow">
           <Icon className="h-6 sm:h-8 lg:h-10 w-6 sm:w-8 lg:w-10 text-white" />
         </div>
         <CardTitle className="text-base sm:text-lg lg:text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors duration-300 leading-tight">{title}</CardTitle>
@@ -354,7 +354,7 @@ const FeatureCard = React.memo<FeatureCardProps>(({ icon: Icon, title, descripti
       </CardHeader>
       <CardContent className="pt-0 p-3 sm:p-4 lg:p-6">
         <Button 
-          className="w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 py-2 sm:py-3 text-xs sm:text-sm lg:text-base"
+          className="w-full btn-premium hover:shadow-xl transition-all duration-300 py-2 sm:py-3 text-xs sm:text-sm lg:text-base font-semibold hover-lift"
           onClick={handleFeatureClick}
         >
           {buttonText} <ArrowRight className="ml-1 sm:ml-2 h-3 sm:h-4 w-3 sm:w-4" />
@@ -377,7 +377,7 @@ const StatsCard = React.memo<StatsCardProps>(({ count, label, buttonText, curren
   }, [currentUser, label]);
 
   return (
-    <Card className="text-center hover:shadow-xl transition-all duration-300 group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30">
+    <Card className="stats-card text-center transition-all duration-300 group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30 hover-lift">
       <CardContent className="p-3 sm:p-4 lg:p-8">
         <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-transparent bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text mb-1 sm:mb-2 lg:mb-3 group-hover:scale-110 transition-transform duration-300">{count}</div>
         <div className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 lg:mb-4 font-medium">{label}</div>

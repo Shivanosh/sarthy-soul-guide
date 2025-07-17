@@ -275,4 +275,110 @@
       0 0 0 1px rgba(255, 255, 255, 0.4),
       inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
+
+  /* Enhanced Button Styles */
+  .btn-premium {
+    background: linear-gradient(135deg, hsl(20 100% 45%) 0%, hsl(25 100% 65%) 100%);
+    color: white;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-premium:hover::before {
+    left: 100%;
+  }
+
+  .btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px hsl(20 100% 45% / 0.4);
+  }
+
+  .btn-secondary-premium {
+    background: linear-gradient(135deg, hsl(120 100% 15%) 0%, hsl(120 60% 35%) 100%);
+    color: white;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px hsl(120 100% 15% / 0.4);
+  }
+
+  /* Enhanced Card Hover Effects */
+  .card-hover-effect {
+    transition: all 0.3s ease;
+    border: 1px solid hsl(214.3 31.8% 91.4%);
+  }
+
+  .card-hover-effect:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.15),
+      0 0 0 1px hsl(20 100% 45% / 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: hsl(20 100% 45% / 0.3);
+  }
+
+  /* Stats Card Animations */
+  .stats-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .stats-card:hover {
+    background: linear-gradient(135deg, hsl(20 100% 45% / 0.1) 0%, hsl(25 100% 65% / 0.05) 100%);
+    border-color: hsl(20 100% 45% / 0.3);
+    transform: scale(1.02);
+  }
+
+  /* Feature Card Enhancements */
+  .feature-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, hsl(20 100% 45%), hsl(25 100% 65%), hsl(120 60% 35%), hsl(120 100% 15%));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.15),
+      0 0 0 1px hsl(20 100% 45% / 0.1);
+  }
 }

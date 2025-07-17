@@ -94,6 +94,22 @@ const Register = React.memo(() => {
       
       // Store user in registered users list
       const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      
+      // Initialize with default user if empty
+      if (existingUsers.length === 0) {
+        const defaultUser = {
+          id: 1000,
+          name: "Sanjiv Tewari",
+          email: "sanjiv.tewari1973@gmail.com",
+          password: "Shreya@1518",
+          role: 'user',
+          joinDate: new Date().toISOString(),
+          streak: 7,
+          points: 150
+        };
+        existingUsers.push(defaultUser);
+      }
+      
       existingUsers.push(mockUser);
       localStorage.setItem('registeredUsers', JSON.stringify(existingUsers));
       

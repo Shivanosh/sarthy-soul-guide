@@ -52,7 +52,24 @@ const LoginUser = React.memo(() => {
       await new Promise(resolve => setTimeout(resolve, 800));
 
       // Check against stored user credentials
-      const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      let storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      
+      // Initialize with default user if empty
+      if (storedUsers.length === 0) {
+        const defaultUser = {
+          id: 1000,
+          name: "Sanjiv Tewari",
+          email: "sanjiv.tewari1973@gmail.com",
+          password: "Shreya@1518",
+          role: 'user',
+          joinDate: new Date().toISOString(),
+          streak: 7,
+          points: 150
+        };
+        storedUsers = [defaultUser];
+        localStorage.setItem('registeredUsers', JSON.stringify(storedUsers));
+      }
+      
       const sanitizedEmail = formData.email.trim().toLowerCase();
       
       const foundUser = storedUsers.find((user: any) => 
