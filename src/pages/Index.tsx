@@ -56,7 +56,7 @@ const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, on
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="glass-saffron shadow-premium border-b border-orange-200/50 sticky top-0 z-50 animate-fade-in">
+    <header className="bg-white/90 backdrop-blur-md shadow-xl border-b border-orange-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
@@ -222,18 +222,18 @@ const Header = React.memo<HeaderProps>(({ currentUser, streakCount, onLogout, on
 
 const HeroSection = React.memo<HeroSectionProps>(({ currentUser, onQuickMeditation, onDailyChallenge }) => {
   return (
-    <div className="bg-animated-gradient text-white py-16 sm:py-20 lg:py-28 relative overflow-hidden">
-      <div className="absolute inset-0 bg-tricolour-mesh"></div>
-      <div className="absolute inset-0 opacity-20" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.15'%3E%3Ccircle cx='40' cy='40' r='6'/%3E%3Cpath d='M40 20c11.046 0 20 8.954 20 20s-8.954 20-20 20-20-8.954-20-20 8.954-20 20-20z' stroke='%23ffffff' stroke-width='1' fill='none'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+    <div className="bg-gradient-to-br from-orange-500 via-yellow-500 to-green-500 text-white py-12 sm:py-16 lg:py-24 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-green-600/20"></div>
+      <div className="absolute inset-0 opacity-10" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
       }}></div>
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 lg:mb-10 bg-gradient-to-r from-white via-orange-100 to-green-100 bg-clip-text text-transparent leading-tight animate-fade-in text-shadow-strong">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 lg:mb-8 bg-gradient-to-r from-white via-orange-100 to-green-100 bg-clip-text text-transparent leading-tight">
             Find Your Inner Peace
           </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 lg:mb-14 text-white-contrast leading-relaxed max-w-4xl mx-auto px-2 animate-fade-in">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 lg:mb-12 text-orange-100 leading-relaxed max-w-3xl mx-auto px-2">
             Experience personalized spiritual guidance with AI-powered meditation, sacred music, and authentic ritual bookings across India 🇮🇳
           </p>
           {currentUser && (
@@ -265,15 +265,15 @@ const HeroSection = React.memo<HeroSectionProps>(({ currentUser, onQuickMeditati
 
 const DailyWisdomCard = React.memo<DailyWisdomCardProps>(({ dailyQuote, dailyGoodDeed, onQuickMeditation, onDailyChallenge, onDevotionalShop }) => {
   return (
-    <Card className="mb-6 sm:mb-8 lg:mb-10 card-premium border-0 shadow-premium hover:shadow-saffron transition-all duration-500 hover-lift animate-fade-in">
+    <Card className="mb-4 sm:mb-6 lg:mb-8 bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50 border-orange-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-4 sm:p-6 lg:p-8">
-        <div className="flex items-center space-x-4 sm:space-x-5 mb-6 sm:mb-8">
-          <div className="w-12 sm:w-14 lg:w-18 h-12 sm:h-14 lg:h-18 rounded-2xl bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center shadow-saffron flex-shrink-0 pulse-glow">
-            <Sparkles className="h-6 sm:h-7 lg:h-9 w-6 sm:w-7 lg:w-9 text-white" />
+        <div className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-6">
+          <div className="w-10 sm:w-12 lg:w-16 h-10 sm:h-12 lg:h-16 rounded-full bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center shadow-lg flex-shrink-0">
+            <Sparkles className="h-5 sm:h-6 lg:h-8 w-5 sm:w-6 lg:w-8 text-white" />
           </div>
-          <h3 className="font-bold text-saffron-dark text-xl sm:text-2xl lg:text-3xl">Daily Wisdom</h3>
+          <h3 className="font-bold text-orange-700 text-lg sm:text-xl lg:text-2xl">Daily Wisdom</h3>
         </div>
-        <blockquote className="text-high-contrast italic mb-6 sm:mb-8 p-4 sm:p-5 lg:p-7 glass rounded-2xl border-l-4 border-saffron shadow-saffron text-sm sm:text-base lg:text-lg leading-relaxed animate-scale-in">
+        <blockquote className="text-gray-700 italic mb-4 sm:mb-6 p-3 sm:p-4 lg:p-6 bg-white rounded-xl border-l-4 border-orange-400 shadow-sm text-sm sm:text-base lg:text-lg leading-relaxed">
           "{dailyQuote}"
         </blockquote>
         {dailyGoodDeed && (
@@ -339,13 +339,13 @@ const FeatureCard = React.memo<FeatureCardProps>(({ icon: Icon, title, descripti
   }, [currentUser, title, path, navigate, onNaradAIClick]);
 
   return (
-    <Card className="card-premium hover:shadow-saffron transition-all duration-500 h-full group border-0 shadow-premium hover-lift animate-fade-in">
-      <CardHeader className="text-center pb-4 sm:pb-5 p-4 sm:p-5 lg:p-7">
-        <div className="w-14 sm:w-18 lg:w-22 h-14 sm:h-18 lg:h-22 rounded-3xl bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center mx-auto mb-4 sm:mb-5 lg:mb-7 shadow-saffron group-hover:shadow-green transition-all duration-500 group-hover:scale-125 pulse-glow">
-          <Icon className="h-7 sm:h-9 lg:h-11 w-7 sm:w-9 lg:w-11 text-white" />
+    <Card className="feature-card hover:shadow-xl transition-all duration-300 h-full group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30">
+      <CardHeader className="text-center pb-3 sm:pb-4 p-3 sm:p-4 lg:p-6">
+        <div className="w-12 sm:w-16 lg:w-20 h-12 sm:h-16 lg:h-20 rounded-2xl bg-gradient-to-r from-orange-500 to-green-500 flex items-center justify-center mx-auto mb-3 sm:mb-4 lg:mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110 pulse-glow">
+          <Icon className="h-6 sm:h-8 lg:h-10 w-6 sm:w-8 lg:w-10 text-white" />
         </div>
-        <CardTitle className="text-lg sm:text-xl lg:text-2xl font-bold text-high-contrast group-hover:text-saffron transition-colors duration-500 leading-tight">{title}</CardTitle>
-        <CardDescription className="text-gray-600 text-sm sm:text-base lg:text-lg leading-relaxed mt-2">{description}</CardDescription>
+        <CardTitle className="text-base sm:text-lg lg:text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors duration-300 leading-tight">{title}</CardTitle>
+        <CardDescription className="text-gray-600 text-xs sm:text-sm lg:text-base leading-relaxed">{description}</CardDescription>
         {badgeText && (
           <Badge className="w-fit mx-auto bg-orange-100 text-orange-800 mt-2 sm:mt-3 px-2 sm:px-3 py-1 text-xs">
             {badgeText}
@@ -377,10 +377,10 @@ const StatsCard = React.memo<StatsCardProps>(({ count, label, buttonText, curren
   }, [currentUser, label]);
 
   return (
-    <Card className="card-premium text-center transition-all duration-500 group border-0 shadow-premium hover:shadow-green hover-lift animate-fade-in">
-      <CardContent className="p-4 sm:p-5 lg:p-9">
-        <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-gradient-to-r from-saffron to-indian-green bg-clip-text mb-2 sm:mb-3 lg:mb-4 group-hover:scale-125 transition-transform duration-500 pulse-glow">{count}</div>
-        <div className="text-sm sm:text-base text-high-contrast mb-3 sm:mb-4 lg:mb-5 font-semibold">{label}</div>
+    <Card className="stats-card text-center transition-all duration-300 group border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30 hover-lift">
+      <CardContent className="p-3 sm:p-4 lg:p-8">
+        <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-transparent bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text mb-1 sm:mb-2 lg:mb-3 group-hover:scale-110 transition-transform duration-300">{count}</div>
+        <div className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 lg:mb-4 font-medium">{label}</div>
         <Button 
           size="sm" 
           variant="ghost" 
