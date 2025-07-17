@@ -254,8 +254,8 @@ const NaradAIChat = () => {
   };
 
   return (
-    <Card className={`w-full mx-auto flex flex-col ${isMobile ? 'h-[80vh] max-w-full' : 'h-[600px] max-w-4xl'}`}>
-      <CardHeader className={`bg-gradient-to-r from-orange-500 via-yellow-500 to-green-500 text-white rounded-t-lg flex-shrink-0 ${isMobile ? 'p-3' : 'p-6'}`}>
+    <Card className={`w-full mx-auto flex flex-col card-premium shadow-premium animate-fade-in ${isMobile ? 'h-[80vh] max-w-full' : 'h-[600px] max-w-4xl'}`}>
+      <CardHeader className={`bg-animated-gradient text-white rounded-t-lg flex-shrink-0 shadow-saffron ${isMobile ? 'p-3' : 'p-6'}`}>
         <CardTitle className={`flex items-center justify-between ${isMobile ? 'text-lg' : 'text-xl'}`}>
           <div className="flex items-center space-x-2">
             <Bot className={`${isMobile ? 'h-5 w-5' : 'h-6 w-6'}`} />
@@ -278,10 +278,10 @@ const NaradAIChat = () => {
                 className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`${isMobile ? 'max-w-[85%]' : 'max-w-[80%]'} p-3 rounded-lg ${
+                  className={`${isMobile ? 'max-w-[85%]' : 'max-w-[80%]'} p-4 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${
                     message.isUser
-                      ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white'
-                      : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800'
+                      ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-saffron'
+                      : 'glass-green text-high-contrast shadow-green'
                   }`}
                 >
                   <div className="flex items-start space-x-2">

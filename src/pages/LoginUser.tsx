@@ -238,7 +238,7 @@ const LoginUser = React.memo(() => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 flex items-center justify-center p-2 sm:p-4">
+    <div className="min-h-screen bg-tricolour-subtle flex items-center justify-center p-2 sm:p-4 animate-fade-in">
       <div className="w-full max-w-md">
         <Button 
           variant="ghost" 
@@ -249,8 +249,8 @@ const LoginUser = React.memo(() => {
           Back to Home
         </Button>
 
-        <Card className={cardStyles.card}>
-          <div className="h-2 bg-gradient-to-r from-orange-500 via-white via-green-500 to-orange-500"></div>
+        <Card className="card-premium shadow-premium border-0 animate-scale-in hover-lift">
+          <div className="h-3 bg-tricolour"></div>
           
           <CardHeader className={cardStyles.header}>
             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
